@@ -1,0 +1,10 @@
+# note: bind is used instead of setting these in .inputrc.
+# This ignores case in bash completion
+bind "set completion-ignore-case on"
+
+export GREP_OPTIONS='--color=auto' GREP_COLOR='1;32'
+export EDITOR='vim'
+
+# set homebrew path to take precedence
+# Alternatively: edit /etc/paths file on OS X
+#export PATH="/usr/local/bin:$PATH"

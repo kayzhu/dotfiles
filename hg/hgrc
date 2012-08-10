@@ -1,0 +1,64 @@
+[ui]
+username=Kay Zhu <me@kayzhu.com>
+ignore= ~/.hgignore_global
+merge = diffmerge
+
+[extensions]
+hgext.extdiff =
+mq =
+graphlog =
+progress = 
+fetch =
+eol =
+hgext.purge =
+pager =
+color =
+bookmarks =
+rebase =
+
+[pager]
+pager = LESS='FRSX' less
+quiet = True
+ignore = version, help, update
+attend = annotate, cat, diff, export, glog, log, qdiff
+
+[color]
+#diff.trailingwhitespace = none
+diff.diffline = bold
+diff.extended = cyan bold
+diff.file_a = red bold
+diff.file_b = green bold
+diff.hunk = magenta
+diff.deleted = red
+diff.inserted = green
+diff.changed = white
+diff.trailingwhitespace = bold red_background
+status.modified = magenta bold
+status.added = green bold
+status.removed = red bold
+status.deleted = cyan bold
+status.unknown = blue bold
+status.ignored = black bold
+qseries.applied = blue bold underline
+qseries.unapplied = black bold
+qseries.missing = red bold
+
+[bookmarks]
+track.current = True
+
+[extdiff]
+# Use Kaleidoscope as external diff tool
+cmd.ksdiff = /usr/local/bin/ksdiff-wrapper
+opts.ksdiff = hg
+# Use vimdiff as external diff tool
+cmd.vimdiff = /usr/local/bin/vimdiff
+cmd.mvimdiff = /usr/local/bin/mvimdiff
+
+[merge-tools]
+diffmerge.executable = /usr/bin/diffmerge
+diffmerge.args = -merge -result=$output -t1="Local Version" -t2=$output -t3="Other Version" -caption=$output $local $base $other
+diffmerge.binary = False
+diffmerge.symlinks = False
+diffmerge.gui = True
+
+%include ./private_hg

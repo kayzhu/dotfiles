@@ -1,0 +1,10 @@
+syntax: glob
+
+*~
+.DS_Store
+tags
+*.class
+*.o
+*.pyc
+*.sqlite3
+*.sw[opmn]

@@ -1,0 +1,92 @@
+###############################################################################
+# Private Aliases (not version controlled)
+###############################################################################
+. ~/bin/dotfiles/bash/private_aliases
+
+
+###############################################################################
+# Utilities
+###############################################################################
+alias c='clear'
+alias rm_svn='find . -name ".svn" -type d -exec rm -rf {} \;'  # remove .svn
+alias killql='killall STOP quicklookd'
+alias killqt='killall STOP QTKitServer'
+alias systail='tail -f /var/log/system.log'
+alias g='grep -i'  # case insensitive grep
+alias f='find . -iname'
+
+function take() {
+    mkdir -p "$1"
+    cd "$1" 
+}
+# From http://github.com/suztomo/dotfiles
+function rmf(){
+    for file in $*
+    do
+        __rm_single_file $file
+    done
+}
+
+function __rm_single_file(){
+    if ! [ -d ~/.Trash/ ]
+    then
+        command /bin/mkdir ~/.Trash
+    fi
+
+    if ! [ $# -eq 1 ]
+    then
+        echo "__rm_single_file: 1 argument required but $# passed."
+        exit
+    fi
+
+    if [ -e $1 ]
+    then
+        BASENAME=`basename $1`
+        NAME=$BASENAME
+        COUNT=0
+        while [ -e ~/.Trash/$NAME ]
+        do
+            COUNT=$(($COUNT+1))
+            NAME="$BASENAME.$COUNT"
+        done
+
+        command /bin/mv $1 ~/.Trash/$NAME
+    else
+        echo "No such file or directory: $file"
+    fi
+}
+
+# It basically allows you to save bookmarks to folders.
+if [ ! -f ~/.dirs ]; then  # if doesn't exist, create it
+    touch ~/.dirs
+fi
+
+alias show='cat ~/.dirs'
+save (){
+    command sed "/!$/d" ~/.dirs > ~/.dirs1; \mv ~/.dirs1 ~/.dirs; echo "$@"=\\"`pwd`\\" >> ~/.dirs; source ~/.dirs ; 
+}
+source ~/.dirs  # Initialization for the above 'save' facility: source the .sdirs file
+shopt -s cdable_vars # set the bash option so that no '$' is required when using the above facility
+
+
+###############################################################################
+# Navigation and browsing
+###############################################################################
+alias ..='cd ..'
+alias ...='cd .. ; cd ..'
+alias tree='tree -CFh --du'
+alias o='open . &'
+
+alias ls="ls -GFh"    # list
+alias la="ls -FGAh"   # list all, includes dot files
+alias ll="ls -FGlh"   # long list, excludes dot files
+alias lla="ls -FGlAh" # long list all, includes dot files
+alias l="ls -GFhltA"   # sort with recent modified first
+
+###############################################################################
+# Processes
+###############################################################################
+alias tu='top -o cpu'   # cpu
+alias tm='top -o vsize' # memory
+
+
