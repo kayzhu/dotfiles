@@ -65,8 +65,8 @@ export PROMPT_COMMAND='echo -ne "\\033]0;${USER}@${HOSTNAME%%.*} ${PWD}"; echo -
 # save and reload history after command finishes
 ###############################################################################
 export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
-export HISTSIZE=50000                    # big big history
-export HISTFILESIZE=50000                # big big history
+export HISTSIZE=70000                    # big big history
+export HISTFILESIZE=70000                # big big history
 shopt -s histappend                      # append to history, don't overwrite
 
 # history:
@@ -81,4 +81,3 @@ shopt -s histappend                      # append to history, don't overwrite
 
 # Save and reload the history after each command finishes
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-

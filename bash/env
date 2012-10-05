@@ -5,6 +5,23 @@ bind "set completion-ignore-case on"
 export GREP_OPTIONS='--color=auto' GREP_COLOR='1;32'
 export EDITOR='vim'
 
+
 # set homebrew path to take precedence
 # Alternatively: edit /etc/paths file on OS X
 #export PATH="/usr/local/bin:$PATH"
+
+
+#==> Downloading https://github.com/rupa/z/tarball/v1.3
+######################################################################### 100.0%
+#==> Caveats
+#For Bash, put something like this in your $HOME/.bashrc:
+
+ #. `brew --prefix`/etc/profile.d/z.sh
+
+#For Zsh, put something like this in your $HOME/.zshrc:
+
+ #. `brew --prefix`/etc/profile.d/z.sh
+ #function precmd () {
+   #z --add "$(pwd -P)"
+ #}
+#. `brew --prefix`/etc/profile.d/z.sh

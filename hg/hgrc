@@ -16,6 +16,14 @@ color =
 bookmarks =
 rebase =
 
+[defaults]
+qnew = -Ue
+
+[diff]
+git = 1
+showfunc = 1
+unified = 8
+
 [pager]
 pager = LESS='FRSX' less
 quiet = True
@@ -61,4 +69,4 @@ diffmerge.binary = False
 diffmerge.symlinks = False
 diffmerge.gui = True
 
-%include ./private_hg
+%include ~/bin/dotfiles/hg/private_hg
