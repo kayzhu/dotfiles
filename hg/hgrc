@@ -69,4 +69,4 @@ diffmerge.binary = False
 diffmerge.symlinks = False
 diffmerge.gui = True
 
-%include ~/bin/dotfiles/hg/private_hg
+#%include private_hg
