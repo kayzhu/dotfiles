@@ -1,0 +1,62 @@
+config defaultToCurrentScreen true
+config nudgePercentOf screenSize
+config resizePercentOf screenSize
+
+# Aliases
+alias full move screenOriginX;screenOriginY screenSizeX;screenSizeY
+alias lefthalf move screenOriginX;screenOriginY screenSizeX/2;screenSizeY
+alias leftthird move screenOriginX;screenOriginY screenSizeX/3;screenSizeY
+alias righthalf move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY
+alias rightthird move screenOriginX+screenSizeX/3+screenSizeX/3;screenOriginY screenSizeX/3;screenSizeY
+alias middlethird move screenOriginX+screenSizeX/3;screenOriginY screenSizeX/3;screenSizeY
+alias tophalf move screenOriginX;screenOriginY screenSizeX;screenSizeY/2
+alias bottomhalf move screenOriginX;screenOriginY+screenSizeY/2 screenSizeX;screenSizeY/2
+alias topleft corner top-left resize:screenSizeX/2;screenSizeY/2
+alias topright corner top-right resize:screenSizeX/2;screenSizeY/2
+alias bottomleft corner bottom-left resize:screenSizeX/2;screenSizeY/2
+alias bottomright corner bottom-right resize:screenSizeX/2;screenSizeY/2
+
+# Resize Bindings
+bind l:alt resize +1% +0
+bind h:alt resize -1% +0
+bind k:alt resize +0 -1%
+bind j:alt resize +0 +1%
+bind l:ctrl;alt resize -1% +0 bottom-right
+bind h:ctrl;alt resize +1% +0 bottom-right
+bind k:ctrl;alt resize +0 +1% bottom-right
+bind j:ctrl;alt resize +0 -1% bottom-right
+
+# Move/Corner bindings
+bind o:ctrl;cmd ${full}
+bind k:ctrl;cmd ${tophalf}
+bind j:ctrl;cmd ${bottomhalf}
+bind h:ctrl;cmd ${lefthalf}
+bind l:ctrl;cmd ${righthalf}
+
+bind b:ctrl;cmd ${bottomleft}
+bind y:ctrl;cmd ${topleft}
+bind .:ctrl;cmd ${bottomright}
+bind p:ctrl;cmd ${topright}
+
+bind h:ctrl;shift;cmd ${leftthird}
+bind i:ctrl;shift;cmd ${middlethird}
+bind l:ctrl;shift;cmd ${rightthird}
+
+# Nudge Bindings
+bind l:ctrl;alt nudge +1% +0
+bind h:ctrl;alt nudge -1% +0
+bind k:ctrl;alt nudge +0 -1%
+bind j:ctrl;alt nudge +0 +1%
+
+# Focus Bindings
+bind l:cmd;shift focus right
+bind h:cmd;shift focus left
+bind k:cmd;shift focus up
+bind j:cmd;shift focus down
+bind k:cmd;shift;alt focus above
+bind j:cmd;shift;alt focus behind
+
+# App Bindings
+bind a:ctrl;cmd focus 'Google Chrome'
+bind s:ctrl;cmd focus 'Terminal'
+bind d:ctrl;cmd focus 'MacVim'

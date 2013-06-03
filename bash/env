@@ -8,6 +8,7 @@ export EDITOR='vim'
 
 # set homebrew path to take precedence
 # Alternatively: edit /etc/paths file on OS X
+export PATH=$HOME/bin:$PATH
 #export PATH="/usr/local/bin:$PATH"
 
 
