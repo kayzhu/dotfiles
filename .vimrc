@@ -37,7 +37,7 @@ set t_Co=256                    " Use 256 colors
 "hi cursorline guibg=#333333         " highlight bg color of current line
 "hi CursorColumn guibg=#333333       " highlight cursor
 
-" Folding. foldmethod=syntax slows everything down.
+" Folding. foldmethod=syntax slows everything down for reasons unknown.
 "set foldmethod=indent
 "set foldnestmax=10
 "set nofoldenable
@@ -116,6 +116,7 @@ nnoremap <unique> <leader>wf :CorpWebCsFile<CR>
 "======================"
 " Vundle configuration "
 "======================"
+
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 if isdirectory(expand('$HOME/.vim/bundle/Vundle.vim'))
@@ -128,7 +129,6 @@ if isdirectory(expand('$HOME/.vim/bundle/Vundle.vim'))
   Plugin 'scrooloose/nerdcommenter'
   Plugin 'scrooloose/nerdtree'
   Plugin 'Valloric/MatchTagAlways'
-  Plugin 'vim-scripts/netrw.vim'
   Plugin 'vim-scripts/a.vim'
   Plugin 'tpope/vim-sensible'
   Plugin 'tpope/vim-surround'
@@ -147,15 +147,20 @@ colorscheme jelleybeans
 
 
 " NERDTree settings.
-nnoremap <leader>n :NERDTreeToggle<CR>
-nnoremap <leader>nb :NERDTreeFind<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+nnoremap <unique> <leader>n :NERDTreeToggle<CR>
+nnoremap <unique> <leader>nb :NERDTreeFind<CR>
+augroup nerdtree
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+augroup END
 let g:NERDTreeChDirMode=2
 let NERDTreeIgnore = ['\.pyc$']
 let NERDTreeMapOpenInTab = '<c-t>'
 
 " Ctrl-P settings.
 "
+" Let CtrlP not go all the way up to the root of the client. Instead, consider a
+" METADATA file to delimit a project.
+"let g:ctrlp_root_markers = ['METADATA']
 let g:ctrlp_map = '<leader>p'
 nnoremap <unique> <leader>m = :CtrlPMRU<cr>
 nnoremap <unique> <leader>mm = :CtrlPMixed<cr>
@@ -188,15 +193,17 @@ if executable('ag')
 
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
+else
+  echomsg 'silversearcher-ag is not installed. It will be faster for CtrlP.'
 endif
-"let g:ctrlp_prompt_mappings = {
-   "\ 'PrtSelectMove("j")':   ['<c-n>', '<down>'],
-   "\ 'PrtSelectMove("k")':   ['<c-p>', '<up>'],
-   "\ 'PrtSelectMove("t")':   ['<Home>', '<kHome>'],
-   "\ 'PrtSelectMove("b")':   ['<End>', '<kEnd>'],
-   "\ 'PrtSelectMove("u")':   ['<PageUp>', '<kPageUp>'],
-   "\ 'PrtSelectMove("d")':   ['<PageDown>', '<kPageDown>'],
-   "\ }
+" Use sensible <c-n> and <c-p> for up and down selection instead of the default
+" <c-j> and <c-k>.
+let g:ctrlp_prompt_mappings = {
+   \ 'PrtSelectMove("j")':   ['<c-n>', '<down>'],
+   \ 'PrtSelectMove("k")':   ['<c-p>', '<up>'],
+   \ 'PrtHistory(-1)':       ['<c-j>'],
+   \ 'PrtHistory(1)':        ['<c-k>'],
+   \ }
 
 
 
