@@ -80,6 +80,11 @@ nnoremap <unique> <leader>gs :GtImporterSort<CR>
 nnoremap <unique> <leader>r :RelatedFilesWindow<CR>
 nnoremap <unique> <leader>rf :RelatedFilesWindow<CR>
 nnoremap <unique> <leader>jd :YcmCompleter GoTo<CR>
+nnoremap <unique> <leader>jdd :YcmCompleter GoToDefinition<CR>
+nnoremap <unique> <leader>jj :YcmCompleter GoToImprecise<CR>
+nnoremap <unique> <leader>jt :YcmCompleter GetType<CR>
+nnoremap <unique> <leader>jp :YcmCompleter GetParent<CR>
+nnoremap <unique> <leader>jc :YcmCompleter GetDoc<CR>
 "Query mode.
 nnoremap <unique> <leader>qf :let g:clang_include_fixer_query_mode=1<cr>:pyf /usr/lib/clang-include-fixer/clang-include-fixer.py<cr>
 nnoremap <unique> <leader>cr :pyf /google/src/head/depot/google3/third_party/llvm/llvm/tools/clang/tools/extra/clang-rename/tool/clang-rename.py<cr>
@@ -158,6 +163,9 @@ let NERDTreeMapOpenInTab = '<c-t>'
 
 " Ctrl-P settings.
 "
+" Let CtrlP not go all the way up to the root of the client. Instead, consider a
+" METADATA file to delimit a project.
+"let g:ctrlp_root_markers = ['METADATA']
 let g:ctrlp_map = '<leader>p'
 nnoremap <unique> <leader>m = :CtrlPMRU<cr>
 nnoremap <unique> <leader>mm = :CtrlPMixed<cr>
