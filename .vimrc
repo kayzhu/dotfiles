@@ -158,9 +158,6 @@ let NERDTreeMapOpenInTab = '<c-t>'
 
 " Ctrl-P settings.
 "
-" Let CtrlP not go all the way up to the root of the client. Instead, consider a
-" METADATA file to delimit a project.
-"let g:ctrlp_root_markers = ['METADATA']
 let g:ctrlp_map = '<leader>p'
 nnoremap <unique> <leader>m = :CtrlPMRU<cr>
 nnoremap <unique> <leader>mm = :CtrlPMixed<cr>
