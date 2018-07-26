@@ -139,7 +139,7 @@ if isdirectory(expand('$HOME/.vim/bundle/Vundle.vim'))
   Plugin 'tpope/vim-surround'
   Plugin 'flazz/vim-colorschemes'
   Plugin 'ctrlpvim/ctrlp.vim'
-  "Plugin 'vim-airline/vim-airline'
+  "Plugin 'vim-airline/vim-airline'  TOO SLOW
 
   call vundle#end()
 else
