@@ -1,0 +1,27 @@
+
+use_transbg = false
+brightness = 100
+fg_color = #ffffff
+bg_color = #000000
+scrollbar_mode = none
+borderless = true
+fontsize = 12
+geometry = 90x35
+use_anti_alias = true
+logsize = 4096
+name = xterm
+word_separators = " ,;="
+
+# Needed for alt/option key to work as meta key for Mac keyboard
+mod_meta_key = alt
+mod_meta_mode = esc
+
+bel_mode = none
+use_variable_column_width = false
+type_engine = xft
+only_use_unicode_font = false
+not_use_unicode_font = false
+cursor_bg_color = #ffffffffffff
+cursor_fg_color = #000000000000
+line_space = 1
+blink_cursor = true
