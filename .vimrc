@@ -137,6 +137,7 @@ if isdirectory(expand('$HOME/.vim/bundle/Vundle.vim'))
   Plugin 'vim-scripts/a.vim'
   Plugin 'tpope/vim-sensible'
   Plugin 'tpope/vim-surround'
+  Plugin 'tpope/vim-eunuch'
   Plugin 'flazz/vim-colorschemes'
   Plugin 'ctrlpvim/ctrlp.vim'
   "Plugin 'vim-airline/vim-airline'  TOO SLOW
