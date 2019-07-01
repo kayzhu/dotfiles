@@ -8,14 +8,19 @@ set hidden                      " Allow buffer backgrounding.
 set scrolloff=3                 " Add top/bottom scroll margins.
 set ttyfast lazyredraw          " Make drawing faster.
 let mapleader="`"               " Default is \, I prefer `.
-set backup                      " Be safe.
+set nobackup                    " No pesky swp files.
 set clipboard=unnamed           " Allow vim to use the X clipboard.
 set formatoptions=cqn1j         " See :help fo-table.
 set history=1000                " Remember a lot.
 set relativenumber number       " Use relative line numbers.
 "set number                     " Use absolute line numbers.
 set showcmd                     " Show the last command.
-set showmatch                   " When a bracket is typed show its match.
+set ruler                       " Show coloumn and line in the status line.
+"Disabled due to Highlight_Matching_Pair() call slowness in MatchParen.vim
+"plugin.
+"set showmatch                   " When a bracket is typed show its match.
+set noshowmatch                   
+let g:loaded_matchparen=1
 set hlsearch                    " Highlight search.
 set incsearch                   " Search incrementally as I type.
 set ignorecase                  " Ignore case when searching.
@@ -31,6 +36,9 @@ set confirm                     " Confirm overwrites etc w/o having to use '!'.
 set colorcolumn=80              " Highlight overlength of 80.
 set t_Co=256                    " Use 256 colors
 
+set guioptions+=aAgcMrL     "this one makes the popup message disappear;instead we have console promots
+"set guioptions+=rL
+"set guioptions-=T
 
 " Highlight current line. Disabled due to slowness.
 "set cursorline cursorcolumn         " highlight current line
@@ -45,6 +53,9 @@ set t_Co=256                    " Use 256 colors
 
 " Make hidden characters look nice when shown.
 set listchars=tab:▷\ ,eol:¬,extends:»,precedes:«
+
+" Type substitution where the pattern is the word under the cursor.
+nnoremap <unique> <Leader>s :%s/\<<C-r><C-w>\>/
 
 " Use jk for normal mode switch.
 inoremap jk <ESC>
