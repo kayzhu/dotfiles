@@ -76,6 +76,9 @@ augroup END
 " Instead of looking up man pages for the word under the cursor, return instead.
 nnoremap <s-k> <CR>
 
+" Remove highlights with enter key.
+nnoremap <cr> :noh<CR><CR>:<backspace>
+
 "========================="
 " Internal Google plugins "
 "========================="
