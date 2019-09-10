@@ -18,7 +18,8 @@ mod_meta_mode = esc
 
 bel_mode = none
 use_variable_column_width = false
-type_engine = xft
+# Commented out for =xft 09-10-2019: causes everything to disapppear and crash upon entering 
+type_engine = cairo # also the default
 only_use_unicode_font = false
 not_use_unicode_font = false
 cursor_bg_color = #ffffffffffff
