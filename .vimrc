@@ -155,6 +155,8 @@ if isdirectory(expand('$HOME/.vim/bundle/Vundle.vim'))
   Plugin 'flazz/vim-colorschemes'
   Plugin 'ctrlpvim/ctrlp.vim'
   "Plugin 'vim-airline/vim-airline'  TOO SLOW
+  Plugin 'mechatroner/rainbow_csv'
+  Plugin 'dracula/vim',{'name':'dracula'}
 
   call vundle#end()
 else
