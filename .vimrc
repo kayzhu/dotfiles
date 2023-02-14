@@ -19,7 +19,7 @@ set ruler                       " Show coloumn and line in the status line.
 "Disabled due to Highlight_Matching_Pair() call slowness in MatchParen.vim
 "plugin.
 "set showmatch                   " When a bracket is typed show its match.
-set noshowmatch                   
+set noshowmatch
 let g:loaded_matchparen=1
 set hlsearch                    " Highlight search.
 set incsearch                   " Search incrementally as I type.
@@ -82,37 +82,37 @@ nnoremap <cr> :noh<CR><CR>:<backspace>
 "========================="
 " Internal Google plugins "
 "========================="
-source /usr/share/vim/google/google.vim
+"source /usr/share/vim/google/google.vim
 
-nnoremap <unique> <leader>cc :CritiqueComments<CR>
-nnoremap <unique> <leader>cn :CritiqueNextComment<CR>
-nnoremap <unique> <leader>cp :CritiquePreviousComment<CR>
-nnoremap <unique> <leader>h :set list!<CR>
-nnoremap <unique> <leader>rp :PiperSelectActiveFiles<CR>
-nnoremap <unique> <leader>gi :GtImporter<CR>
-nnoremap <unique> <leader>gs :GtImporterSort<CR>
-nnoremap <unique> <leader>r :RelatedFilesWindow<CR>
-nnoremap <unique> <leader>rf :RelatedFilesWindow<CR>
+"nnoremap <unique> <leader>cc :CritiqueComments<CR>
+"nnoremap <unique> <leader>cn :CritiqueNextComment<CR>
+"nnoremap <unique> <leader>cp :CritiquePreviousComment<CR>
+"nnoremap <unique> <leader>h :set list!<CR>
+"nnoremap <unique> <leader>rp :PiperSelectActiveFiles<CR>
+"nnoremap <unique> <leader>gi :GtImporter<CR>
+"nnoremap <unique> <leader>gs :GtImporterSort<CR>
+"nnoremap <unique> <leader>r :RelatedFilesWindow<CR>
+"nnoremap <unique> <leader>rf :RelatedFilesWindow<CR>
 nnoremap <unique> <leader>jd :YcmCompleter GoTo<CR>
 nnoremap <unique> <leader>jdd :YcmCompleter GoToDefinition<CR>
 nnoremap <unique> <leader>jj :YcmCompleter GoToImprecise<CR>
 nnoremap <unique> <leader>jt :YcmCompleter GetType<CR>
 nnoremap <unique> <leader>jp :YcmCompleter GetParent<CR>
 nnoremap <unique> <leader>jc :YcmCompleter GetDoc<CR>
-"Query mode.
-nnoremap <unique> <leader>qf :let g:clang_include_fixer_query_mode=1<cr>:pyf /usr/lib/clang-include-fixer/clang-include-fixer.py<cr>
-nnoremap <unique> <leader>cr :pyf /google/src/head/depot/google3/third_party/llvm/llvm/tools/clang/tools/extra/clang-rename/tool/clang-rename.py<cr>
-nnoremap <unique> <leader>cf :pyf /usr/lib/clang-include-fixer/clang-include-fixer.py<cr>:w<cr>:BlazeDepsUpdate<cr>
-
-Glug blaze plugin[mappings]='<leader>b'
-Glug blazedeps
-Glug critique
-Glug relatedfiles
-Glug youcompleteme-google
-Glug googlepaths
-
-Glug codefmt plugin[mappings]='\f'
-Glug codefmt-google
+""Query mode.
+"nnoremap <unique> <leader>qf :let g:clang_include_fixer_query_mode=1<cr>:pyf /usr/lib/clang-include-fixer/clang-include-fixer.py<cr>
+"nnoremap <unique> <leader>cr :pyf /google/src/head/depot/google3/third_party/llvm/llvm/tools/clang/tools/extra/clang-rename/tool/clang-rename.py<cr>
+"nnoremap <unique> <leader>cf :pyf /usr/lib/clang-include-fixer/clang-include-fixer.py<cr>:w<cr>:BlazeDepsUpdate<cr>
+"
+"Glug blaze plugin[mappings]='<leader>b'
+"Glug blazedeps
+"Glug critique
+"Glug relatedfiles
+"Glug youcompleteme-google
+"Glug googlepaths
+"
+"Glug codefmt plugin[mappings]='\f'
+"Glug codefmt-google
 augroup autoformat_settings
   autocmd FileType borg,gcl,patchpanel AutoFormatBuffer gclfmt
   autocmd FileType bzl AutoFormatBuffer buildifier
@@ -121,16 +121,18 @@ augroup autoformat_settings
   autocmd FileType java AutoFormatBuffer google-java-format
   autocmd FileType jslayout AutoFormatBuffer jslfmt
   autocmd FileType go AutoFormatBuffer gofmt
-  autocmd FileType python AutoFormatBuffer pyformat
+  "autocmd FileType python AutoFormatBuffer pyformat
+  autocmd FileType python AutoFormatBuffer black
+  "autocmd FileType python AutoFormatBuffer yapf 
   autocmd FileType markdown AutoFormatBuffer mdformat
   autocmd FileType ncl AutoFormatBuffer nclfmt
 augroup END
-
-Glug corpweb !plugin[mappings_gx]
-" search for the word under the cursor
-nnoremap <unique> <leader>ws :CorpWebCs <cword> <Cr>
-" search for the current file
-nnoremap <unique> <leader>wf :CorpWebCsFile<CR>
+"
+"Glug corpweb !plugin[mappings_gx]
+"" search for the word under the cursor
+"nnoremap <unique> <leader>ws :CorpWebCs <cword> <Cr>
+"" search for the current file
+"nnoremap <unique> <leader>wf :CorpWebCsFile<CR>
 
 "======================"
 " Vundle configuration "
@@ -157,8 +159,16 @@ if isdirectory(expand('$HOME/.vim/bundle/Vundle.vim'))
   "Plugin 'vim-airline/vim-airline'  TOO SLOW
   Plugin 'mechatroner/rainbow_csv'
   Plugin 'dracula/vim',{'name':'dracula'}
+  Plugin 'google/vim-maktaba'
+  Plugin 'google/vim-codefmt'
+  Plugin 'ycm-core/YouCompleteMe'
+  " Also add Glaive, which is used to configure codefmt's maktaba flags. See
+  " " `:help :Glaive` for usage.
+  Plugin 'google/vim-glaive'
 
   call vundle#end()
+  call glaive#Install()
+
 else
   echomsg 'Vundle is not installed. You can install Vundle from'
       \ 'https://github.com/VundleVim/Vundle.vim'
@@ -167,6 +177,10 @@ endif
 " Colorscheme settings, must have Plugin 'flazz/vim-colorschemes' installed.
 colorscheme jelleybeans
 
+" Map codefmt shortkey to '\f', must have 'google/vim-glaive' installed.
+Glaive codefmt plugin[mappings]='\f'
+"Glaive codefmt yapf_executable='/opt/homebrew/bin/yapf -style="{based_on_style: google, indent_width: 4, column_limit: 100}"'
+"Glaive codefmt black_executable='black --line-length=100'
 
 " NERDTree settings.
 nnoremap <unique> <leader>n :NERDTreeToggle<CR>
