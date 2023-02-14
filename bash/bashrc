@@ -1,6 +1,8 @@
 COLOR_GREEN='\033[1;32m'
-echo -e "${COLOR_GREEN}Loading ${HOME}/bin/dotfiles/bash/bashrc ...\033[m"
+echo -e "${COLOR_GREEN}Loading ${HOME}/dotfiles/bash/bashrc ...\033[m"
 
-. ~/bin/dotfiles/bash/env
-. ~/bin/dotfiles/bash/config
-. ~/bin/dotfiles/bash/aliases
+. ~/dotfiles/bash/env
+. ~/dotfiles/bash/config
+. ~/dotfiles/bash/aliases
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
