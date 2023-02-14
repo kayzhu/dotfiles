@@ -47,7 +47,7 @@ BWHITE='\033[47m'
 ###############################################################################
 
 #PS1="\n${EWHITE}\u:${UBLUE}\w${NO_COLOR}\$(vcprompt)\n${RED}→${NO_COLOR}"
-PS1="\n${EWHITE}\u:${UBLUE}\w${NO_COLOR}\$(vcprompt) \n→ "
+PS1="\u:\[\e[36m\]\w\n⇨ \[\e[m\] "
 
 
 #Note: PROMPT_COMMAND, used in this way, causes problems when you are using the
