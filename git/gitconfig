@@ -3,7 +3,7 @@
     email = me@kayzhu.com
 
 [core]
-    excludesfile = /Users/kay/.gitignore_global
+    excludesfile = ~/.gitignore_global
     editor = vim
     pager = less -R
 
@@ -46,4 +46,9 @@
     cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
 
 [github]
-    user = kayzh
+    user = kayzhu
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
