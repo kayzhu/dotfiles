@@ -26,3 +26,6 @@ export PATH=$HOME/bin:$PATH
    #z --add "$(pwd -P)"
  #}
 #. `brew --prefix`/etc/profile.d/z.sh
+
+# Use git autocompletion which is installed by `brew install bash-completion`.
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
