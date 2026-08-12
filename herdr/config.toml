@@ -30,6 +30,11 @@
 name = "terminal"
 
 [terminal]
+# Explicit rather than $SHELL: the server process inherits a stale $SHELL
+# from whatever environment launched it (bit us during the 2026-08 bash->zsh
+# switch -- panes kept spawning bash after chsh).
+default_shell = "/bin/zsh"
+
 # tmux heritage: tmux_conf_new_pane_retain_current_path=true.
 # New panes/tabs inherit the source pane's cwd. Predictable inside the
 # one-workspace-per-project convention; for a different project, make a
