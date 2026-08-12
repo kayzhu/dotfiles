@@ -25,7 +25,9 @@ link() {
 }
 
 # Portable basics (always).
+# bashrc doubles as .bashrc so non-login bash (ssh host cmd) is configured too.
 link bash/bashrc          "$HOME/.bash_profile"
+link bash/bashrc          "$HOME/.bashrc"
 link git/gitconfig        "$HOME/.gitconfig"
 link git/gitignore_global "$HOME/.gitignore_global"
 link vim/vimrc            "$HOME/.vimrc"
@@ -49,7 +51,8 @@ link zsh/zshrc                "$HOME/.zshrc"
 
 echo
 echo "--- prerequisite check (informational) ---"
-for c in aerospace herdr vim fzf rg borders black clang-format; do
+for c in aerospace herdr vim fzf rg fd bat eza zoxide tree htop btop trash \
+         delta lazygit ctags gh borders black clang-format; do
   if command -v "$c" >/dev/null 2>&1; then echo "ok:       $c"
   else echo "MISSING:  $c"; fi
 done

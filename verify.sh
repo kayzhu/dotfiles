@@ -3,8 +3,9 @@
 # manual checklist for the keystroke tests (those need human fingers).
 set -uo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FAILS=0
 pass() { echo "ok:    $1"; }
-fail() { echo "FAIL:  $1"; }
+fail() { echo "FAIL:  $1"; FAILS=$((FAILS + 1)); }
 
 # Every managed dotfile must be a symlink into this repo.
 check_link() {
@@ -14,6 +15,7 @@ check_link() {
   else fail "$dst is not a symlink to $want (run ./install.sh)"; fi
 }
 check_link "$HOME/.bash_profile"            bash/bashrc
+check_link "$HOME/.bashrc"                  bash/bashrc
 check_link "$HOME/.gitconfig"               git/gitconfig
 check_link "$HOME/.gitignore_global"        git/gitignore_global
 check_link "$HOME/.vimrc"                   vim/vimrc
@@ -30,8 +32,9 @@ if echo "$zout" | grep -q emacs && echo "$zout" | grep -q "^la="; then
   pass "zsh emacs keymap + shared aliases"
 else fail "zsh keymap is not emacs or aliases missing (check zsh/zshrc)"; fi
 
-# ctrl+s must be free of XOFF in this shell.
-if stty -a 2>/dev/null | grep -q -- '-ixon'; then pass "stty -ixon (ctrl+s free)"
+# ctrl+s must be free of XOFF in this shell (tty only; meaningless without one).
+if [ ! -t 0 ]; then echo "note:  no tty; skipping stty -ixon check"
+elif stty -a 2>/dev/null | grep -q -- '-ixon'; then pass "stty -ixon (ctrl+s free)"
 else fail "ixon still on: ctrl+s is XOFF here (zsh/zshrc or bash/env not loaded)"; fi
 
 # Secure input steals all global hotkeys when held by any process.
@@ -72,3 +75,9 @@ cat << 'MANUAL'
 5. ctrl+s ctrl+j  workspace switches; if COPY MODE opens instead, the build
                   aliases 0x0A/0x0D -- switch bindings to prefix+ctrl+p/n
 MANUAL
+
+if [ "$FAILS" -gt 0 ]; then
+  echo
+  echo "$FAILS check(s) FAILED"
+  exit 1
+fi
