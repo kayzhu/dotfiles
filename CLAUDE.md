@@ -154,10 +154,13 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   `herdr --default-config` against the last known template, re-verify every
   custom binding via `prefix+?`, and re-check integration versions with
   `herdr integration status`.
-- **Ghostty**: NOT brew-managed (no cask installed) — updates come from the
-  app itself. After updating, reload config, then `ghostty +list-keybinds`
-  to confirm the 20 repo-defined text: translations survived (23 total
-  including Ghostty's own defaults); watch release notes for keybind
-  grammar changes (physical key names arrived in 1.2).
+- **Ghostty**: brew-cask-managed since 2026-08 (adopted at 1.3.1). The cask
+  is marked auto_updates, so the app updates itself and plain
+  `brew upgrade` skips it; `brew upgrade --cask ghostty --greedy` forces a
+  brew-side sync. After updating, reload config, then
+  `ghostty +list-keybinds` to confirm the 20 repo-defined text:
+  translations survived (23 total including Ghostty's own defaults); watch
+  release notes for keybind grammar changes (physical key names arrived
+  in 1.2).
 - **vim plugins**: `:PlugUpdate`; `:LspInstallServer --force` if a language
   server misbehaves after a brew python bump.
