@@ -1,0 +1,17 @@
+# Tango color scheme from Gnome.
+black=#000000
+red=#CC0000
+green=#4E9A0
+yellow=#C4A000
+blue=#3465A4
+magenta=#75507B
+cyan=#06989A
+white=#D3D7CF
+hl_black=#555753
+hl_red=#EF2929
+hl_green=#8AE234
+hl_yellow=#FCE94F
+hl_blue=#729FCF
+hl_magenta=#AD7FA8
+hl_cyan=#34E2E2
+hl_white=#EEEEEC
