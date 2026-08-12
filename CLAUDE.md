@@ -5,13 +5,15 @@ Personal dotfiles: one directory per tool, symlinked into `$HOME` by
 `--minimal` installs just bash/git/vim for remote Linux VMs). Edit in the
 repo, apply, verify, commit — the repo file IS the live file.
 
-The bulk of this repo is **terminal-stack**: a three-layer macOS terminal
-environment on an M5 Max — AeroSpace (tiling WM) + Ghostty (emulator) +
-herdr (agent-aware multiplexer), plus the vimrc that lives inside it. This
-file is the canonical project state; it encodes conclusions from the
-debugging campaign that produced those configs, so read it before proposing
-changes. The rest (`bash/`, `git/`) predates the stack and mostly stays
-stable.
+The bulk of this repo is **the terminal stack**: a three-layer macOS
+terminal environment on an M5 Max — AeroSpace (tiling WM) + Ghostty
+(emulator) + herdr (agent-aware multiplexer), plus the vimrc that lives
+inside it. (It began life as a separate "terminal-stack" project directory,
+long since dissolved into the per-tool dirs here — aerospace/, ghostty/,
+herdr/, vim/, zsh/.) This file is the canonical project state; it encodes
+conclusions from the debugging campaign that produced those configs, so
+read it before proposing changes. The rest (`bash/`, `git/`) predates the
+stack and mostly stays stable.
 
 ## The layering contract (the core invariant)
 
@@ -136,6 +138,14 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   `herdr integration install claude` (state + session resume) and the herdr
   agent skill (`herdr --skill` to review; installed globally, gated on
   HERDR_ENV=1 and explicit mention).
+- Remote multiplexing, two tiers: VMs that can take the herdr binary get
+  `herdr --remote <ssh-target> --session <name>` (managed ssh: keepalives,
+  control-socket reuse; local keybindings by default) — run it from a PLAIN
+  Ghostty window (`open -na Ghostty --args -e zsh`), never inside a herdr
+  pane: the outer herdr consumes ctrl+s (constraint 2) and the nest guard
+  (`allow_nested = false`) refuses herdr-in-herdr. Everything else gets
+  tmux via `install.sh --minimal` (prefix C-a for the same reason).
+  UNVERIFIED against a real VM — test on first use and drop this note.
 
 ## Pending verification
 

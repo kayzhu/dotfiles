@@ -121,6 +121,10 @@ mouse_capture = true
 # affordance -- keep it visible even with one tab.
 hide_tab_bar_when_single_tab = false
 
+# Agent name on the pane border when panes are split -- the closest
+# analogue to tmux's pane indicators.
+show_agent_labels_on_pane_borders = true
+
 # Disambiguate parallel Claude Code panes in the agents sidebar:
 # Claude Code sets the terminal title to what it is working on, so two
 # sessions in one workspace stay tellable-apart by content.
@@ -145,6 +149,12 @@ resume_agents_on_restore = true
 [experimental]
 # Ghostty is Kitty-graphics capable; lets inline images through.
 kitty_graphics = true
+
+# Nest guard, explicit: herdr-in-herdr stays refused. Run `herdr --remote`
+# from a plain Ghostty window (open -na Ghostty --args -e zsh), never from
+# inside a pane -- the outer herdr would consume the ctrl+s prefix anyway
+# (constraint 2).
+allow_nested = false
 
 [advanced]
 # tmux history-limit heritage, but herdr counts BYTES, not lines.
