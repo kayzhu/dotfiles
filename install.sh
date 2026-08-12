@@ -44,14 +44,8 @@ link herdr/config.toml        "$HOME/.config/herdr/config.toml"
 # macOS Cocoa text-system keybindings; apps read it at launch.
 link DefaultKeyBinding.dict   "$HOME/Library/KeyBindings/DefaultKeyBinding.dict"
 
-# Shell glue: source stack.zsh from .zshrc exactly once.
-ZLINE="source $REPO/zsh/stack.zsh"
-if ! grep -qF "zsh/stack.zsh" "$HOME/.zshrc" 2>/dev/null; then
-  printf '\n# terminal-stack glue (ctrl+s / EDITOR)\n%s\n' "$ZLINE" >> "$HOME/.zshrc"
-  echo "appended:  source line to ~/.zshrc"
-else
-  echo "present:   ~/.zshrc already sources stack.zsh"
-fi
+# Interactive shell config (login shell is zsh; bash configs serve VMs).
+link zsh/zshrc                "$HOME/.zshrc"
 
 echo
 echo "--- prerequisite check (informational) ---"

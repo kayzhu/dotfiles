@@ -66,7 +66,9 @@ save (){
     command sed "/!$/d" ~/.dirs > ~/.dirs1; \mv ~/.dirs1 ~/.dirs; echo "$@"=\\"`pwd`\\" >> ~/.dirs; source ~/.dirs ; 
 }
 source ~/.dirs  # Initialization for the above 'save' facility: source the .sdirs file
-shopt -s cdable_vars # set the bash option so that no '$' is required when using the above facility
+# no '$' required when cd-ing to the bookmark variables above; this file is
+# shared by bash and zsh (zsh/zshrc sources it), so pick the right builtin
+if [ -n "$ZSH_VERSION" ]; then setopt cdable_vars; else shopt -s cdable_vars; fi
 
 
 ###############################################################################

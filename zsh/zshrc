@@ -1,0 +1,60 @@
+# zsh interactive config. Linked to ~/.zshrc by install.sh.
+# The bash configs (bash/) stay canonical for Linux VMs (install.sh --minimal);
+# aliases are shared -- this file sources bash/aliases.
+
+# MUST stay first: EDITOR=vim below would otherwise make zsh select the vi
+# keymap at startup, killing alt+f/b/d word motion (reserved by the layering
+# contract for readline/zle emacs-style word motion).
+bindkey -e
+
+# --- Environment (parity with bash/bashrc + bash/env) ---
+eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH=$HOME/bin:$PATH
+export EDITOR='vim'
+
+# Added by Antigravity
+export PATH="/Users/kz/.antigravity/antigravity/bin:$PATH"
+
+# Free ctrl+s from XOFF flow control -- it is the herdr prefix.
+# Guarded: stty errors in non-interactive shells.
+[[ -t 0 ]] && stty -ixon
+
+# --- History (port of bash/config: big, deduped, shared across terminals) ---
+HISTFILE=~/.zsh_history
+HISTSIZE=70000
+SAVEHIST=70000
+# SHARE_HISTORY replaces bash's PROMPT_COMMAND="history -a; history -c; history -r"
+setopt SHARE_HISTORY
+# replaces HISTCONTROL=ignoredups:erasedups
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS
+
+# --- Prompt (port of bash PS1: user:cyan-cwd, newline, cyan arrow) ---
+PROMPT=$'%n:%F{cyan}%~\n⇨ %f '
+
+# Terminal title: user@host cwd (port of bash's title PROMPT_COMMAND).
+precmd() { print -Pn '\e]0;%n@%m %d\a' }
+
+# --- Behavior parity with bash ---
+# unmatched globs pass through to the command instead of erroring
+setopt NO_NOMATCH
+setopt INTERACTIVE_COMMENTS
+
+# Completion: brew-installed completions, then case-insensitive matching
+# (port of bash/env's "bind set completion-ignore-case on").
+FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+# --- Shared aliases and functions (same file bash sources) ---
+source ~/dotfiles/bash/aliases
+
+# --- fzf ---
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# --- Plugins (brew-installed; guarded so machines without them still work) ---
+[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
+  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# syntax highlighting must be sourced LAST (it wraps zle widgets)
+[ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
+  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

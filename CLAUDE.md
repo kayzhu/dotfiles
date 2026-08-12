@@ -40,7 +40,7 @@ prefix works identically over SSH and the cmd chords only exist locally.
 | ghostty/config         | ~/.config/ghostty/config     | cmd+shift+comma in Ghostty  | `ghostty +list-keybinds`        |
 | herdr/config.toml      | ~/.config/herdr/config.toml  | `herdr server reload-config`| `prefix+?` inside herdr         |
 | vim/vimrc              | ~/.vimrc                     | restart vim / `:so %`       | `:checkhealth`-style manual     |
-| zsh/stack.zsh          | sourced from ~/.zshrc        | new shell                   | `stty -a \| grep ixon`          |
+| zsh/zshrc              | ~/.zshrc                     | new shell                   | `stty -a \| grep ixon`; `bindkey -lL main` → emacs |
 | bash/bashrc            | ~/.bash_profile              | new login shell             | `bash --login -i -c 'type la'`  |
 | git/gitconfig          | ~/.gitconfig                 | immediate                   | `git config core.excludesfile`  |
 | git/gitignore_global   | ~/.gitignore_global          | immediate                   | `.DS_Store` invisible to status |
@@ -55,8 +55,9 @@ apply, verify, commit. Never leave changes uncommitted.
    into herdr as literal text. All comments on their own lines.
 2. **Never map `<C-s>` in vim or any TUI config.** herdr consumes the prefix
    before the PTY; the key cannot reach any application inside it.
-3. **`stty -ixon` must stay in shell init** (zsh/stack.zsh). ctrl+s is XOFF
-   at the tty layer without it; symptom is a frozen pane, cure is ctrl+q.
+3. **`stty -ixon` must stay in shell init** (zsh/zshrc for zsh, bash/env for
+   bash — one definition per shell). ctrl+s is XOFF at the tty layer without
+   it; symptom is a frozen pane, cure is ctrl+q.
 4. **AeroSpace: reconcile against `aerospace --version`, not against
    documentation.** The docs site tracks the newest release; the installed
    binary may lag. `auto-reload-config`, `focus-follows-mouse`, and the
@@ -93,6 +94,11 @@ apply, verify, commit. Never leave changes uncommitted.
    `open -na Ghostty --args -e zsh`.
 10. **herdr scrollback is BYTES, not lines** (`scrollback_limit_bytes`).
     tmux's history-limit intuition does not transfer.
+11. **`bindkey -e` must stay FIRST in zsh/zshrc.** `EDITOR=vim` makes zsh
+    select the vi keymap at startup, which kills alt+f/b/d word motion (the
+    reserved readline/zle plane, constraint 8). The login shell is zsh
+    (`chsh -s /bin/zsh`); bash/ configs remain canonical for Linux VMs and
+    share bash/aliases with zsh — keep that file bash-AND-zsh compatible.
 
 ## Debugging doctrine: bisect by layer
 
@@ -129,10 +135,10 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
 
 - vimrc first launch: vim-plug bootstrap + `:LspInstallServer` (pyright)
   in a Python buffer.
-- `stty -ixon` is defined in three places: bash/env, zsh/stack.zsh, and a
-  hand-added line in ~/.zshrc (predates the stack.zsh source line).
-  Consolidate: drop the bare ~/.zshrc line once stack.zsh sourcing is
-  confirmed in a new shell.
+- zsh switch (2026-08-12): confirm interactive feel in a real terminal —
+  prompt renders, autosuggestions/highlighting show, alt+f/b/d word motion
+  works, history shared across panes. Remove this item once a day of use
+  passes without surprises.
 
 ## Upgrade playbook
 

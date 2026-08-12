@@ -21,6 +21,14 @@ check_link "$HOME/.aerospace.toml"          aerospace/aerospace.toml
 check_link "$HOME/.config/ghostty/config"   ghostty/config
 check_link "$HOME/.config/herdr/config.toml" herdr/config.toml
 check_link "$HOME/Library/KeyBindings/DefaultKeyBinding.dict" DefaultKeyBinding.dict
+check_link "$HOME/.zshrc"                   zsh/zshrc
+
+# zsh must be on the emacs keymap (EDITOR=vim would otherwise pick viins,
+# killing alt+f/b/d word motion) with shared aliases loaded.
+zout=$(zsh -ic 'bindkey -lL main; alias la' 2>/dev/null)
+if echo "$zout" | grep -q emacs && echo "$zout" | grep -q "^la="; then
+  pass "zsh emacs keymap + shared aliases"
+else fail "zsh keymap is not emacs or aliases missing (check zsh/zshrc)"; fi
 
 # ctrl+s must be free of XOFF in this shell.
 if stty -a 2>/dev/null | grep -q -- '-ixon'; then pass "stty -ixon (ctrl+s free)"
