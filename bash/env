@@ -1,34 +1,19 @@
 # note: bind is used instead of setting these in .inputrc.
-# This ignores case in bash completion
-bind "set completion-ignore-case on"
+# This ignores case in bash completion (interactive shells only)
+[[ $- == *i* ]] && bind "set completion-ignore-case on"
 
-export GREP_OPTIONS='--color=auto' GREP_COLOR='1;32'
 export EDITOR='vim'
 
 export PATH=$HOME/bin:$PATH
 
-# free ctrl+s from XOFF
-stty -ixon
+# free ctrl+s from XOFF -- it is the herdr prefix (CLAUDE.md constraint 3)
+[ -t 0 ] && stty -ixon
 
-# set homebrew path to take precedence
-# Alternatively: edit /etc/paths file on OS X
-#export PATH="/usr/local/bin:$PATH"
+# fzf keybindings (ctrl+r history, ctrl+t files, alt+c cd) -- fzf >= 0.48
+command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
 
-
-#==> Downloading https://github.com/rupa/z/tarball/v1.3
-######################################################################### 100.0%
-#==> Caveats
-#For Bash, put something like this in your $HOME/.bashrc:
-
- #. `brew --prefix`/etc/profile.d/z.sh
-
-#For Zsh, put something like this in your $HOME/.zshrc:
-
- #. `brew --prefix`/etc/profile.d/z.sh
- #function precmd () {
-   #z --add "$(pwd -P)"
- #}
-#. `brew --prefix`/etc/profile.d/z.sh
+# zoxide: frecency cd (z / zi)
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
 
 # Use git autocompletion which is installed by `brew install bash-completion`.
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"

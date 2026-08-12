@@ -19,8 +19,9 @@
 # ---------------------------------------------------------------------
 
 # TODO get a better theme
+# NOTE herdr inherits this palette (herdr config.toml theme name=terminal),
+# so a theme change here restyles the pane layer too.
 theme = catppuccin mocha
-#theme = Catppuccin Frappe
 
 font-size = 13
 

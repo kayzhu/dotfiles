@@ -213,10 +213,12 @@ endif
 " ============================================================
 nnoremap <unique> <leader>n :NERDTreeToggle<CR>
 nnoremap <unique> <leader>nb :NERDTreeFind<CR>
+" close vim if NERDTree is the last window (b:NERDTreeType was removed from
+" NERDTree years ago; b:NERDTree.isTabTree() is the current API)
 augroup nerdtree
   autocmd!
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType")
-        \ && b:NERDTreeType == "primary") | q | endif
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
+        \ && b:NERDTree.isTabTree()) | q | endif
 augroup END
 let g:NERDTreeChDirMode=2
 let NERDTreeIgnore = ['\.pyc$']

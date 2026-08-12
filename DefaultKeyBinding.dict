@@ -27,10 +27,13 @@ delete:       \U007F
 */
 
 
-"~b"       = "moveWordBackward:";                            /* Option + j */
-"~f"       = "moveWordForward:";                             /* Option + l */
-"~j"       = "moveUp:";                                      /* Option + i */
-"~k"       = "moveDown:";                                    /* Option + k */
-
-"~\U007F"  = "deleteWordBackward:";                          /* Option + Backspace */
-"~d"  = "deleteWordForward:";                                /* Option + d */
+/*
+Emacs-style word motion in Cocoa text views (Mail, Notes, browser fields),
+mirroring the readline/zle plane in the terminal. Option+Backspace already
+does deleteWordBackward: by system default.
+alt+j/k remaps were removed 2026-08: unreachable (AeroSpace owns alt+j/k as
+global hotkeys) and inverted vs the stack's j=down grammar.
+*/
+"~b"       = "moveWordBackward:";                            /* Option + b */
+"~f"       = "moveWordForward:";                             /* Option + f */
+"~d"       = "deleteWordForward:";                           /* Option + d */

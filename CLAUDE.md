@@ -25,8 +25,9 @@ stable.
 **No key may ever have two claimants.** Every bug in the original campaign
 was two layers claiming one keystroke. Before adding ANY binding anywhere,
 enumerate claimants across: aerospace.toml, ghostty config, herdr
-config.toml, vimrc, AND readline (the alt+letter Meta keys: f, b, d, t, u,
-period are reserved for word motion and deliberately unbound in AeroSpace).
+config.toml, vimrc, AND readline/zle (the alt+letter Meta keys: f, b, d, t,
+u, period are reserved for word motion, and alt+c for fzf's cd widget — all
+deliberately unbound in AeroSpace).
 
 Ghostty's `cmd+*` keybinds are pure conveniences that re-encode chords as
 prefix bytes (`text:\x13...`); herdr only ever sees bytes, which is why the
@@ -77,7 +78,9 @@ apply, verify, commit. Never leave changes uncommitted.
 6. **Shared accent `#00afff`** (tmux heritage, colour_4) appears in TWO
    places that must change together: JankyBorders `active_color` in
    aerospace.toml and `ui.accent` in herdr config.toml. Focus must read
-   identically at the window layer and the pane layer.
+   identically at the window layer and the pane layer. Same coupling class:
+   herdr's theme (`name = "terminal"`) inherits Ghostty's `theme` — changing
+   the Ghostty theme restyles the pane layer too.
 7. **Gaps and border width are coupled** in aerospace.toml: 8px gaps for
    5px borders. Shrinking gaps to 1 requires borders at 2-3 or adjacent
    borders merge and active/inactive stops reading.
@@ -133,8 +136,10 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
 
 ## Pending verification
 
-- vimrc first launch: vim-plug bootstrap + `:LspInstallServer` (pyright)
-  in a Python buffer.
+- vimrc: `:LspInstallServer` (pyright) in a Python buffer remains unverified
+  (vim-plug bootstrap is confirmed done). Also unverified after the 2026-08
+  black upgrade (22.8 → 26.x): format-on-save output will follow the newer
+  stable style.
 - zsh switch (2026-08-12): confirm interactive feel in a real terminal —
   prompt renders, autosuggestions/highlighting show, alt+f/b/d word motion
   works, history shared across panes. Remove this item once a day of use
@@ -149,8 +154,10 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   `herdr --default-config` against the last known template, re-verify every
   custom binding via `prefix+?`, and re-check integration versions with
   `herdr integration status`.
-- **Ghostty**: reload config, then `ghostty +list-keybinds` to confirm the
-  23 text: translations survived; watch release notes for keybind grammar
-  changes (physical key names arrived in 1.2).
+- **Ghostty**: NOT brew-managed (no cask installed) — updates come from the
+  app itself. After updating, reload config, then `ghostty +list-keybinds`
+  to confirm the 20 repo-defined text: translations survived (23 total
+  including Ghostty's own defaults); watch release notes for keybind
+  grammar changes (physical key names arrived in 1.2).
 - **vim plugins**: `:PlugUpdate`; `:LspInstallServer --force` if a language
   server misbehaves after a brew python bump.

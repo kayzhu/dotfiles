@@ -1,10 +1,18 @@
-COLOR_GREEN='\033[1;32m'
-echo -e "${COLOR_GREEN}Loading ${HOME}/dotfiles/bash/bashrc ...\033[m"
+# Linked as both ~/.bash_profile (login) and ~/.bashrc (non-login) by
+# install.sh. Everything below is guarded to be safe non-interactively
+# (scp/rsync/ssh host cmd break on unguarded output).
+
+# banner only for interactive shells
+if [[ $- == *i* ]]; then
+    echo -e "\033[1;32mLoading ${HOME}/dotfiles/bash/bashrc ...\033[m"
+fi
+
+# brew first so later PATH prepends (~/bin) take precedence over it
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
 . ~/dotfiles/bash/env
 . ~/dotfiles/bash/config
 . ~/dotfiles/bash/aliases
-eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Added by Antigravity
-export PATH="/Users/kz/.antigravity/antigravity/bin:$PATH"
+[ -d "$HOME/.antigravity/antigravity/bin" ] && export PATH="$HOME/.antigravity/antigravity/bin:$PATH"

@@ -1,24 +1,11 @@
 [user]
     name = Kay Zhu
-	email = me@kayzhu.com
+    email = me@kayzhu.com
 
 [core]
     excludesfile = ~/.gitignore_global
     editor = vim
-    ;pager = less -R
     pager = delta
-
-[difftool "sourcetree"]
-	cmd = /Applications/DiffMerge.app/Contents/MacOS/DiffMerge --nosplash \"$LOCAL\" \"$REMOTE\"
-	path = 
-
-[mergetool "sourcetree"]
-	cmd = /Applications/DiffMerge.app/Contents/MacOS/DiffMerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
-	trustExitCode = true
-
-[mergetool "diffmerge"]
-    cmd = diffmerge --merge --result=$MERGED $LOCAL $BASE $REMOTE
-    trustExitCode = false
 
 [alias]
     # https://gist.github.com/2051932
@@ -31,28 +18,12 @@
     df = diff
     lg = log -p
 
-    # Show the log, with the diff +'s and -'s
-    lc = log ORIG_HEAD.. --stat --no-merges datetag = "tag `date '+%Y%m%d%H%M'`"
+    # Show what the last pull/merge brought in
+    lc = log ORIG_HEAD.. --stat --no-merges
+    datetag = "!git tag `date '+%Y%m%d%H%M'`"
 
     # The first thing I run on a new project. Who has done the most damage
     who = shortlog -s --
-
-[color]
-    diff = auto
-    status = auto
-    branch = auto
-    ui = auto
-
-[difftool "Kaleidoscope"]
-    cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
-
-[github]
-    user = kayzh
-
-[push]
-    default = simple
-#[url "git@github.com:"]
-#	insteadOf = https://github.com/
 
 [interactive]
     diffFilter = delta --color-only
@@ -61,14 +32,25 @@
     navigate = true  # use n and N to move between diff sections
 
 [merge]
-    conflictstyle = diff3
+    # zdiff3: diff3's 3-way view with common lines hoisted out of the hunks
+    conflictstyle = zdiff3
 
 [diff]
     colorMoved = default
+    algorithm = histogram
+
+[pull]
+    rebase = true
+
+[fetch]
+    prune = true
+
+[rerere]
+    enabled = true
 
 [credential "https://github.com"]
-	helper = 
+	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
+	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential

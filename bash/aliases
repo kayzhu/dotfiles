@@ -1,94 +1,84 @@
 ###############################################################################
-# Private Aliases (not version controlled)
+# Shared aliases and functions -- sourced by BOTH bash (via bash/bashrc) and
+# zsh (via zsh/zshrc). Keep everything here bash-AND-zsh compatible
+# (CLAUDE.md constraint 11). Modern tools are guarded with command -v so
+# machines without them (Linux VMs, fresh Macs) fall back cleanly.
 ###############################################################################
-. ~/dotfiles/bash/private_aliases
 
+###############################################################################
+# Private Aliases (not version controlled; absent on fresh clones)
+###############################################################################
+[ -r ~/dotfiles/bash/private_aliases ] && . ~/dotfiles/bash/private_aliases
 
 ###############################################################################
 # Utilities
 ###############################################################################
 alias c='clear'
-alias rm_svn='find . -name ".svn" -type d -exec rm -rf {} \;'  # remove .svn
-alias killql='killall STOP quicklookd'
-alias killqt='killall STOP QTKitServer'
-alias systail='tail -f /var/log/system.log'
-alias g='grep -i'  # case insensitive grep
-alias f='find . -iname'
+alias grep='grep --color=auto'
 
-function take() {
-    mkdir -p "$1"
-    cd "$1" 
-}
-# From http://github.com/suztomo/dotfiles
-function rmf(){
-    for file in $*
-    do
-        __rm_single_file $file
-    done
-}
-
-function __rm_single_file(){
-    if ! [ -d ~/.Trash/ ]
-    then
-        command /bin/mkdir ~/.Trash
-    fi
-
-    if ! [ $# -eq 1 ]
-    then
-        echo "__rm_single_file: 1 argument required but $# passed."
-        exit
-    fi
-
-    if [ -e $1 ]
-    then
-        BASENAME=`basename $1`
-        NAME=$BASENAME
-        COUNT=0
-        while [ -e ~/.Trash/$NAME ]
-        do
-            COUNT=$(($COUNT+1))
-            NAME="$BASENAME.$COUNT"
-        done
-
-        command /bin/mv $1 ~/.Trash/$NAME
-    else
-        echo "No such file or directory: $file"
-    fi
-}
-
-# It basically allows you to save bookmarks to folders.
-if [ ! -f ~/.dirs ]; then  # if doesn't exist, create it
-    touch ~/.dirs
+# unified logging replaced /var/log/system.log in macOS 10.12
+if [ "$(uname)" = Darwin ]; then
+    alias systail='log stream --level info'
 fi
 
-alias show='cat ~/.dirs'
-save (){
-    command sed "/!$/d" ~/.dirs > ~/.dirs1; \mv ~/.dirs1 ~/.dirs; echo "$@"=\\"`pwd`\\" >> ~/.dirs; source ~/.dirs ; 
-}
-source ~/.dirs  # Initialization for the above 'save' facility: source the .sdirs file
-# no '$' required when cd-ing to the bookmark variables above; this file is
-# shared by bash and zsh (zsh/zshrc sources it), so pick the right builtin
-if [ -n "$ZSH_VERSION" ]; then setopt cdable_vars; else shopt -s cdable_vars; fi
+# ripgrep and fd when available, classic forms otherwise
+if command -v rg >/dev/null 2>&1; then
+    alias g='rg -i'
+else
+    alias g='grep -i'
+fi
+if command -v fd >/dev/null 2>&1; then
+    alias f='fd'
+else
+    alias f='find . -iname'
+fi
 
+take() {
+    mkdir -p "$1"
+    cd "$1"
+}
+
+# move to Trash instead of rm (ships with modern macOS)
+command -v trash >/dev/null 2>&1 && alias rmf='trash'
 
 ###############################################################################
 # Navigation and browsing
 ###############################################################################
 alias ..='cd ..'
-alias ...='cd .. ; cd ..'
-alias tree='tree -CFh --du'
-alias o='open . &'
+alias ...='cd ../..'
+[ "$(uname)" = Darwin ] && alias o='open .'
 
-alias ls="ls -GFh"    # list
-alias la="ls -FGAh"   # list all, includes dot files
-alias ll="ls -FGlh"   # long list, excludes dot files
-alias lla="ls -FGlAh" # long list all, includes dot files
-alias l="ls -GFhltA"   # sort with recent modified first
+command -v tree >/dev/null 2>&1 && alias tree='tree -CFh --du'
+
+# eza when available; BSD/GNU ls fallbacks otherwise
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza'
+    alias la='eza -a'
+    alias ll='eza -l'
+    alias lla='eza -la'
+    # sort with recent modified first
+    alias l='eza -la --sort=modified --reverse'
+elif [ "$(uname)" = Darwin ]; then
+    alias ls='ls -GFh'
+    alias la='ls -FGAh'
+    alias ll='ls -FGlh'
+    alias lla='ls -FGlAh'
+    alias l='ls -GFhltA'
+else
+    alias ls='ls --color=auto -Fh'
+    alias la='ls --color=auto -AFh'
+    alias ll='ls --color=auto -lFh'
+    alias lla='ls --color=auto -lAFh'
+    alias l='ls --color=auto -lAtFh'
+fi
 
 ###############################################################################
 # Processes
 ###############################################################################
-alias tu='top -o cpu'   # cpu
-alias tm='top -o vsize' # memory
-
-
+if command -v htop >/dev/null 2>&1; then
+    alias tu='htop --sort-key=PERCENT_CPU'
+    alias tm='htop --sort-key=M_RESIDENT'
+elif [ "$(uname)" = Darwin ]; then
+    alias tu='top -o cpu'
+    alias tm='top -o vsize'
+fi

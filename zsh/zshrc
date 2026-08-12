@@ -8,12 +8,13 @@
 bindkey -e
 
 # --- Environment (parity with bash/bashrc + bash/env) ---
-eval "$(/opt/homebrew/bin/brew shellenv)"
+typeset -U path
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH=$HOME/bin:$PATH
 export EDITOR='vim'
 
 # Added by Antigravity
-export PATH="/Users/kz/.antigravity/antigravity/bin:$PATH"
+[ -d "$HOME/.antigravity/antigravity/bin" ] && export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # Free ctrl+s from XOFF flow control -- it is the herdr prefix.
 # Guarded: stty errors in non-interactive shells.
@@ -49,8 +50,11 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # --- Shared aliases and functions (same file bash sources) ---
 source ~/dotfiles/bash/aliases
 
-# --- fzf ---
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# --- fzf keybindings: ctrl+r history, ctrl+t files, alt+c cd (fzf >= 0.48) ---
+command -v fzf >/dev/null && eval "$(fzf --zsh)"
+
+# --- zoxide: frecency cd (z / zi) ---
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 
 # --- Plugins (brew-installed; guarded so machines without them still work) ---
 [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
