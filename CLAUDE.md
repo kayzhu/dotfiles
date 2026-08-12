@@ -56,7 +56,9 @@ apply, verify, commit. Never leave changes uncommitted.
    value. A trailing comment on a `keybind = ...=text:...` line gets typed
    into herdr as literal text. All comments on their own lines.
 2. **Never map `<C-s>` in vim or any TUI config.** herdr consumes the prefix
-   before the PTY; the key cannot reach any application inside it.
+   before the PTY; the key cannot reach any application inside it. (This is
+   why remote tmux's prefix is C-a — its former C-s prefix, the very
+   heritage herdr's prefix came from, became unreachable under herdr.)
 3. **`stty -ixon` must stay in shell init** (zsh/zshrc for zsh, bash/env for
    bash — one definition per shell). ctrl+s is XOFF at the tty layer without
    it; symptom is a frozen pane, cure is ctrl+q.

@@ -339,12 +339,14 @@ tmux_conf_copy_to_os_clipboard=false
 #set -g status-keys vi
 #set -g mode-keys vi
 
-# replace C-b by C-a instead of using both prefixes
+# prefix: C-a (screen heritage). Was C-s (2022) -- which is now the herdr
+# prefix: local herdr consumes ctrl+s before the PTY (CLAUDE.md constraint
+# 2), so a remote tmux with a C-s prefix can never receive it from inside
+# the stack. C-a C-a sends a literal C-a through (readline start-of-line).
 # set -gu prefix2
- unbind C-a
  unbind C-b
- set -g prefix C-s
- #bind C-a send-prefix
+ set -g prefix C-a
+ bind C-a send-prefix
 
 # move status line to top
 #set -g status-position top
