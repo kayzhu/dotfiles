@@ -32,7 +32,7 @@ else fail "zsh keymap is not emacs or aliases missing (check zsh/zshrc)"; fi
 
 # ctrl+s must be free of XOFF in this shell.
 if stty -a 2>/dev/null | grep -q -- '-ixon'; then pass "stty -ixon (ctrl+s free)"
-else fail "ixon still on: ctrl+s is XOFF here (source zsh/stack.zsh)"; fi
+else fail "ixon still on: ctrl+s is XOFF here (zsh/zshrc or bash/env not loaded)"; fi
 
 # Secure input steals all global hotkeys when held by any process.
 if [ -z "$(ioreg -l -w 0 2>/dev/null | grep -i SecureInput)" ]; then
