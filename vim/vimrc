@@ -107,12 +107,18 @@ Plug 'google/vim-maktaba'
 Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
 
-" Kept from 2018, current org names.
-Plug 'preservim/nerdtree'
-Plug 'preservim/nerdcommenter'
+" Kept from 2018, current org names. (2026: NERDTree dropped -- fzf covers
+" file finding, netrw the rare browse; nerdcommenter replaced by vim 9.1's
+" built-in comment package, see packadd below.)
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-eunuch'
 Plug 'mechatroner/rainbow_csv'
+
+" Git change signs in the number column (lazygit handles the heavy lifting).
+Plug 'airblade/vim-gitgutter'
+" Per-file indent detection; this vimrc deliberately sets no global
+" shiftwidth/expandtab.
+Plug 'tpope/vim-sleuth'
 
 " Colorscheme: canonical jellybeans (replaces the flazz megapack and its
 " 'jelleybeans' fork-of-a-typo).
@@ -120,6 +126,9 @@ Plug 'nanotech/jellybeans.vim'
 
 call plug#end()
 call glaive#Install()
+
+" Built-in commenting (vim >= 9.1): gcc toggles a line, gc{motion}/visual gc.
+packadd comment
 
 " ============================================================
 " Mappings
@@ -218,22 +227,6 @@ nnoremap <unique> <leader>a :call fzf#vim#grep('rg --column --line-number
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading
 endif
-
-" ============================================================
-" NERDTree
-" ============================================================
-nnoremap <unique> <leader>n :NERDTreeToggle<CR>
-nnoremap <unique> <leader>nb :NERDTreeFind<CR>
-" close vim if NERDTree is the last window (b:NERDTreeType was removed from
-" NERDTree years ago; b:NERDTree.isTabTree() is the current API)
-augroup nerdtree
-  autocmd!
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
-        \ && b:NERDTree.isTabTree()) | q | endif
-augroup END
-let g:NERDTreeChDirMode=2
-let NERDTreeIgnore = ['\.pyc$']
-let NERDTreeMapOpenInTab = '<c-t>'
 
 " ============================================================
 " Colors -- last, since the scheme resets highlights
