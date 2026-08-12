@@ -1,11 +1,12 @@
 [user]
     name = Kay Zhu
-    email = me@kayzhu.com
+	email = me@kayzhu.com
 
 [core]
     excludesfile = /Users/kay/.gitignore_global
     editor = vim
-    pager = less -R
+    ;pager = less -R
+    pager = delta
 
 [difftool "sourcetree"]
 	cmd = /Applications/DiffMerge.app/Contents/MacOS/DiffMerge --nosplash \"$LOCAL\" \"$REMOTE\"
@@ -47,3 +48,21 @@
 
 [github]
     user = kayzh
+
+[push]
+    default = simple
+#[url "git@github.com:"]
+#	insteadOf = https://github.com/
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true  # use n and N to move between diff sections
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+

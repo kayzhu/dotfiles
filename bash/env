@@ -5,10 +5,13 @@ bind "set completion-ignore-case on"
 export GREP_OPTIONS='--color=auto' GREP_COLOR='1;32'
 export EDITOR='vim'
 
+export PATH=$HOME/bin:$PATH
+
+# free ctrl+s from XOFF
+stty -ixon
 
 # set homebrew path to take precedence
 # Alternatively: edit /etc/paths file on OS X
-export PATH=$HOME/bin:$PATH
 #export PATH="/usr/local/bin:$PATH"
 
 
