@@ -198,12 +198,23 @@ augroup END
 " ============================================================
 " Fuzzy finding (fzf.vim) -- CtrlP muscle memory preserved
 " ============================================================
-nnoremap <unique> <leader>p :Files<CR>
+" Anchor Files/Rg at the project (git) root: the autodir augroup above makes
+" the cwd follow the current file, which would otherwise silently scope both
+" searches to that file's subtree. Non-repo files fall back to the cwd.
+function! s:project_root() abort
+  let l:root = systemlist('git -C ' . shellescape(expand('%:p:h'))
+        \ . ' rev-parse --show-toplevel')
+  return (v:shell_error || empty(l:root)) ? getcwd() : l:root[0]
+endfunction
+nnoremap <unique> <leader>p :call fzf#vim#files(<SID>project_root(),
+      \ fzf#vim#with_preview(), 0)<CR>
 nnoremap <unique> <leader>m :History<CR>
 nnoremap <unique> <leader>b :Buffers<CR>
 nnoremap <unique> <leader>t :Tags<CR>
 " ag heritage: ripgrep the project.
-nnoremap <unique> <leader>a :Rg<CR>
+nnoremap <unique> <leader>a :call fzf#vim#grep('rg --column --line-number
+      \ --no-heading --color=always --smart-case -- ""',
+      \ fzf#vim#with_preview({'dir': <SID>project_root()}), 0)<CR>
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading
 endif
