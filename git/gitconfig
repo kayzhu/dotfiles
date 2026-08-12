@@ -3,7 +3,7 @@
 	email = me@kayzhu.com
 
 [core]
-    excludesfile = /Users/kay/.gitignore_global
+    excludesfile = ~/.gitignore_global
     editor = vim
     ;pager = less -R
     pager = delta

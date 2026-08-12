@@ -2,8 +2,24 @@
 # Smoke tests for the three-layer contract. Checks the checkable, prints a
 # manual checklist for the keystroke tests (those need human fingers).
 set -uo pipefail
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 pass() { echo "ok:    $1"; }
 fail() { echo "FAIL:  $1"; }
+
+# Every managed dotfile must be a symlink into this repo.
+check_link() {
+  local dst="$1" want="$REPO/$2"
+  if [ -L "$dst" ] && [ "$(readlink "$dst")" = "$want" ]; then
+    pass "link $dst"
+  else fail "$dst is not a symlink to $want (run ./install.sh)"; fi
+}
+check_link "$HOME/.bash_profile"            bash/bashrc
+check_link "$HOME/.gitconfig"               git/gitconfig
+check_link "$HOME/.gitignore_global"        git/gitignore_global
+check_link "$HOME/.vimrc"                   vim/vimrc
+check_link "$HOME/.aerospace.toml"          aerospace/aerospace.toml
+check_link "$HOME/.config/ghostty/config"   ghostty/config
+check_link "$HOME/.config/herdr/config.toml" herdr/config.toml
 
 # ctrl+s must be free of XOFF in this shell.
 if stty -a 2>/dev/null | grep -q -- '-ixon'; then pass "stty -ixon (ctrl+s free)"

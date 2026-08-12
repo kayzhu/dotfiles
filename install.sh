@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
-# Idempotent symlink installer for terminal-stack.
+# Idempotent symlink installer for the dotfiles repo.
 # Real files are backed up to <name>.bak.<timestamp>; symlinks are replaced.
+# Per-file links only, never directory links (config dirs hold runtime state).
+#
+# Usage:
+#   ./install.sh            full install (macOS: terminal stack + shell + git)
+#   ./install.sh --minimal  bash/git/vim only (remote Linux VM basics)
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TS="$(date +%Y%m%d%H%M%S)"
+
+MINIMAL=0
+[ "${1:-}" = "--minimal" ] && MINIMAL=1
 
 link() {
   local src="$REPO/$1" dst="$2"
@@ -16,10 +24,22 @@ link() {
   echo "linked:    $dst -> $src"
 }
 
+# Portable basics (always).
+link bash/bashrc          "$HOME/.bash_profile"
+link git/gitconfig        "$HOME/.gitconfig"
+link git/gitignore_global "$HOME/.gitignore_global"
+link vim/vimrc            "$HOME/.vimrc"
+
+if [ "$MINIMAL" -eq 1 ]; then
+  echo
+  echo "Minimal install done (bash/git/vim). Open a new shell."
+  exit 0
+fi
+
+# macOS terminal stack.
 link aerospace/aerospace.toml "$HOME/.aerospace.toml"
 link ghostty/config           "$HOME/.config/ghostty/config"
 link herdr/config.toml        "$HOME/.config/herdr/config.toml"
-link vim/vimrc                "$HOME/.vimrc"
 
 # Shell glue: source stack.zsh from .zshrc exactly once.
 ZLINE="source $REPO/zsh/stack.zsh"
