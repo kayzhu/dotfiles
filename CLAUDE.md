@@ -1,10 +1,17 @@
-# terminal-stack
+# dotfiles
 
-Configuration for a three-layer macOS terminal environment on an M5 Max:
-AeroSpace (tiling WM) + Ghostty (emulator) + herdr (agent-aware multiplexer),
-plus the vimrc that lives inside it. This file is the canonical project
-state; it encodes conclusions from the debugging campaign that produced the
-configs, so read it before proposing changes.
+Personal dotfiles: one directory per tool, symlinked into `$HOME` by
+`./install.sh` (idempotent, per-file links only, backs up real files;
+`--minimal` installs just bash/git/vim for remote Linux VMs). Edit in the
+repo, apply, verify, commit — the repo file IS the live file.
+
+The bulk of this repo is **terminal-stack**: a three-layer macOS terminal
+environment on an M5 Max — AeroSpace (tiling WM) + Ghostty (emulator) +
+herdr (agent-aware multiplexer), plus the vimrc that lives inside it. This
+file is the canonical project state; it encodes conclusions from the
+debugging campaign that produced those configs, so read it before proposing
+changes. The rest (`bash/`, `git/`) predates the stack and mostly stays
+stable.
 
 ## The layering contract (the core invariant)
 
@@ -34,6 +41,9 @@ prefix works identically over SSH and the cmd chords only exist locally.
 | herdr/config.toml      | ~/.config/herdr/config.toml  | `herdr server reload-config`| `prefix+?` inside herdr         |
 | vim/vimrc              | ~/.vimrc                     | restart vim / `:so %`       | `:checkhealth`-style manual     |
 | zsh/stack.zsh          | sourced from ~/.zshrc        | new shell                   | `stty -a \| grep ixon`          |
+| bash/bashrc            | ~/.bash_profile              | new login shell             | `bash --login -i -c 'type la'`  |
+| git/gitconfig          | ~/.gitconfig                 | immediate                   | `git config core.excludesfile`  |
+| git/gitignore_global   | ~/.gitignore_global          | immediate                   | `.DS_Store` invisible to status |
 
 `install.sh` creates symlinks (with backup of real files). Edit in the repo,
 apply, verify, commit. Never leave changes uncommitted.
@@ -47,18 +57,22 @@ apply, verify, commit. Never leave changes uncommitted.
    before the PTY; the key cannot reach any application inside it.
 3. **`stty -ixon` must stay in shell init** (zsh/stack.zsh). ctrl+s is XOFF
    at the tty layer without it; symptom is a frozen pane, cure is ctrl+q.
-4. **AeroSpace: prefer version-tolerant forms.** The docs site tracks the
-   newest release; the installed binary lags. Use `if.app-id` table form in
-   on-window-detected (accepted by all versions; string `test` form rejects
-   on older binaries). `auto-reload-config` and `focus-follows-mouse` are
-   version-gated: the former stays commented until after a brew upgrade.
-   Reconcile against `aerospace --version`, not against documentation.
+4. **AeroSpace: reconcile against `aerospace --version`, not against
+   documentation.** The docs site tracks the newest release; the installed
+   binary may lag. `auto-reload-config`, `focus-follows-mouse`, and the
+   string `test` form of on-window-detected are version-gated (older
+   binaries reject them, and AeroSpace refuses the WHOLE file on any unknown
+   key). The live config keeps all three active — verified accepted by the
+   installed binary (2026-08). On a downgrade or a second machine, fall back
+   to the tolerant forms: `if.app-id` table form, both gated keys commented.
 5. **herdr: source of truth is `herdr --default-config` and `prefix+?`,
    never web docs or blog posts.** herdr is pre-1.0; the template's lists
    are illustrative, not schemas (bracket keys ARE valid despite not being
-   listed; underscore is NOT). Use single-string binding values; array
-   forms are unverified. Invalid bindings fail SILENTLY (herdr keeps the
-   old binding) — always confirm with `prefix+?` after reload.
+   listed; underscore is NOT). Single-string binding values are the verified
+   form; the live tab bindings use array form (`previous_tab = ["prefix+[",
+   "cmd+shift+["]`) by deliberate choice — kept because it works on this
+   build, but unverified upstream. Invalid bindings fail SILENTLY (herdr
+   keeps the old binding) — always confirm with `prefix+?` after reload.
 6. **Shared accent `#00afff`** (tmux heritage, colour_4) appears in TWO
    places that must change together: JankyBorders `active_color` in
    aerospace.toml and `ui.accent` in herdr config.toml. Focus must read
@@ -69,10 +83,13 @@ apply, verify, commit. Never leave changes uncommitted.
 8. **`macos-option-as-alt = true` in Ghostty is load-bearing** for readline
    word motion (alt+f/b/d...). It does NOT affect AeroSpace's alt bindings
    (Carbon hotkeys fire before Ghostty sees the key). Do not set to false.
-9. **Ghostty runs `command = /opt/homebrew/bin/herdr`** — one window, one
-   session layer, no native tabs. Native macOS tabs are separate AXWindows
-   and break AeroSpace focus (the bug that started everything). Never
-   reintroduce native tabs; escape hatch for a plain shell:
+9. **No native Ghostty tabs, ever.** Native macOS tabs are separate
+   AXWindows and break AeroSpace focus (the bug that started everything).
+   The original design auto-launched herdr via
+   `command = /opt/homebrew/bin/herdr`; that line is now DELIBERATELY
+   commented out (new Ghostty windows each attached a fresh herdr window to
+   the same session — unwanted duplicates). herdr is started manually in
+   the primary window instead; plain-shell escape hatch:
    `open -na Ghostty --args -e zsh`.
 10. **herdr scrollback is BYTES, not lines** (`scrollback_limit_bytes`).
     tmux's history-limit intuition does not transfer.
@@ -110,11 +127,16 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
 
 ## Pending verification
 
-- `previous_workspace/next_workspace` on prefix+ctrl+k/j: confirm ctrl+j
-  (0x0A) is not aliased with copy_mode's enter (0x0D) on this build;
-  fallback pair is prefix+ctrl+p/n. Remove this item once tested.
+- `previous_workspace/next_workspace` on prefix+ctrl+k/j (now merged into
+  herdr/config.toml): confirm with fingers that ctrl+j (0x0A) is not aliased
+  with copy_mode's enter (0x0D) on this build; fallback pair is
+  prefix+ctrl+p/n. Remove this item once tested.
 - vimrc first launch: vim-plug bootstrap + `:LspInstallServer` (pyright)
   in a Python buffer.
+- `stty -ixon` is defined in three places: bash/env, zsh/stack.zsh, and a
+  hand-added line in ~/.zshrc (predates the stack.zsh source line).
+  Consolidate: drop the bare ~/.zshrc line once stack.zsh sourcing is
+  confirmed in a new shell.
 
 ## Upgrade playbook
 
