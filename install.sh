@@ -31,6 +31,10 @@ link bash/bashrc          "$HOME/.bashrc"
 link git/gitconfig        "$HOME/.gitconfig"
 link git/gitignore_global "$HOME/.gitignore_global"
 link vim/vimrc            "$HOME/.vimrc"
+# tmux is for remote VMs (session persistence over ssh); linked everywhere
+# for consistency -- herdr remains the local multiplexer (CLAUDE.md).
+link tmux/tmux.conf       "$HOME/.tmux.conf"
+link tmux/tmux.conf.local "$HOME/.tmux.conf.local"
 
 if [ "$MINIMAL" -eq 1 ]; then
   echo

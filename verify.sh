@@ -19,6 +19,8 @@ check_link "$HOME/.bashrc"                  bash/bashrc
 check_link "$HOME/.gitconfig"               git/gitconfig
 check_link "$HOME/.gitignore_global"        git/gitignore_global
 check_link "$HOME/.vimrc"                   vim/vimrc
+check_link "$HOME/.tmux.conf"               tmux/tmux.conf
+check_link "$HOME/.tmux.conf.local"         tmux/tmux.conf.local
 check_link "$HOME/.aerospace.toml"          aerospace/aerospace.toml
 check_link "$HOME/.config/ghostty/config"   ghostty/config
 check_link "$HOME/.config/herdr/config.toml" herdr/config.toml

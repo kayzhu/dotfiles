@@ -45,6 +45,7 @@ prefix works identically over SSH and the cmd chords only exist locally.
 | bash/bashrc            | ~/.bash_profile              | new login shell             | `bash --login -i -c 'type la'`  |
 | git/gitconfig          | ~/.gitconfig                 | immediate                   | `git config core.excludesfile`  |
 | git/gitignore_global   | ~/.gitignore_global          | immediate                   | `.DS_Store` invisible to status |
+| tmux/tmux.conf(.local) | ~/.tmux.conf(.local)         | `tmux source ~/.tmux.conf`  | remote-VM use; herdr owns local |
 
 `install.sh` creates symlinks (with backup of real files). Edit in the repo,
 apply, verify, commit. Never leave changes uncommitted.
