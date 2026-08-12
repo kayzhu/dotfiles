@@ -18,9 +18,10 @@
 # Appearance
 # ---------------------------------------------------------------------
 
-# TODO get a better theme
-# NOTE herdr inherits this palette (herdr config.toml theme name=terminal),
-# so a theme change here restyles the pane layer too.
+# COUPLED VALUE (CLAUDE.md constraint 6): herdr inherits this palette
+# (herdr config.toml theme name=terminal), so a theme change here restyles
+# the pane layer too. A better theme is a parked wishlist item; change it
+# deliberately, not in passing.
 theme = catppuccin mocha
 
 font-size = 13

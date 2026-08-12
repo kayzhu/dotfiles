@@ -2,7 +2,7 @@
 
 Personal dotfiles: one directory per tool, symlinked into `$HOME` by
 `./install.sh` (idempotent, per-file links only, backs up real files;
-`--minimal` installs just bash/git/vim for remote Linux VMs). Edit in the
+`--minimal` installs just bash/git/vim/tmux for remote Linux VMs). Edit in the
 repo, apply, verify, commit — the repo file IS the live file.
 
 The bulk of this repo is **the terminal stack**: a three-layer macOS
@@ -44,10 +44,16 @@ prefix works identically over SSH and the cmd chords only exist locally.
 | herdr/config.toml      | ~/.config/herdr/config.toml  | `herdr server reload-config`| `prefix+?` inside herdr         |
 | vim/vimrc              | ~/.vimrc                     | restart vim / `:so %`       | `:checkhealth`-style manual     |
 | zsh/zshrc              | ~/.zshrc                     | new shell                   | `stty -a \| grep ixon`; `bindkey -lL main` → emacs |
-| bash/bashrc            | ~/.bash_profile              | new login shell             | `bash --login -i -c 'type la'`  |
+| bash/bashrc            | ~/.bash_profile + ~/.bashrc  | new shell                   | `bash --login -i -c 'type la'`  |
 | git/gitconfig          | ~/.gitconfig                 | immediate                   | `git config core.excludesfile`  |
 | git/gitignore_global   | ~/.gitignore_global          | immediate                   | `.DS_Store` invisible to status |
 | tmux/tmux.conf(.local) | ~/.tmux.conf(.local)         | `tmux source ~/.tmux.conf`  | remote-VM use; herdr owns local |
+| DefaultKeyBinding.dict | ~/Library/KeyBindings/…      | app relaunch                | Cocoa text fields only          |
+
+Not in the table: `bash/env`, `bash/config`, `bash/aliases` are sourced by
+bash/bashrc (and `bash/aliases` also by zsh/zshrc — keep it bash-AND-zsh
+compatible); `i3/config` is installed nowhere — a modernized reference for
+a future Linux desktop, unverifiable until one exists.
 
 `install.sh` creates symlinks (with backup of real files). Edit in the repo,
 apply, verify, commit. Never leave changes uncommitted.
@@ -78,14 +84,20 @@ apply, verify, commit. Never leave changes uncommitted.
    listed; underscore is NOT). Single-string binding values are the verified
    form; the live tab bindings use array form (`previous_tab = ["prefix+[",
    "cmd+shift+["]`) by deliberate choice — kept because it works on this
-   build, but unverified upstream. Invalid bindings fail SILENTLY (herdr
-   keeps the old binding) — always confirm with `prefix+?` after reload.
-6. **Shared accent `#00afff`** (tmux heritage, colour_4) appears in TWO
+   build, but unverified upstream. The `cmd+shift+…` array elements are
+   DEAD locally (Ghostty consumes all cmd chords and sends prefix bytes);
+   they exist only for herdr attached from a non-Ghostty terminal — a
+   documented exception to "no key has two claimants," not a live one.
+   Invalid bindings fail SILENTLY (herdr keeps the old binding) — always
+   confirm with `prefix+?` after reload.
+6. **Shared accent `#00afff`** (tmux heritage, colour_4) appears in FOUR
    places that must change together: JankyBorders `active_color` in
-   aerospace.toml and `ui.accent` in herdr config.toml. Focus must read
-   identically at the window layer and the pane layer. Same coupling class:
-   herdr's theme (`name = "terminal"`) inherits Ghostty's `theme` — changing
-   the Ghostty theme restyles the pane layer too.
+   aerospace/aerospace.toml, `ui.accent` in herdr/config.toml,
+   `tmux_conf_theme_colour_4` in tmux/tmux.conf.local (the origin), and
+   `client.focused` in i3/config. Focus must read identically at every
+   layer. Same coupling class: herdr's theme (`name = "terminal"`) inherits
+   Ghostty's `theme` — changing the Ghostty theme restyles the pane layer
+   too.
 7. **Gaps and border width are coupled** in aerospace.toml: 8px gaps for
    5px borders. Shrinking gaps to 1 requires borders at 2-3 or adjacent
    borders merge and active/inactive stops reading.
@@ -160,9 +172,11 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
 
 ## Upgrade playbook
 
-- **AeroSpace**: `brew upgrade --cask aerospace`, then uncomment
-  `auto-reload-config`, reload once manually. Upgrading restarts the WM and
-  briefly un-hides all workspace windows — do it between tasks.
+- **AeroSpace**: `brew upgrade --cask aerospace`, then verify the config
+  still parses (`aerospace reload-config` + `list-modes`): the version-gated
+  keys are live in the config (constraint 4) — if the reload is refused,
+  comment them per the tolerant-forms fallback. Upgrading restarts the WM
+  and briefly un-hides all workspace windows — do it between tasks.
 - **herdr** (pre-1.0, highest churn): after upgrade, diff
   `herdr --default-config` against the last known template, re-verify every
   custom binding via `prefix+?`, and re-check integration versions with

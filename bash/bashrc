@@ -14,5 +14,11 @@ fi
 . ~/dotfiles/bash/config
 . ~/dotfiles/bash/aliases
 
+# fzf (ctrl+r/ctrl+t/alt+c) and zoxide (z/zi) must come AFTER config:
+# zoxide appends its tracking hook to PROMPT_COMMAND, which config assigns
+# -- init here or z never learns directories.
+command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
+
 # Added by Antigravity
 [ -d "$HOME/.antigravity/antigravity/bin" ] && export PATH="$HOME/.antigravity/antigravity/bin:$PATH"

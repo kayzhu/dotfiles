@@ -5,10 +5,17 @@
 #
 # Usage:
 #   ./install.sh            full install (macOS: terminal stack + shell + git)
-#   ./install.sh --minimal  bash/git/vim only (remote Linux VM basics)
+#   ./install.sh --minimal  bash/git/vim/tmux (remote Linux VM basics)
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TS="$(date +%Y%m%d%H%M%S)"
+
+# The shell configs hardcode ~/dotfiles (bashrc/zshrc source paths); links
+# from another clone location would verify green but load nothing.
+if [ "$REPO" != "$HOME/dotfiles" ]; then
+  echo "WARNING: repo is at $REPO, but the shell configs expect ~/dotfiles."
+  echo "         Clone to ~/dotfiles (or symlink it) before installing."
+fi
 
 MINIMAL=0
 [ "${1:-}" = "--minimal" ] && MINIMAL=1
@@ -38,7 +45,7 @@ link tmux/tmux.conf.local "$HOME/.tmux.conf.local"
 
 if [ "$MINIMAL" -eq 1 ]; then
   echo
-  echo "Minimal install done (bash/git/vim). Open a new shell."
+  echo "Minimal install done (bash/git/vim/tmux). Open a new shell."
   exit 0
 fi
 
@@ -55,12 +62,16 @@ link zsh/zshrc                "$HOME/.zshrc"
 
 echo
 echo "--- prerequisite check (informational) ---"
-for c in aerospace herdr vim fzf rg fd bat eza zoxide tree htop btop trash \
-         delta lazygit ctags gh borders black clang-format; do
+for c in aerospace herdr vim tmux fzf rg fd bat eza zoxide tree htop btop \
+         trash delta lazygit ctags gh borders black clang-format; do
   if command -v "$c" >/dev/null 2>&1; then echo "ok:       $c"
   else echo "MISSING:  $c"; fi
 done
 open -Ra Ghostty 2>/dev/null && echo "ok:       Ghostty.app" || echo "MISSING:  Ghostty.app"
+for p in zsh-autosuggestions zsh-syntax-highlighting; do
+  if [ -f "/opt/homebrew/share/$p/$p.zsh" ]; then echo "ok:       $p"
+  else echo "MISSING:  $p (brew install $p)"; fi
+done
 if vim --version 2>/dev/null | grep -q '+clipboard'; then
   echo "ok:       vim +clipboard"
 else

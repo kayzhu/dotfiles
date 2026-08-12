@@ -9,11 +9,7 @@ export PATH=$HOME/bin:$PATH
 # free ctrl+s from XOFF -- it is the herdr prefix (CLAUDE.md constraint 3)
 [ -t 0 ] && stty -ixon
 
-# fzf keybindings (ctrl+r history, ctrl+t files, alt+c cd) -- fzf >= 0.48
-command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
-
-# zoxide: frecency cd (z / zi)
-command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
-
-# Use git autocompletion which is installed by `brew install bash-completion`.
-[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+# bash-completion if installed (v1 formula for macOS's bash 3.2).
+# fzf and zoxide init live in bash/bashrc, AFTER bash/config: zoxide
+# appends its hook to PROMPT_COMMAND, which config assigns.
+[[ $- == *i* && -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
