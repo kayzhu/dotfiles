@@ -127,10 +127,6 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
 
 ## Pending verification
 
-- `previous_workspace/next_workspace` on prefix+ctrl+k/j (now merged into
-  herdr/config.toml): confirm with fingers that ctrl+j (0x0A) is not aliased
-  with copy_mode's enter (0x0D) on this build; fallback pair is
-  prefix+ctrl+p/n. Remove this item once tested.
 - vimrc first launch: vim-plug bootstrap + `:LspInstallServer` (pyright)
   in a Python buffer.
 - `stty -ixon` is defined in three places: bash/env, zsh/stack.zsh, and a
