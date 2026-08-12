@@ -20,6 +20,7 @@ check_link "$HOME/.vimrc"                   vim/vimrc
 check_link "$HOME/.aerospace.toml"          aerospace/aerospace.toml
 check_link "$HOME/.config/ghostty/config"   ghostty/config
 check_link "$HOME/.config/herdr/config.toml" herdr/config.toml
+check_link "$HOME/Library/KeyBindings/DefaultKeyBinding.dict" DefaultKeyBinding.dict
 
 # ctrl+s must be free of XOFF in this shell.
 if stty -a 2>/dev/null | grep -q -- '-ixon'; then pass "stty -ixon (ctrl+s free)"

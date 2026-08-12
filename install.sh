@@ -41,6 +41,9 @@ link aerospace/aerospace.toml "$HOME/.aerospace.toml"
 link ghostty/config           "$HOME/.config/ghostty/config"
 link herdr/config.toml        "$HOME/.config/herdr/config.toml"
 
+# macOS Cocoa text-system keybindings; apps read it at launch.
+link DefaultKeyBinding.dict   "$HOME/Library/KeyBindings/DefaultKeyBinding.dict"
+
 # Shell glue: source stack.zsh from .zshrc exactly once.
 ZLINE="source $REPO/zsh/stack.zsh"
 if ! grep -qF "zsh/stack.zsh" "$HOME/.zshrc" 2>/dev/null; then
