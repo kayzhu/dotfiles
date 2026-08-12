@@ -161,10 +161,12 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
 
 ## Pending verification
 
-- vimrc: `:LspInstallServer` (pyright) in a Python buffer remains unverified
-  (vim-plug bootstrap is confirmed done). Also unverified after the 2026-08
-  black upgrade (22.8 → 26.x): format-on-save output will follow the newer
-  stable style.
+- vimrc: black upgrade (22.8 → 26.x, 2026-08) means format-on-save follows
+  the newer stable style — expect small diffs on first save of old Python.
+  (pyright verified working 2026-08-12: LspStatus running, hover, go-to-def.
+  Note: the servers dir was created by a manual install after vim's own
+  `:LspInstallServer` failed once with a stale-environment suspicion; if a
+  future server install fails, capture `:messages` before closing vim.)
 - zsh switch (2026-08-12): confirm interactive feel in a real terminal —
   prompt renders, autosuggestions/highlighting show, alt+f/b/d word motion
   works, history shared across panes. Remove this item once a day of use
