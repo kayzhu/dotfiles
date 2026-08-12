@@ -1,0 +1,154 @@
+# ~/.config/ghostty/config
+#
+# LAYERING CONTRACT for this machine:
+#   AeroSpace  owns  alt+*      windows between applications
+#   herdr      owns  ctrl+s ... tabs/panes/sessions inside this window
+#   Ghostty    owns  cmd+*      the frame: pixels, fonts, clipboard
+# No key has two claimants.
+#
+# IMPORTANT: Ghostty does NOT support inline comments. Everything after
+# "=" is part of the value, so a trailing comment on a keybind line gets
+# typed into herdr as literal text. All comments in this file are on
+# their own lines. Keep it that way.
+#
+# Reload:               cmd+shift+comma
+# List live bindings:   ghostty +list-keybinds
+
+# ---------------------------------------------------------------------
+# Appearance
+# ---------------------------------------------------------------------
+
+# TODO get a better theme
+theme = catppuccin mocha
+#theme = Catppuccin Frappe
+
+font-size = 13
+
+# Font size lives HERE, not in herdr. herdr is a TUI in a character
+# grid; it has no concept of glyphs or pixels. cmd+plus / cmd+minus
+# resize live; herdr re-lays-out automatically via SIGWINCH.
+
+# herdr draws its own sidebar, tab row, and pane borders. Keep the
+# frame tight so herdr's UI sits near the window edge.
+window-padding-x = 4
+window-padding-y = 2
+window-padding-balance = true
+macos-titlebar-style = hidden
+
+# ---------------------------------------------------------------------
+# Option key
+# ---------------------------------------------------------------------
+
+# Unbound alt chords must reach the PTY as ESC-prefixed Meta sequences
+# so readline word motion works: alt+f forward-word, alt+b backward-word,
+# alt+d kill-word, etc.
+# This does NOT affect AeroSpace's alt bindings (alt+hjkl, alt+1..9):
+# those are global Carbon hotkeys consumed before Ghostty sees the key.
+# It only governs the chords AeroSpace deliberately leaves unbound.
+# Trade-off: Option no longer types composed characters. If you need
+# those, set this to "left" and keep right-Option for composition.
+macos-option-as-alt = true
+
+# ---------------------------------------------------------------------
+# Launch straight into herdr
+# ---------------------------------------------------------------------
+
+# One window, one session layer. Sessions live in the herdr server, so
+# closing this window never loses work.
+# Verify the path with:  which herdr
+# Need a plain shell without herdr? From anywhere:
+#   open -na Ghostty --args -e zsh
+# NOTE DISABLED: not wanting multiple herdr windows for the same session
+# when starting ghostty
+#command = /opt/homebrew/bin/herdr
+
+# ---------------------------------------------------------------------
+# Scrollback
+# ---------------------------------------------------------------------
+
+# herdr owns real scrollback (advanced.scrollback_limit_bytes in its
+# config). Ghostty's buffer only ever holds herdr's TUI repaints.
+scrollback-limit = 1000000
+
+# ---------------------------------------------------------------------
+# Shell integration
+# ---------------------------------------------------------------------
+
+# Ghostty's integration wraps the process it launches, which is herdr,
+# not your inner shells. Cursor and title features would fight herdr's
+# own cursor and title handling.
+shell-integration = detect
+shell-integration-features = no-cursor,no-title
+
+# ---------------------------------------------------------------------
+# Inline graphics
+# ---------------------------------------------------------------------
+
+# Ghostty speaks the Kitty graphics protocol. Pairs with
+# experimental.kitty_graphics = true on the herdr side so matplotlib
+# output can render inline in a pane.
+image-storage-limit = 640000000
+
+# ---------------------------------------------------------------------
+# Close behavior
+# ---------------------------------------------------------------------
+
+# herdr sessions survive detach. Closing the frame is always safe.
+confirm-close-surface = false
+quit-after-last-window-closed = false
+
+# ---------------------------------------------------------------------
+# Keybindings: Cmd chords -> herdr prefix byte sequences
+# ---------------------------------------------------------------------
+
+# macOS consumes Cmd chords at the AppKit layer; a PTY can never see
+# them. The text: action re-encodes each chord as bytes herdr already
+# understands. \x13 is ctrl+s, the herdr prefix -- so every binding
+# below is identical to typing ctrl+s then the key by hand, and works
+# the same when herdr is attached over SSH from elsewhere.
+# Physical key names (bracket_left, digit_1) survive layout switches.
+# These are conveniences only: the prefix always works without them.
+
+# New herdr tab: prefix c
+keybind = super+t=text:\x13c
+
+# Previous / next herdr tab: prefix [ and prefix ]
+keybind = super+shift+bracket_left=text:\x13[
+keybind = super+shift+bracket_right=text:\x13]
+
+# Unshifted variants: browser-style back/forward muscle memory.
+# Delete these two lines if you ever want cmd+[ free for something else.
+keybind = super+bracket_left=text:\x13[
+keybind = super+bracket_right=text:\x13]
+
+# Split side-by-side: prefix v
+keybind = super+d=text:\x13v
+
+# Split stacked: prefix -
+keybind = super+shift+d=text:\x13-
+
+# Close pane: prefix x
+keybind = super+w=text:\x13x
+
+# Zoom pane: prefix +
+# Matches zoom = "prefix+plus" in herdr's config (tmux bind + heritage).
+keybind = super+enter=text:\x13+
+
+# Switch herdr tab 1-9: prefix 1..9
+# Also keeps Ghostty's own cmd+digit native-tab actions from firing.
+keybind = super+digit_1=text:\x131
+keybind = super+digit_2=text:\x132
+keybind = super+digit_3=text:\x133
+keybind = super+digit_4=text:\x134
+keybind = super+digit_5=text:\x135
+keybind = super+digit_6=text:\x136
+keybind = super+digit_7=text:\x137
+keybind = super+digit_8=text:\x138
+keybind = super+digit_9=text:\x139
+
+# Kept native, acting on the frame only:
+#   cmd+q              quit
+#   cmd+comma          open this config
+#   cmd+shift+comma    reload this config
+#   cmd+c / cmd+v      clipboard
+#   cmd+plus / minus   font size

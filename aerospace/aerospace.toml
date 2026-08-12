@@ -1,0 +1,209 @@
+# ~/.aerospace.toml
+# i3 heritage: https://github.com/i3/i3/blob/next/etc/config
+# Reconciled against AeroSpace's current default-config.toml.
+#
+# LAYERING CONTRACT for this machine:
+#   AeroSpace  owns  alt+*      windows between applications  (this file)
+#   herdr      owns  ctrl+s ... tabs/panes inside the one Ghostty window
+#   Ghostty    owns  cmd+*      frame only (quit, config, clipboard, font)
+# No key has two claimants. Nothing here touches ctrl+s or cmd.
+#
+# Apply: aerospace reload-config   (auto-reload takes over afterwards)
+# Debug: aerospace list-windows --workspace focused
+#        aerospace list-modes --current
+
+# Opt in to current semantics. Without this, reload warns and
+# persistent-workspaces gets inferred from bindings (error-prone).
+config-version = 2
+
+start-at-login = true
+
+# Reload on save. Reload manually once for this to take effect.
+auto-reload-config = true
+
+after-startup-command = [
+    # JankyBorders (brew install FelixKratz/formulae/borders).
+    # It detects an already-running instance, so restart-safe.
+    # active_color = herdr's ui.accent (#00afff): focus reads the same
+    # at the window layer and the pane layer.
+    'exec-and-forget borders active_color=0xff00afff inactive_color=0xff494d64 width=5.0 style=round hidpi=on'
+]
+
+# Normalizations keep the tree sane. The i3 split-then-place idiom is
+# replaced by join-with (see service mode).
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Mouse follows focused monitor (i3 default behavior).
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Mouse follows any focus change: strong motion cue when switching, and
+# prevents a stationary pointer from hover-focusing something else.
+# Drop this line if it feels distracting.
+on-focus-changed = ['move-mouse window-lazy-center']
+
+# Disarm cmd-h "Hide application", a frequent misfire near alt chords.
+automatically-unhide-macos-hidden-apps = true
+
+focus-follows-mouse.enabled = false
+
+key-mapping.preset = 'qwerty'
+
+# Under config-version = 2 this must be explicit or empty workspaces
+# vanish. Matches the bindings and monitor assignments below.
+persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+
+[mode.main.binding]
+
+# --- Launch -----------------------------------------------------------
+# open -na forces a genuinely new window (not raising the existing one).
+# Ghostty's config launches herdr, so a new window is a new client
+# attached to the same herdr server.
+alt-enter = 'exec-and-forget open -na Ghostty'
+
+# --- Focus ------------------------------------------------------------
+# Horizontal crosses monitors; vertical stops at the workspace edge.
+alt-h = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop left'
+alt-l = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop right'
+alt-j = 'focus --boundaries workspace --boundaries-action stop down'
+alt-k = 'focus --boundaries workspace --boundaries-action stop up'
+
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# --- Layout -----------------------------------------------------------
+alt-shift-enter = 'fullscreen'
+
+# i3: layout stacking / layout tabbed / layout toggle split
+alt-s = 'layout v_accordion'
+alt-w = 'layout h_accordion'
+alt-e = 'layout tiles horizontal vertical'
+
+# i3: floating toggle
+alt-shift-space = 'layout floating tiling'
+
+# Resize without entering a mode (AeroSpace defaults, kept).
+alt-minus = 'resize smart -50'
+alt-equal = 'resize smart +50'
+
+# Not representable in AeroSpace:
+#   focus toggle_tiling_floating -- redundant in AeroSpace's model:
+#     https://nikitabobko.github.io/AeroSpace/guide#floating-windows
+#   focus parent / focus child -- unsupported:
+#     https://github.com/nikitabobko/AeroSpace/issues/5
+
+# --- Workspaces -------------------------------------------------------
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+alt-0 = 'workspace 10'
+
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-5 = 'move-node-to-workspace 5'
+alt-shift-6 = 'move-node-to-workspace 6'
+alt-shift-7 = 'move-node-to-workspace 7'
+alt-shift-8 = 'move-node-to-workspace 8'
+alt-shift-9 = 'move-node-to-workspace 9'
+alt-shift-0 = 'move-node-to-workspace 10'
+
+alt-tab = 'workspace-back-and-forth'
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+alt-shift-c = 'reload-config'
+alt-shift-semicolon = 'mode service'
+
+# NOTE: this line must stay in [mode.main.binding], ABOVE the mode
+# tables below. In an earlier config it sat under [mode.service.binding]
+# and TOML scoped it there, so alt-r did nothing from main mode.
+alt-r = 'mode resize'
+
+# --- Deliberately NOT bound -------------------------------------------
+# These alt chords are readline/Emacs Meta keys. AeroSpace's Carbon
+# hotkeys sit above the frontmost app, so binding them here would steal
+# them from every shell and TUI on the machine. Ghostty is configured
+# with macos-option-as-alt = true precisely so these fall through as
+# Meta sequences:
+#   alt-f  forward-word      alt-d  kill-word
+#   alt-b  backward-word     alt-t  transpose-words
+#   alt-u  upcase-word       alt-.  yank-last-arg
+# alt-h and alt-l ARE taken above by design: alt+hjkl focus is the
+# point of the setup, and backward-kill-word / downcase-word lose.
+
+[mode.service.binding]
+    esc = ['reload-config', 'mode main']
+    # reset layout
+    r = ['flatten-workspace-tree', 'mode main']
+    f = ['layout floating tiling', 'mode main']
+    backspace = ['close-all-windows-but-current', 'mode main']
+
+    # sticky is not yet supported:
+    # https://github.com/nikitabobko/AeroSpace/issues/2
+    #s = ['layout sticky tiling', 'mode main']
+
+    # i3 split replacement under normalization.
+    alt-shift-h = ['join-with left', 'mode main']
+    alt-shift-j = ['join-with down', 'mode main']
+    alt-shift-k = ['join-with up', 'mode main']
+    alt-shift-l = ['join-with right', 'mode main']
+
+[mode.resize.binding]
+    h = 'resize width -50'
+    j = 'resize height +50'
+    k = 'resize height -50'
+    l = 'resize width +50'
+    minus = 'resize smart -50'
+    equal = 'resize smart +50'
+    b = 'balance-sizes'
+    enter = 'mode main'
+    esc = 'mode main'
+
+# on-window-detected: if.* form is soft-deprecated; test form is current.
+[[on-window-detected]]
+if = 'test %{app-bundle-id} = com.apple.QuickTimePlayerX'
+run = 'layout floating'
+
+[[on-window-detected]]
+if = 'test %{app-bundle-id} = com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if = 'test %{app-bundle-id} = com.apple.Preview'
+run = 'layout floating'
+
+# Ghostty needs no rule: single window, no native tabs, tiles cleanly.
+# To pin it to a workspace instead:
+#[[on-window-detected]]
+#if = 'test %{app-bundle-id} = com.mitchellh.ghostty'
+#run = 'move-node-to-workspace 1'
+
+[workspace-to-monitor-force-assignment]
+2 = 'Studio Display'
+4 = 'Studio Display'
+6 = 'Studio Display'
+8 = 'Studio Display'
+
+# Gaps sized for the 5px JankyBorders: at the old 1px, adjacent borders
+# merged into one thick line and active/inactive stopped reading at a
+# glance. Prefer density? Set gaps back to 1 AND border width to 2-3.
+[gaps]
+inner.horizontal = 8
+inner.vertical   = 8
+outer.left       = 8
+outer.right      = 8
+outer.top        = 8
+outer.bottom     = 8

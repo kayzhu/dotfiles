@@ -1,0 +1,231 @@
+" ~/.vimrc
+" Lineage: Nate Soares original ->
+" 	 Kay Zhu personal fork, last major update 07/25/2018 ->
+" 	  2026 modernization with Claude's help.
+" Last major update: 08/12/2026
+"
+" Vim 9 + vim-plug. Requires brew vim (+clipboard), fzf, ripgrep.
+"
+" STACK CONTRACT (aerospace + ghostty + herdr):
+"   bare hjkl      vim cursor motion
+"   ctrl+s hjkl    herdr pane focus      -- NEVER map <C-s> in this file:
+"                                           herdr consumes it before the PTY,
+"                                           so vim can never receive it.
+"   alt+hjkl       AeroSpace window focus (Carbon hotkeys; vim never sees them)
+" Ghostty sets macos-option-as-alt=true, so Option chords arrive as
+" ESC-prefixed sequences. ttimeoutlen below is kept low so ESC (and the
+" jk/kj insert escapes) stay instant; the cost is that option+f in insert
+" mode reads as ESC then f. That ambiguity is inherent to terminal vim.
+
+" ============================================================
+" Core settings
+" ============================================================
+set nocompatible
+set encoding=utf-8              " Required for the listchars glyphs below.
+set backspace=indent,eol,start  " Make backspace sane.
+set hidden                      " Allow buffer backgrounding.
+set scrolloff=3                 " Top/bottom scroll margins.
+let mapleader="`"               " Default is \, ` is home-row adjacent.
+
+" History and persistence.
+set history=1000
+set nobackup                    " No file~ backups.
+set noswapfile                  " No .swp files (the 2018 comment claimed
+                                " nobackup did this; it never did).
+set undofile                    " Undo history across sessions...
+if !isdirectory($HOME . '/.vim/undo')
+  call mkdir($HOME . '/.vim/undo', 'p', 0700)
+endif
+set undodir=$HOME/.vim/undo     " ...collected here, not littered per-file.
+set viewoptions=cursor,folds
+
+" Display.
+set relativenumber number       " Relative numbers, absolute on cursor line.
+set signcolumn=number           " LSP signs share the number column.
+set showcmd ruler laststatus=2
+set colorcolumn=88              " Black's line length (was 80 pre-black).
+set noshowmatch                 " MatchParen is slow; see 2018 notes.
+let g:loaded_matchparen=1
+if has('termguicolors')
+  set termguicolors             " Ghostty + herdr pass truecolor through.
+endif
+
+" Search.
+set hlsearch incsearch
+set ignorecase smartcase
+
+" Editing.
+set formatoptions=cqn1j
+set smarttab
+set splitbelow splitright
+set clipboard=unnamed           " macOS pasteboard. Needs +clipboard:
+                                "   vim --version | grep clipboard
+                                " (brew vim has it; /usr/bin/vim does not.)
+set mouse=a                     " herdr passes the mouse through when an app
+                                " requests it. For a herdr-level selection
+                                " instead, :set mouse= temporarily.
+set confirm
+set updatetime=300              " Snappier CursorHold (LSP diagnostics).
+
+" Key timing. Low ttimeoutlen keeps ESC and jk/kj instant; see header.
+set ttimeout ttimeoutlen=20 timeoutlen=600
+
+" Completion menus.
+set wildmenu
+set wildmode=longest:full,full
+set wildoptions=pum
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc
+set completeopt=menuone,noinsert,noselect
+
+" Hidden characters, when shown with :set list.
+set listchars=tab:▷\ ,eol:¬,extends:»,precedes:«
+
+" ============================================================
+" Plugins (vim-plug, self-bootstrapping)
+" ============================================================
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+
+" Fuzzy finding: fzf + ripgrep replace CtrlP + ag.
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" LSP: replaces YouCompleteMe. :LspInstallServer inside a python/c++ file
+" installs pyright/clangd automatically (vim-lsp-settings manages servers).
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+" Formatting: kept from the Google lineage; these are the public repos.
+Plug 'google/vim-maktaba'
+Plug 'google/vim-codefmt'
+Plug 'google/vim-glaive'
+
+" Kept from 2018, current org names.
+Plug 'preservim/nerdtree'
+Plug 'preservim/nerdcommenter'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-eunuch'
+Plug 'mechatroner/rainbow_csv'
+
+" Colorscheme: canonical jellybeans (replaces the flazz megapack and its
+" 'jelleybeans' fork-of-a-typo).
+Plug 'nanotech/jellybeans.vim'
+
+call plug#end()
+call glaive#Install()
+
+" ============================================================
+" Mappings
+" ============================================================
+" Substitute the word under the cursor.
+nnoremap <unique> <Leader>s :%s/\<<C-r><C-w>\>/
+
+" Insert-mode escape.
+inoremap jk <ESC>
+inoremap kj <ESC>
+
+" Move in visual lines; gj/gk for precise line counts.
+nnoremap k gk
+nnoremap j gj
+nnoremap gk k
+nnoremap gj j
+
+" Enter clears search highlight -- except in quickfix, where Enter must
+" jump to the entry (the 2018 version broke this).
+nnoremap <cr> :noh<CR><CR>:<backspace>
+augroup qf_enter
+  autocmd!
+  autocmd FileType qf nnoremap <buffer> <cr> <cr>
+augroup END
+
+" K no longer opens man pages (2018 intent, cleaner form). LSP buffers
+" rebind K to hover documentation below -- the useful version of K.
+nnoremap K <Nop>
+
+" ============================================================
+" Working directory follows the current file
+" ============================================================
+augroup autodir
+  autocmd!
+  autocmd BufNewFile,BufEnter * silent! lcd %:p:h
+augroup END
+
+" ============================================================
+" LSP (vim-lsp) -- the <leader>j* family, retargeted from YCM
+" ============================================================
+function! s:on_lsp_buffer_enabled() abort
+  setlocal omnifunc=lsp#complete
+  " YCM heritage: jd GoTo, jt GetType, jc GetDoc.
+  nmap <buffer> <leader>jd <plug>(lsp-definition)
+  nmap <buffer> <leader>jt <plug>(lsp-type-definition)
+  nmap <buffer> <leader>jc <plug>(lsp-hover)
+  nmap <buffer> <leader>jr <plug>(lsp-references)
+  nmap <buffer> <leader>rn <plug>(lsp-rename)
+  nmap <buffer> K <plug>(lsp-hover)
+  nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+  nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+endfunction
+augroup lsp_install
+  autocmd!
+  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+let g:lsp_diagnostics_echo_cursor = 1
+
+" Completion popup: Tab / S-Tab to move, Enter to accept.
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup() : "\<CR>"
+
+" ============================================================
+" Formatting (vim-codefmt) -- \f manual, format-on-save guarded
+" ============================================================
+Glaive codefmt plugin[mappings]='\f'
+augroup autoformat_settings
+  autocmd!
+  autocmd FileType python if executable('black')
+        \ | exe 'AutoFormatBuffer black' | endif
+  autocmd FileType c,cpp if executable('clang-format')
+        \ | exe 'AutoFormatBuffer clang-format' | endif
+augroup END
+
+" ============================================================
+" Fuzzy finding (fzf.vim) -- CtrlP muscle memory preserved
+" ============================================================
+nnoremap <unique> <leader>p :Files<CR>
+nnoremap <unique> <leader>m :History<CR>
+nnoremap <unique> <leader>b :Buffers<CR>
+nnoremap <unique> <leader>t :Tags<CR>
+" ag heritage: ripgrep the project.
+nnoremap <unique> <leader>a :Rg<CR>
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --no-heading
+endif
+
+" ============================================================
+" NERDTree
+" ============================================================
+nnoremap <unique> <leader>n :NERDTreeToggle<CR>
+nnoremap <unique> <leader>nb :NERDTreeFind<CR>
+augroup nerdtree
+  autocmd!
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType")
+        \ && b:NERDTreeType == "primary") | q | endif
+augroup END
+let g:NERDTreeChDirMode=2
+let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeMapOpenInTab = '<c-t>'
+
+" ============================================================
+" Colors -- last, since the scheme resets highlights
+" ============================================================
+filetype plugin indent on
+syntax enable
+silent! colorscheme jellybeans
+hi ColorColumn ctermbg=Blue guibg=#00005f

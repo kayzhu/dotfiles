@@ -1,0 +1,146 @@
+# ~/.config/herdr/config.toml
+#
+# LAYERING CONTRACT: AeroSpace owns alt+* (between apps). herdr owns
+# everything behind ctrl+s (tabs/panes/sessions in the one Ghostty
+# window). Ghostty owns cmd+* (frame only) and re-encodes a few Cmd
+# chords into prefix bytes -- see ~/.config/ghostty/config.
+#
+# Lineage: translated from oh-my-tmux (gpakosz) + .tmux.conf.local,
+# reconciled against this build's `herdr --default-config`.
+# Only non-defaults and load-bearing choices appear here.
+#
+# Apply:            herdr server reload-config
+# Live bindings:    prefix+?
+# Full defaults:    herdr --default-config
+#
+# One-time shell prerequisite: ctrl+s is XOFF flow control at the tty
+# layer. Ensure ~/.zshrc contains:   stty -ixon
+#
+# Claude Code wiring (outside this file, documented here so it isn't
+# forgotten):
+#   herdr integration install claude    state detection + session resume
+#   herdr --skill                       review the agent skill, then:
+#   npx skills add ogulcancelik/herdr --skill herdr -g
+# Convention: one workspace per project/worktree. The agents sidebar
+# groups by workspace, so stale-cwd tabs misattribute agents.
+
+[theme]
+# "terminal" inherits Ghostty's palette (catppuccin-mocha) so the two
+# layers never disagree about colors.
+name = "terminal"
+
+[terminal]
+# tmux heritage: tmux_conf_new_pane_retain_current_path=true.
+# New panes/tabs inherit the source pane's cwd. Predictable inside the
+# one-workspace-per-project convention; for a different project, make a
+# new workspace (prefix+ctrl+c), don't cd inside a tab.
+new_cwd = "follow"
+
+[keys]
+# tmux: unbind C-a / unbind C-b / set -g prefix C-s
+prefix = "ctrl+s"
+
+# --- Panes (match oh-my-tmux and herdr defaults; explicit anyway) ---
+focus_pane_left  = "prefix+h"
+focus_pane_down  = "prefix+j"
+focus_pane_up    = "prefix+k"
+focus_pane_right = "prefix+l"
+
+# tmux: bind - split-window -v (stacked)
+split_horizontal = "prefix+minus"
+# tmux used underscore for side-by-side; underscore is not an accepted
+# herdr key name, so herdr's default stays.
+split_vertical   = "prefix+v"
+close_pane       = "prefix+x"
+# tmux: bind + _maximize_pane. Ghostty's cmd+enter sends these bytes.
+zoom             = "prefix+plus"
+
+# --- Tabs (tmux "windows") ---
+new_tab      = "prefix+c"
+# Bracket pair, mirrored by Ghostty's cmd+[ / cmd+] / cmd+shift+[ / ].
+# prefix+[ was copy_mode's default; copy_mode is remapped below.
+previous_tab = ["prefix+[", "cmd+shift+["]
+next_tab     = ["prefix+]", "cmd+shift+]"]
+
+# tmux: bind Tab last-window. prefix+tab is cycle_pane_next by default,
+# so that moves aside rather than silently colliding.
+last_pane       = "prefix+tab"
+cycle_pane_next = "prefix+ctrl+tab"
+
+# --- Workspaces (tmux "sessions") ---
+# tmux: bind C-c new-session / bind C-f find-session
+new_workspace = "prefix+ctrl+c"
+goto          = "prefix+ctrl+f"
+
+# Workspaces stack vertically in the sidebar: k = up/previous, j = down/next.
+# Same vertical grammar as vim j/k and AeroSpace alt+j/k, one plane coarser
+# than prefix+j/k pane focus.
+# VERIFY once: ctrl+j is byte 0x0A; if some input path aliases it with
+# copy_mode's enter (0x0D) and prefix+ctrl+j opens copy mode instead of
+# switching workspace, fall back to prefix+ctrl+p / prefix+ctrl+n.
+previous_workspace = "prefix+ctrl+k"
+next_workspace     = "prefix+ctrl+j"
+
+# Ordinal workspace jump, mirroring switch_tab = prefix+1..9 one shift up.
+# Only predictable if workspace order stays stable; enable if that holds.
+#switch_workspace = "prefix+shift+1..9"
+
+# --- Copy mode ---
+# tmux: bind Enter copy-mode. Also frees prefix+[ for previous_tab.
+copy_mode = "prefix+enter"
+
+# --- Popup commands ---
+# Session-modal popup; does not disturb the pane layout.
+# Remove this block if you don't use lazygit.
+[[keys.command]]
+key = "prefix+g"
+type = "popup"
+command = "lazygit"
+width = "90%"
+height = "90%"
+
+[ui]
+# tmux_conf_theme_colour_4. Same accent as JankyBorders' active_color
+# in AeroSpace, so "focused" reads identically at both layers.
+accent = "#00afff"
+
+# tmux_conf_copy_to_os_clipboard=false: selection stays until copied.
+copy_on_select = false
+
+# Ghostty handles cmd+click on URLs; herdr keeps the mouse for its own
+# UI. Set false only if URL clicking misbehaves.
+mouse_capture = true
+
+# The single Ghostty window means this tab row is the only tab
+# affordance -- keep it visible even with one tab.
+hide_tab_bar_when_single_tab = false
+
+# Disambiguate parallel Claude Code panes in the agents sidebar:
+# Claude Code sets the terminal title to what it is working on, so two
+# sessions in one workspace stay tellable-apart by content.
+[ui.sidebar.agents]
+rows = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
+
+[ui.toast]
+# tmux monitor-activity analogue, upgraded: agent state changes go to
+# macOS Notification Center. This is the reason to run herdr over tmux
+# for long agent runs.
+delivery = "system"
+delay_seconds = 2
+
+[ui.sound]
+enabled = true
+
+[session]
+# Resume Claude Code (and other integrated agents) into their native
+# sessions after a herdr server restart. Requires the integration.
+resume_agents_on_restore = true
+
+[experimental]
+# Ghostty is Kitty-graphics capable; lets inline images through.
+kitty_graphics = true
+
+[advanced]
+# tmux history-limit heritage, but herdr counts BYTES, not lines.
+# 20 MB per pane is generous; agents are chatty.
+scrollback_limit_bytes = 20000000
