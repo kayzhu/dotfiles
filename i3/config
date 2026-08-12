@@ -13,6 +13,24 @@ font pango:monospace 10
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+# drag tiling windows by their titlebar (i3 4.22+)
+tiling_drag modifier titlebar
+
+# stack-accent harmonization (CLAUDE.md constraint 6): focused border is the
+# #00afff accent, mirroring JankyBorders/herdr; 8px gaps echo aerospace.
+# UNVERIFIED aesthetically -- tune on a real desktop.
+default_border pixel 3
+gaps inner 8
+# class                 border  bg      text    indicator childborder
+client.focused          #00afff #00afff #080808 #00afff   #00afff
+client.focused_inactive #303030 #303030 #e4e4e4 #303030   #303030
+client.unfocused        #303030 #080808 #8a8a8a #303030   #303030
+
+# XDG autostart (generic; the 2017 Cinnamon daemons are gone)
+exec --no-startup-id dex --autostart --environment i3
+
+# suspend-aware screen locking
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -c 000000
 
 # terminal: ghostty runs on Linux too; fall back if absent
 bindsym $mod+Return exec --no-startup-id sh -c 'command -v ghostty >/dev/null && exec ghostty || exec i3-sensible-terminal'
@@ -80,10 +98,10 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
-# reload / restart / exit
+# reload / restart / exit (exit confirms via nagbar)
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
-bindsym $mod+Shift+e exit
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3? This ends the X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (hjkl grammar; Shift shrinks)
 mode "resize" {
@@ -101,16 +119,17 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
-# lock screen
-bindsym Mod1+Mod4+l exec i3lock -c 000000 && xset dpms force off
+# lock screen (routes through xss-lock's locker)
+bindsym Mod1+Mod4+l exec --no-startup-id loginctl lock-session
 
 # status bar
 bar {
     status_command i3status
 }
 
-# volume (PulseAudio/PipeWire)
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
+# volume (PulseAudio/PipeWire); refresh the bar immediately
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
