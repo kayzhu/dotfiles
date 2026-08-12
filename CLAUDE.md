@@ -148,7 +148,7 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   custom binding via `prefix+?`, and re-check integration versions with
   `herdr integration status`.
 - **Ghostty**: reload config, then `ghostty +list-keybinds` to confirm the
-  18 text: translations survived; watch release notes for keybind grammar
+  23 text: translations survived; watch release notes for keybind grammar
   changes (physical key names arrived in 1.2).
 - **vim plugins**: `:PlugUpdate`; `:LspInstallServer --force` if a language
   server misbehaves after a brew python bump.
