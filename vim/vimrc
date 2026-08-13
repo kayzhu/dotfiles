@@ -227,7 +227,9 @@ nnoremap <unique> <leader>p :call fzf#vim#files(<SID>project_root(),
       \ fzf#vim#with_preview(), 0)<CR>
 nnoremap <unique> <leader>m :History<CR>
 nnoremap <unique> <leader>b :Buffers<CR>
-nnoremap <unique> <leader>t :Tags<CR>
+" `t = jump to symbol. Was fzf :Tags (ctags); LSP workspace symbols
+" replaced it 2026-08 -- nothing was generating the tags file anyway.
+nnoremap <unique> <leader>t :LspWorkspaceSymbol<CR>
 " ag heritage: ripgrep the project.
 nnoremap <unique> <leader>a :call fzf#vim#grep('rg --column --line-number
       \ --no-heading --color=always --smart-case -- ""',

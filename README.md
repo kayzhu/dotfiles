@@ -97,7 +97,7 @@ between files).
 | Keys | Action |
 |---|---|
 | `` `p `` / `` `a `` | fzf files / ripgrep — **project-rooted**, not cwd |
-| `` `b `` / `` `m `` / `` `t `` | buffers / recent files / tags |
+| `` `b `` / `` `m `` / `` `t `` | buffers / recent files / workspace symbols |
 | `jk` or `kj` | escape insert mode |
 | `gcc` / `gc{motion}` / `` `cc `` | toggle comment |
 | `` `jd `jt `jr `` / `K` | LSP: definition / type / references / hover |
