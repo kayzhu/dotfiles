@@ -68,8 +68,38 @@ vim.pack.add({
   'https://github.com/mfussenegger/nvim-dap-python',
   -- visual continuity with vim
   'https://github.com/nanotech/jellybeans.vim',
+  -- structural highlighting (the visible upgrade over vim)
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
+  -- format-on-save (vim's codefmt counterpart); skips missing formatters
+  'https://github.com/stevearc/conform.nvim',
+  -- git signs in the number column (vim's gitgutter counterpart)
+  'https://github.com/lewis6991/gitsigns.nvim',
 })
 vim.cmd('silent! colorscheme jellybeans')
+
+-- Treesitter: install parsers (no-op when present), start per filetype.
+local ts_fts = { 'python', 'c', 'cpp', 'lua', 'bash', 'yaml', 'toml',
+                 'json', 'markdown', 'vim' }
+pcall(function() require('nvim-treesitter').install(ts_fts) end)
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = ts_fts,
+  callback = function() pcall(vim.treesitter.start) end,
+})
+
+-- Formatting: black / clang-format on save, like the vimrc's codefmt
+-- autocmds; \f formats manually (same key as vim's Glaive mapping).
+require('conform').setup({
+  formatters_by_ft = {
+    python = { 'black' },
+    c = { 'clang-format' },
+    cpp = { 'clang-format' },
+  },
+  format_on_save = { timeout_ms = 2000, lsp_format = 'never' },
+})
+vim.keymap.set({ 'n', 'v' }, '\\f', function() require('conform').format() end)
+
+-- Git change signs (number column, same as vim's gitgutter).
+require('gitsigns').setup()
 
 -- fzf: project-rooted, same as the vimrc (autodir is not ported, but the
 -- root anchor is kept for identical behavior).

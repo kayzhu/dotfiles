@@ -65,8 +65,9 @@ link zsh/zshrc                "$HOME/.zshrc"
 
 echo
 echo "--- prerequisite check (informational) ---"
-for c in aerospace herdr vim tmux fzf rg fd bat eza zoxide tree htop btop \
-         trash delta lazygit gh borders black clang-format; do
+for c in aerospace herdr vim nvim tmux fzf rg fd bat eza zoxide tree htop \
+         btop trash delta lazygit gh borders black clang-format \
+         tree-sitter pyright-langserver; do
   if command -v "$c" >/dev/null 2>&1; then echo "ok:       $c"
   else echo "MISSING:  $c"; fi
 done
