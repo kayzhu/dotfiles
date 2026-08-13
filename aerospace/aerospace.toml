@@ -24,9 +24,9 @@ auto-reload-config = true
 after-startup-command = [
     # JankyBorders (brew install FelixKratz/formulae/borders).
     # It detects an already-running instance, so restart-safe.
-    # active_color = herdr's ui.accent (#00afff): focus reads the same
+    # active_color = herdr's ui.accent (#97bedc): focus reads the same
     # at the window layer and the pane layer.
-    'exec-and-forget borders active_color=0xff00afff inactive_color=0xff494d64 width=5.0 style=round hidpi=on'
+    'exec-and-forget borders active_color=0xff97bedc inactive_color=0xff494d64 width=5.0 style=round hidpi=on'
 ]
 
 # Normalizations keep the tree sane. The i3 split-then-place idiom is

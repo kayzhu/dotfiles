@@ -25,13 +25,15 @@ tmux_conf_24b_colour=true
 tmux_conf_copy_to_os_clipboard=true
 
 # -- theme ---------------------------------------------------------------------
-# colour_4 #00afff is the stack accent: JankyBorders active_color and herdr
-# ui.accent must match it (CLAUDE.md constraint 6 -- this file is the origin).
+# colour_4 #97bedc is the stack accent (Jellybeans blue; CLAUDE.md
+# constraint 6): JankyBorders active_color and herdr ui.accent must match.
+# History: this file's old #00afff WAS the origin of the stack accent
+# until the 2026-08 Jellybeans theme switch; now Ghostty's palette leads.
 
 tmux_conf_theme_colour_1="#080808"    # dark gray
 tmux_conf_theme_colour_2="#303030"    # gray
 tmux_conf_theme_colour_3="#8a8a8a"    # light gray
-tmux_conf_theme_colour_4="#00afff"    # light blue
+tmux_conf_theme_colour_4="#97bedc"    # light blue
 tmux_conf_theme_colour_5="#ffff00"    # yellow
 tmux_conf_theme_colour_6="#080808"    # dark gray
 tmux_conf_theme_colour_7="#e4e4e4"    # white

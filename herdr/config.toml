@@ -108,7 +108,7 @@ height = "90%"
 [ui]
 # tmux_conf_theme_colour_4. Same accent as JankyBorders' active_color
 # in AeroSpace, so "focused" reads identically at both layers.
-accent = "#00afff"
+accent = "#97bedc"
 
 # tmux_conf_copy_to_os_clipboard=false: selection stays until copied.
 copy_on_select = false
