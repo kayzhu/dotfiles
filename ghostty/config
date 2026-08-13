@@ -20,10 +20,12 @@
 
 # COUPLED VALUE (CLAUDE.md constraint 6): herdr inherits this palette
 # (herdr config.toml theme name=terminal), so a theme change here restyles
-# the pane layer too.
-# Jellybeans matches vim's colorscheme -- editor and terminal agree.
-# (was: catppuccin mocha, until 2026-08-12)
-theme = Jellybeans
+# the pane layer too, and the stack accent must be re-derived to keep
+# sidebar active rows readable (whitish text paints over the accent; no
+# text-on-accent override exists). A Jellybeans attempt was reverted
+# 2026-08-12 for exactly that reason -- change deliberately, not in
+# passing.
+theme = catppuccin mocha
 
 font-size = 13
 

@@ -1,4 +1,3 @@
-onboarding = false
 # ~/.config/herdr/config.toml
 #
 # LAYERING CONTRACT: AeroSpace owns alt+* (between apps). herdr owns
@@ -24,6 +23,9 @@ onboarding = false
 #   npx skills add ogulcancelik/herdr --skill herdr -g
 # Convention: one workspace per project/worktree. The agents sidebar
 # groups by workspace, so stale-cwd tabs misattribute agents.
+
+# Written by herdr itself (first-run flag). TOML: must stay above [theme].
+onboarding = false
 
 [theme]
 # "terminal" inherits Ghostty's palette (catppuccin-mocha) so the two
@@ -107,12 +109,9 @@ width = "90%"
 height = "90%"
 
 [ui]
-# The stack accent (CLAUDE.md constraint 6): Jellybeans' selection
-# indigo -- chosen because sidebar active rows paint the theme's whitish
-# text over it, and selection colors are designed for exactly that.
-# Same as JankyBorders' active_color and tmux colour_4, so "focused"
-# reads identically at every layer.
-accent = "#474e91"
+# tmux_conf_theme_colour_4. Same accent as JankyBorders' active_color
+# in AeroSpace, so "focused" reads identically at both layers.
+accent = "#00afff"
 
 # tmux_conf_copy_to_os_clipboard=false: selection stays until copied.
 copy_on_select = false
