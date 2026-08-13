@@ -108,8 +108,10 @@ between files).
 
 ## Debugging (nvim + nvim-dap)
 
-nvim is the debug editor — vim stays the daily driver; same leader (`` ` ``)
-and `` `p/`a/`j* `` muscle memory. The debug plane is `` `d* ``:
+nvim is a full parallel editor (same leader, mappings, formatting, and
+git signs as vim, plus treesitter) whose reason to exist is the debug
+plane — vim remains the canonical daily/VM editor until nvim earns the
+title. The debug plane is `` `d* ``:
 
 | Keys | Action |
 |---|---|

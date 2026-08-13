@@ -34,6 +34,9 @@ vim.o.termguicolors = true
 vim.o.confirm = true
 vim.o.timeoutlen = 600
 vim.o.ttimeoutlen = 20
+vim.o.swapfile = false               -- parity with vimrc: no .swp files
+vim.o.formatoptions = 'cqn1j'
+vim.opt.listchars = { tab = '▷ ', eol = '¬', extends = '»', precedes = '«' }
 
 -- ============================================================
 -- Mappings (ported muscle memory)
@@ -51,6 +54,18 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = 'qf',
   callback = function()
     vim.keymap.set('n', '<CR>', '<CR>', { buffer = true })
+  end,
+})
+
+-- `cc rides nvim's built-in gcc/gc commenting (same as vim's port).
+vim.keymap.set('n', '<Leader>cc', 'gcc', { remap = true })
+vim.keymap.set('x', '<Leader>cc', 'gc', { remap = true })
+
+-- Working directory follows the current file (vimrc's autodir; `p/`a
+-- stay project-rooted regardless).
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufEnter' }, {
+  callback = function()
+    pcall(vim.cmd, 'silent! lcd ' .. vim.fn.expand('%:p:h'))
   end,
 })
 
@@ -74,6 +89,11 @@ vim.pack.add({
   'https://github.com/stevearc/conform.nvim',
   -- git signs in the number column (vim's gitgutter counterpart)
   'https://github.com/lewis6991/gitsigns.nvim',
+  -- the remaining vimrc parity set (all vimscript; work fine in nvim)
+  'https://github.com/tpope/vim-surround',
+  'https://github.com/tpope/vim-eunuch',
+  'https://github.com/tpope/vim-sleuth',
+  'https://github.com/mechatroner/rainbow_csv',
 })
 vim.cmd('silent! colorscheme jellybeans')
 

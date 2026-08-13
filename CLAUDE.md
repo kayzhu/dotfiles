@@ -43,7 +43,7 @@ prefix works identically over SSH and the cmd chords only exist locally.
 | ghostty/config         | ~/.config/ghostty/config     | cmd+shift+comma in Ghostty  | `ghostty +list-keybinds`        |
 | herdr/config.toml      | ~/.config/herdr/config.toml  | `herdr server reload-config`| `prefix+?` inside herdr         |
 | vim/vimrc              | ~/.vimrc                     | restart vim / `:so %`       | `:checkhealth`-style manual     |
-| nvim/init.lua          | ~/.config/nvim/init.lua      | restart nvim                | `:checkhealth`; debug-first, vim stays daily |
+| nvim/init.lua          | ~/.config/nvim/init.lua      | restart nvim                | `:checkhealth`; full vim parity + DAP; vim stays canonical |
 | zsh/zshrc              | ~/.zshrc                     | new shell                   | `stty -a \| grep ixon`; `bindkey -lL main` → emacs |
 | bash/bashrc            | ~/.bash_profile + ~/.bashrc  | new shell                   | `bash --login -i -c 'type la'`  |
 | git/gitconfig          | ~/.gitconfig                 | immediate                   | `git config core.excludesfile`  |
