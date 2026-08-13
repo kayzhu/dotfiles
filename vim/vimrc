@@ -189,6 +189,11 @@ augroup lsp_install
   autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 let g:lsp_diagnostics_echo_cursor = 1
+" Diagnostics stay OUT of the buffer text: vim-lsp's virtual text defaults
+" ON with align "below", interleaving phantom diagnostic lines with real
+" code. Signs live in the number column (signcolumn=number above); the
+" full message echoes when the cursor is on the line (echo_cursor).
+let g:lsp_diagnostics_virtual_text_enabled = 0
 
 " Completion popup: Tab / S-Tab to move, Enter to accept.
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
