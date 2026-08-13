@@ -32,6 +32,7 @@ if [ "$IS_MAC" = 1 ]; then
   check_link "$HOME/.config/ghostty/config"   ghostty/config
   check_link "$HOME/.config/herdr/config.toml" herdr/config.toml
   check_link "$HOME/Library/KeyBindings/DefaultKeyBinding.dict" DefaultKeyBinding.dict
+  check_link "$HOME/.config/nvim/init.lua"    nvim/init.lua
   check_link "$HOME/.zshrc"                   zsh/zshrc
 fi
 

@@ -57,6 +57,9 @@ link herdr/config.toml        "$HOME/.config/herdr/config.toml"
 # macOS Cocoa text-system keybindings; apps read it at launch.
 link DefaultKeyBinding.dict   "$HOME/Library/KeyBindings/DefaultKeyBinding.dict"
 
+# Neovim: debug-first config (nvim-dap); vim remains the daily editor.
+link nvim/init.lua            "$HOME/.config/nvim/init.lua"
+
 # Interactive shell config (login shell is zsh; bash configs serve VMs).
 link zsh/zshrc                "$HOME/.zshrc"
 

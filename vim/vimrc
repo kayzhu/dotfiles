@@ -196,7 +196,7 @@ augroup END
 let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_diagnostics_echo_cursor = 0
 let g:lsp_diagnostics_float_cursor = 1
-let g:lsp_diagnostics_float_delay = 150
+let g:lsp_diagnostics_float_delay = 500
 
 " Completion popup: Tab / S-Tab to move, Enter to accept.
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"

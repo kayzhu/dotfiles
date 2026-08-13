@@ -106,6 +106,24 @@ between files).
 | `\f` | format (python/c++ also format on save) |
 | `Enter` | clear search highlight |
 
+## Debugging (nvim + nvim-dap)
+
+nvim is the debug editor — vim stays the daily driver; same leader (`` ` ``)
+and `` `p/`a/`j* `` muscle memory. The debug plane is `` `d* ``:
+
+| Keys | Action |
+|---|---|
+| `` `db `` / `` `dB `` | toggle / conditional breakpoint |
+| `` `dc `` | continue — or start a session (pick a config) |
+| `` `do `` / `` `di `` / `` `dO `` | step over / into / out |
+| `` `du `` / `` `dr `` / `` `dk `` | UI panels / REPL / eval under cursor |
+| `` `dx `` | terminate session |
+
+Robot/VM attach: on the target, run the node under debugpy
+(`python3 -m debugpy --listen 0.0.0.0:5678 --wait-for-client …`), then
+`` `dc `` → "Attach remote (robot/VM)". ROS 2 / bazel nodes: attach is the
+primary workflow.
+
 ## Remote VMs
 
 - Box you can install herdr on: `herdr --remote user@host --session name`
