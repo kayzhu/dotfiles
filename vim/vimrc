@@ -129,6 +129,9 @@ call glaive#Install()
 
 " Built-in commenting (vim >= 9.1): gcc toggles a line, gc{motion}/visual gc.
 packadd comment
+" nerdcommenter muscle memory: `cc still toggles comment (line / selection)
+nmap <leader>cc <Plug>(comment-toggle-line)
+xmap <leader>cc <Plug>(comment-toggle)
 
 " ============================================================
 " Mappings

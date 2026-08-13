@@ -20,9 +20,10 @@
 
 # COUPLED VALUE (CLAUDE.md constraint 6): herdr inherits this palette
 # (herdr config.toml theme name=terminal), so a theme change here restyles
-# the pane layer too. A better theme is a parked wishlist item; change it
-# deliberately, not in passing.
-theme = catppuccin mocha
+# the pane layer too.
+# Jellybeans matches vim's colorscheme -- editor and terminal agree.
+# (was: catppuccin mocha, until 2026-08-12)
+theme = Jellybeans
 
 font-size = 13
 
