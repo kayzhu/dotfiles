@@ -124,9 +124,10 @@ keybind = super+bracket_left=text:\x13[
 keybind = super+bracket_right=text:\x13]
 
 # Previous / next herdr workspace: prefix ctrl+k and prefix ctrl+j.
-# Brackets switch tabs, so alt+brackets switch the coarser container.
-keybind = super+alt+bracket_left=text:\x13\x0b
-keybind = super+alt+bracket_right=text:\x13\x0a
+# Brackets switch tabs; ctrl+brackets the coarser container, carrying the
+# ctrl plane of the herdr chord through the cmd mirror.
+keybind = super+ctrl+bracket_left=text:\x13\x0b
+keybind = super+ctrl+bracket_right=text:\x13\x0a
 
 # Split side-by-side: prefix v
 keybind = super+d=text:\x13v

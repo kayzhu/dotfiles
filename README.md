@@ -59,7 +59,7 @@ live herdr bindings; a frozen pane is XOFF — press `ctrl+q`.
 | `prefix +` | zoom pane | `cmd+enter` |
 | `prefix tab` | last pane | |
 | `prefix ctrl+c` | **new workspace (= new project)** | |
-| `prefix ctrl+k` / `ctrl+j` | previous / next workspace | `cmd+alt+[` / `]` |
+| `prefix ctrl+k` / `ctrl+j` | previous / next workspace | `cmd+ctrl+[` / `]` |
 | `prefix ctrl+f` | find workspace | |
 | `prefix enter` | copy mode (vi keys; `v` select, `y` yank) | |
 | `prefix e` | open scrollback in vim | |

@@ -83,7 +83,7 @@ goto          = "prefix+ctrl+f"
 # ctrl+j is byte 0x0A; verified distinct from copy_mode's enter (0x0D) on
 # herdr 0.8.0 (2026-08-12). Re-test after herdr upgrades (verify.sh manual
 # checklist item 5); if aliased, fall back to prefix+ctrl+p / prefix+ctrl+n
-# and update the two Ghostty cmd+alt+bracket mirrors to \x10 / \x0e.
+# and update the two Ghostty cmd+ctrl+bracket mirrors to \x10 / \x0e.
 previous_workspace = "prefix+ctrl+k"
 next_workspace     = "prefix+ctrl+j"
 
