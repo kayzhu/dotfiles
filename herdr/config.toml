@@ -28,7 +28,7 @@
 onboarding = false
 
 [theme]
-# "terminal" inherits Ghostty's palette (catppuccin-mocha) so the two
+# "terminal" inherits Ghostty's palette (TokyoNight) so the two
 # layers never disagree about colors.
 name = "terminal"
 
@@ -109,9 +109,11 @@ width = "90%"
 height = "90%"
 
 [ui]
-# tmux_conf_theme_colour_4. Same accent as JankyBorders' active_color
-# in AeroSpace, so "focused" reads identically at both layers.
-accent = "#00afff"
+# The stack accent (CLAUDE.md constraint 6): TokyoNight's
+# selection-background, so the whitish text herdr paints over active
+# sidebar rows sits on a color designed for it. Same as JankyBorders'
+# active_color and tmux colour_4 -- "focused" reads identically everywhere.
+accent = "#33467c"
 
 # tmux_conf_copy_to_os_clipboard=false: selection stays until copied.
 copy_on_select = false

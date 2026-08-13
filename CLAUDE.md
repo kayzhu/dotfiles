@@ -90,17 +90,21 @@ apply, verify, commit. Never leave changes uncommitted.
    documented exception to "no key has two claimants," not a live one.
    Invalid bindings fail SILENTLY (herdr keeps the old binding) — always
    confirm with `prefix+?` after reload.
-6. **Shared accent `#00afff`** (tmux heritage, colour_4) appears in FOUR
-   places that must change together: JankyBorders `active_color` in
-   aerospace/aerospace.toml, `ui.accent` in herdr/config.toml,
-   `tmux_conf_theme_colour_4` in tmux/tmux.conf.local (the origin), and
-   `client.focused` in i3/config. Focus must read identically at every
-   layer. Same coupling class: herdr's theme (`name = "terminal"`) inherits
-   Ghostty's `theme` — changing the Ghostty theme restyles the pane layer
-   too, AND requires re-deriving the accent (herdr paints whitish text over
-   the accent in active sidebar rows; no text-on-accent override exists —
-   verified against theme.custom via reload diagnostics). A 2026-08
-   Jellybeans attempt was reverted over exactly this; see git history.
+6. **Shared accent `#33467c`** (TokyoNight's selection-background, derived
+   from the Ghostty theme 2026-08; the accent originated as tmux colour_4
+   `#00afff`) appears in FOUR places that must change together:
+   JankyBorders `active_color` in aerospace/aerospace.toml, `ui.accent` in
+   herdr/config.toml, `tmux_conf_theme_colour_4` in tmux/tmux.conf.local,
+   and `client.focused` in i3/config. Focus must read identically at every
+   layer. The accent must be SELECTION-grade: herdr paints whitish text
+   over it in active sidebar rows and no text-on-accent override exists
+   (verified against theme.custom via reload diagnostics; a Jellybeans
+   bright-blue attempt failed exactly here). Light-on-accent counterparts:
+   tmux `window_status_current_fg` = colour_7, i3 `client.focused` text.
+   Same coupling class: herdr's theme (`name = "terminal"`) inherits
+   Ghostty's `theme` — a theme change re-derives the accent from the new
+   theme's selection color, and JankyBorders `inactive_color` (#15161e,
+   TokyoNight palette 0) from a near-background tone.
 7. **Gaps and border width are coupled** in aerospace.toml: 8px gaps for
    5px borders. Shrinking gaps to 1 requires borders at 2-3 or adjacent
    borders merge and active/inactive stops reading.

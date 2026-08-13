@@ -25,14 +25,16 @@ tmux_conf_24b_colour=true
 tmux_conf_copy_to_os_clipboard=true
 
 # -- theme ---------------------------------------------------------------------
-# colour_4 #00afff is the stack accent (tmux heritage; CLAUDE.md
-# constraint 6 -- this file is the origin): JankyBorders active_color and
-# herdr ui.accent must match it.
+# colour_4 #33467c is the stack accent (TokyoNight's selection indigo,
+# derived from the Ghostty theme; CLAUDE.md constraint 6): JankyBorders
+# active_color and herdr ui.accent must match it. Light text goes ON the
+# accent (current_fg below). Historical note: the accent originated here
+# as #00afff before the Ghostty palette took the lead.
 
 tmux_conf_theme_colour_1="#080808"    # dark gray
 tmux_conf_theme_colour_2="#303030"    # gray
 tmux_conf_theme_colour_3="#8a8a8a"    # light gray
-tmux_conf_theme_colour_4="#00afff"    # light blue
+tmux_conf_theme_colour_4="#33467c"    # tokyonight selection indigo
 tmux_conf_theme_colour_5="#ffff00"    # yellow
 tmux_conf_theme_colour_6="#080808"    # dark gray
 tmux_conf_theme_colour_7="#e4e4e4"    # white
@@ -75,7 +77,7 @@ tmux_conf_theme_window_status_fg="$tmux_conf_theme_colour_3"
 tmux_conf_theme_window_status_bg="$tmux_conf_theme_colour_1"
 tmux_conf_theme_window_status_attr="none"
 tmux_conf_theme_window_status_format="#I #W"
-tmux_conf_theme_window_status_current_fg="$tmux_conf_theme_colour_1"
+tmux_conf_theme_window_status_current_fg="$tmux_conf_theme_colour_7"
 tmux_conf_theme_window_status_current_bg="$tmux_conf_theme_colour_4"
 tmux_conf_theme_window_status_current_attr="bold"
 tmux_conf_theme_window_status_current_format="#I #W"

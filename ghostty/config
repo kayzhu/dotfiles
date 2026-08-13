@@ -25,7 +25,7 @@
 # text-on-accent override exists). A Jellybeans attempt was reverted
 # 2026-08-12 for exactly that reason -- change deliberately, not in
 # passing.
-theme = catppuccin mocha
+theme = TokyoNight
 
 font-size = 13
 

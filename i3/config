@@ -17,12 +17,12 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # stack-accent harmonization (CLAUDE.md constraint 6): focused border is the
-# #00afff accent, mirroring JankyBorders/herdr; 8px gaps echo aerospace.
+# #33467c accent, mirroring JankyBorders/herdr; 8px gaps echo aerospace.
 # UNVERIFIED aesthetically -- tune on a real desktop.
 default_border pixel 3
 gaps inner 8
 # class                 border  bg      text    indicator childborder
-client.focused          #00afff #00afff #080808 #00afff   #00afff
+client.focused          #33467c #33467c #e4e4e4 #33467c   #33467c
 client.focused_inactive #303030 #303030 #e4e4e4 #303030   #303030
 client.unfocused        #303030 #080808 #8a8a8a #303030   #303030
 
