@@ -2,6 +2,11 @@
 # This ignores case in bash completion (interactive shells only)
 [[ $- == *i* ]] && bind "set completion-ignore-case on"
 
+# alt+shift+backspace (Ghostty re-encodes it as ESC ctrl+h): kill the whole
+# whitespace-delimited argument; plain alt+backspace already stops at / in
+# readline. Parity with zsh/zshrc's backward-kill-space-word.
+[[ $- == *i* ]] && bind '"\e\C-h": unix-word-rubout'
+
 export EDITOR='vim'
 
 export PATH=$HOME/bin:$PATH

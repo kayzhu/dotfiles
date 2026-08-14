@@ -34,6 +34,12 @@ deliberately unbound in AeroSpace).
 Ghostty's `cmd+*` keybinds are pure conveniences that re-encode chords as
 prefix bytes (`text:\x13...`); herdr only ever sees bytes, which is why the
 prefix works identically over SSH and the cmd chords only exist locally.
+One documented non-cmd exception: `alt+shift+backspace` is re-encoded as
+`ESC ctrl+h` (legacy encoding drops shift on backspace, so the shell could
+never distinguish it from alt+backspace) — zsh/bash bind those bytes to
+whole-argument kill. The zle word plane itself runs `select-word-style
+bash` (readline alphanumeric-only words), so alt+f/b/d, alt+backspace, and
+ctrl+w all stop at `/` like bash.
 
 ## File map
 
@@ -195,8 +201,8 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   is marked auto_updates, so the app updates itself and plain
   `brew upgrade` skips it; `brew upgrade --cask ghostty --greedy` forces a
   brew-side sync. After updating, reload config, then
-  `ghostty +list-keybinds` to confirm the 20 repo-defined text:
-  translations survived (23 total including Ghostty's own defaults); watch
+  `ghostty +list-keybinds` to confirm the 21 repo-defined text:
+  translations survived (24 total including Ghostty's own defaults); watch
   release notes for keybind grammar changes (physical key names arrived
   in 1.2).
 - **vim plugins**: `:PlugUpdate`; `:LspInstallServer --force` if a language

@@ -78,7 +78,8 @@ panes by workspace.
 |---|---|
 | `z proj` / `zi` | jump to a frecent directory / pick interactively |
 | `ctrl+r` / `ctrl+t` / `alt+c` | fzf: history / files / cd |
-| `alt+f` `alt+b` `alt+d` | word forward / back / delete-word |
+| `alt+f` `alt+b` `alt+d` | word forward / back / delete — stops at `/` `.` `-` (bash-style) |
+| `alt+backspace` / `alt+shift+backspace` | delete back one word / the whole argument |
 | `ls la ll lla l` | eza listings (`l` = newest first) |
 | `g PATTERN` | ripgrep, case-insensitive |
 | `f NAME` | fd file search |

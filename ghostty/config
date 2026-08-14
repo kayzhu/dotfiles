@@ -157,6 +157,15 @@ keybind = super+digit_7=text:\x137
 keybind = super+digit_8=text:\x138
 keybind = super+digit_9=text:\x139
 
+# The one non-cmd keybind: alt+shift+backspace. Legacy terminal encoding
+# drops shift on backspace, so the PTY would receive the same bytes as
+# alt+backspace and the shell could never tell them apart. Re-encoded as
+# ESC ctrl+h: zsh binds it to whitespace-delimited kill (whole argument),
+# bash to unix-word-rubout; unmanaged shells degrade to their default
+# ESC-ctrl+h binding, backward-kill-word. Documented exception to
+# "Ghostty owns cmd+* only" (CLAUDE.md).
+keybind = alt+shift+backspace=text:\x1b\x08
+
 # Kept native, acting on the frame only:
 #   cmd+q              quit
 #   cmd+comma          open this config

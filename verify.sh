@@ -62,11 +62,11 @@ if [ "$IS_MAC" = 1 ]; then
     pass "aerospace responding (modes: $(aerospace list-modes | tr '\n' ' '))"
   else fail "aerospace CLI not responding"; fi
 
-  # Ghostty keybind translations present: 20 repo-defined (plus Ghostty's
+  # Ghostty keybind translations present: 21 repo-defined (plus Ghostty's
   # own text: defaults, 3 today -- threshold is the repo-owned count).
   if command -v ghostty >/dev/null; then
     n=$(ghostty +list-keybinds 2>/dev/null | grep -c 'text:' || true)
-    [ "${n:-0}" -ge 20 ] && pass "ghostty text: translations loaded ($n)" \
+    [ "${n:-0}" -ge 21 ] && pass "ghostty text: translations loaded ($n)" \
                          || fail "ghostty translations missing ($n found; reload config)"
   fi
 

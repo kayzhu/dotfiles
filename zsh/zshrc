@@ -49,6 +49,24 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # interactive highlighted menu: Tab into it, arrows/Tab to move
 zstyle ':completion:*' menu select
 
+# --- Word motion: bash/readline parity ---
+# zsh's default WORDCHARS counts / . - as word chars, so backward-kill-word
+# eats whole paths. select-word-style bash = readline's alphanumeric-only
+# words: alt+f/b/d and alt+backspace stop at every path segment, matching
+# the bash muscle memory this file ports. Side effect, on purpose: ctrl+w
+# (backward-kill-word) now stops at / too; the whole-argument kill moves
+# to alt+shift+backspace below. Must stay BEFORE the plugin block -- the
+# plugins wrap whatever widgets exist when they load.
+autoload -Uz select-word-style
+select-word-style bash
+# alt+shift+backspace = kill whole whitespace-delimited argument (path).
+# Legacy terminal encoding drops shift on backspace, so ghostty/config
+# re-encodes the chord as ESC ctrl+h (\x1b\x08). Where that re-encode is
+# absent (other terminals), the bytes degrade to plain backward-kill-word.
+zle -N backward-kill-space-word backward-kill-word-match
+zstyle :zle:backward-kill-space-word word-style space
+bindkey '^[^H' backward-kill-space-word
+
 # --- Shared aliases and functions (same file bash sources) ---
 source ~/dotfiles/bash/aliases
 
