@@ -33,10 +33,14 @@ setopt HIST_REDUCE_BLANKS
 # --- Prompt (port of bash PS1: user:cyan-cwd, newline, cyan arrow) ---
 PROMPT=$'%n:%F{cyan}%~\n⇨ %f '
 
-# Terminal title. In a herdr pane, lead with the session name (derived
-# from HERDR_SOCKET_PATH: sessions live at ~/.config/herdr/sessions/
-# <name>/herdr.sock, the default at ~/.config/herdr/herdr.sock) so
-# AltTab can tell two Ghostty windows on different sessions apart.
+# Terminal title. NOTE: herdr stores pane OSC titles for its sidebar but
+# does NOT forward them to the outer terminal -- a pane's precmd can never
+# retitle the Ghostty window (verified 2026-08-14 via aerospace
+# list-windows vs herdr api snapshot). The window title is whatever the
+# LAUNCHER shell last painted; the herdr() wrapper below owns that. In a
+# pane, the [session] prefix (derived from HERDR_SOCKET_PATH: sessions
+# live at ~/.config/herdr/sessions/<name>/, default at ~/.config/herdr/)
+# only feeds herdr's sidebar terminal_title rows.
 # %~ (tilde-abbreviated cwd), not %d: full paths made titles unreadable.
 if [[ -n $HERDR_SOCKET_PATH ]]; then
   case $HERDR_SOCKET_PATH in
@@ -81,6 +85,28 @@ bindkey '^[^H' backward-kill-space-word
 
 # --- Shared aliases and functions (same file bash sources) ---
 source ~/dotfiles/bash/aliases
+
+# Launching herdr: stamp the OUTER window title with the session name
+# first, so AltTab can tell two Ghostty windows on different herdr
+# sessions apart (herdr never retitles the enclosing terminal itself).
+# Only fires for TUI-attaching invocations from outside herdr; CLI
+# subcommands (status, server, api, ...) and calls inside a pane pass
+# through untouched. On detach the next precmd repaints the plain title.
+herdr() {
+  if [[ -z $HERDR_ENV ]]; then
+    local s='' prev='' a
+    for a in "$@"; do
+      [[ $prev == --session ]] && s=$a
+      [[ $a == --session=* ]] && s=${a#--session=}
+      prev=$a
+    done
+    [[ ${1:-} == session && ${2:-} == attach && -n ${3:-} ]] && s=$3
+    if (( $# == 0 )) || [[ -n $s || ${1:-} == --remote ]]; then
+      print -n "\e]0;❐ ${s:-default}\a"
+    fi
+  fi
+  command herdr "$@"
+}
 
 # --- fzf keybindings: ctrl+r history, ctrl+t files, alt+c cd (fzf >= 0.48) ---
 command -v fzf >/dev/null && eval "$(fzf --zsh)"
