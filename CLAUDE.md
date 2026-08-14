@@ -41,6 +41,19 @@ whole-argument kill. The zle word plane itself runs `select-word-style
 bash` (readline alphanumeric-only words), so alt+f/b/d, alt+backspace, and
 ctrl+w all stop at `/` like bash.
 
+`cmd+tab` is claimed by AltTab (2026-08, `brew install --cask alt-tab`),
+not the native switcher: macOS app activation raises ALL of an app's
+windows on EVERY display (no setting changes this, and AeroSpace never
+sees the chord — it owns only alt), which shuffled the other monitor's
+stack whenever an app had windows on both. AltTab switches single
+windows, filtered to the active screen, so the other monitor stays
+untouched. Non-default prefs (domain `com.lwouis.alt-tab-macos`):
+`screensToShow = "1"` (screen showing AltTab only), `startAtLogin =
+"true"`, and Shortcut 1's hold key ⌥→⌘ set in the GUI — shortcut prefs
+are NSKeyedArchiver blobs, not `defaults`-scriptable (plain strings get
+silently discarded). The hold key MUST be ⌘: on its default ⌥, AltTab's
+event tap would race AeroSpace's Carbon hotkey for alt+tab.
+
 ## File map
 
 | Repo path              | Installs to                  | Apply                       | Verify                          |

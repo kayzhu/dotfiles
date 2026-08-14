@@ -45,6 +45,7 @@ live herdr bindings; a frozen pane is XOFF — press `ctrl+q`.
 | `alt+r` | resize mode: `h/j/k/l`, `b` balance, `esc` done |
 | `alt+s / alt+w / alt+e` | v-accordion / h-accordion / tiles layout |
 | `alt+shift+;` | service mode (`esc` reload, `r` flatten, `f` float) |
+| `cmd+tab` | AltTab window switcher — current screen only, raises one window |
 
 ## Tabs, panes, projects — herdr (`ctrl+s` prefix)
 

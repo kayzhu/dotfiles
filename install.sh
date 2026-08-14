@@ -72,6 +72,7 @@ for c in aerospace herdr vim nvim tmux fzf rg fd bat eza zoxide tree htop \
   else echo "MISSING:  $c"; fi
 done
 open -Ra Ghostty 2>/dev/null && echo "ok:       Ghostty.app" || echo "MISSING:  Ghostty.app"
+open -Ra AltTab 2>/dev/null && echo "ok:       AltTab.app" || echo "MISSING:  AltTab.app (brew install --cask alt-tab)"
 for p in zsh-autosuggestions zsh-syntax-highlighting; do
   if [ -f "/opt/homebrew/share/$p/$p.zsh" ]; then echo "ok:       $p"
   else echo "MISSING:  $p (brew install $p)"; fi
