@@ -38,13 +38,15 @@ accordion-padding = 30
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 
-# Mouse follows focused monitor (i3 default behavior).
-on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-
-# Mouse follows any focus change: strong motion cue when switching, and
-# prevents a stationary pointer from hover-focusing something else.
-# Drop this line if it feels distracting.
-on-focus-changed = ['move-mouse window-lazy-center']
+# DISABLED 2026-08-13 (CLAUDE.md constraint 12): with these move-mouse
+# callbacks active, alt+h/l cross-monitor focus intermittently landed on
+# a same-monitor window of the target's app instead of crossing --
+# found by bisection (AltTab was a red herring; the upstream-#101 /
+# separate-Spaces theory was never put to the test).
+# Suspected mechanism: the mouse warp fires mid-focus-change and feeds
+# back into focus resolution. Re-enable only with a repro test at hand.
+# on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+# on-focus-changed = ['move-mouse window-lazy-center']
 
 # Disarm cmd-h "Hide application", a frequent misfire near alt chords.
 automatically-unhide-macos-hidden-apps = true

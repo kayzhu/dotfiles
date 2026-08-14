@@ -146,6 +146,19 @@ apply, verify, commit. Never leave changes uncommitted.
     reserved readline/zle plane, constraint 8). The login shell is zsh
     (`chsh -s /bin/zsh`); bash/ configs remain canonical for Linux VMs and
     share bash/aliases with zsh — keep that file bash-AND-zsh compatible.
+12. **AeroSpace `move-mouse` callbacks stay disabled.** With
+    `on-focus-changed` / `on-focused-monitor-changed = move-mouse …`
+    active, alt+h cross-monitor focus intermittently landed on a
+    same-monitor window of the target app instead of crossing (found by
+    bisection 2026-08-13; suspected mechanism: the mouse warp fires
+    mid-focus-change and feeds back into focus resolution). The symptom
+    exactly mimics upstream #101 (same-app-on-two-monitors misfocus).
+    AltTab was ruled out by bisection; macOS "Displays have separate
+    Spaces" stays ENABLED — deliberately untried (AeroSpace guide §4.3
+    recommends disabling it, but the side effects — native fullscreen
+    blacking the other display, primary-only menu bar — aren't worth it
+    while the callbacks-off fix holds). Cost: the pointer no longer
+    follows focus; move it by hand. Re-enable only with a repro test.
 
 ## Debugging doctrine: bisect by layer
 
