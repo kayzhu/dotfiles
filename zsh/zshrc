@@ -33,8 +33,20 @@ setopt HIST_REDUCE_BLANKS
 # --- Prompt (port of bash PS1: user:cyan-cwd, newline, cyan arrow) ---
 PROMPT=$'%n:%F{cyan}%~\n⇨ %f '
 
-# Terminal title: user@host cwd (port of bash's title PROMPT_COMMAND).
-precmd() { print -Pn '\e]0;%n@%m %d\a' }
+# Terminal title. In a herdr pane, lead with the session name (derived
+# from HERDR_SOCKET_PATH: sessions live at ~/.config/herdr/sessions/
+# <name>/herdr.sock, the default at ~/.config/herdr/herdr.sock) so
+# AltTab can tell two Ghostty windows on different sessions apart.
+# %~ (tilde-abbreviated cwd), not %d: full paths made titles unreadable.
+if [[ -n $HERDR_SOCKET_PATH ]]; then
+  case $HERDR_SOCKET_PATH in
+    */sessions/*/herdr.sock) _herdr_session=${${HERDR_SOCKET_PATH:h}:t} ;;
+    *)                       _herdr_session=default ;;
+  esac
+  precmd() { print -Pn "\e]0;[${_herdr_session}] %~\a" }
+else
+  precmd() { print -Pn '\e]0;%n@%m %~\a' }
+fi
 
 # --- Behavior parity with bash ---
 # unmatched globs pass through to the command instead of erroring
