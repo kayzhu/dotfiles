@@ -102,6 +102,7 @@ between files).
 | `` `b `` / `` `m `` / `` `t `` | buffers / recent files / workspace symbols |
 | `jk` or `kj` | escape insert mode |
 | `gcc` / `gc{motion}` / `` `cc `` | toggle comment |
+| `` `cu `` | uncomment (no-op on uncommented lines) |
 | `` `jd `jt `jr `` / `K` | LSP: definition / type / references / hover |
 | `` `rn `` / `[g` `]g` | rename / prev-next diagnostic |
 | `` `s `` | substitute word under cursor |

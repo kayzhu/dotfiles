@@ -60,6 +60,29 @@ vim.api.nvim_create_autocmd('FileType', {
 -- `cc rides nvim's built-in gcc/gc commenting (same as vim's port).
 vim.keymap.set('n', '<Leader>cc', 'gcc', { remap = true })
 vim.keymap.set('x', '<Leader>cc', 'gc', { remap = true })
+-- `cu uncomments (vimrc parity): only touches commented lines -- a bare
+-- toggle would re-comment clean lines in a mixed selection.
+local function uncomment_range(first, last)
+  local lead = vim.trim(vim.bo.commentstring:match('^(.-)%%s') or '')
+  if lead == '' then return end
+  local view = vim.fn.winsaveview()
+  for ln = first, last do
+    if vim.startswith(vim.trim(vim.fn.getline(ln)), lead) then
+      vim.api.nvim_win_set_cursor(0, { ln, 0 })
+      vim.cmd('normal gcc')
+    end
+  end
+  vim.fn.winrestview(view)
+end
+vim.keymap.set('n', '<Leader>cu', function()
+  uncomment_range(vim.fn.line('.'), vim.fn.line('.'))
+end)
+vim.keymap.set('x', '<Leader>cu', function()
+  local first, last = vim.fn.line('v'), vim.fn.line('.')
+  if first > last then first, last = last, first end
+  vim.cmd([[execute "normal! \<Esc>"]])
+  uncomment_range(first, last)
+end)
 
 -- Working directory follows the current file (vimrc's autodir; `p/`a
 -- stay project-rooted regardless).

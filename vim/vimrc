@@ -132,6 +132,23 @@ packadd comment
 " nerdcommenter muscle memory: `cc still toggles comment (line / selection)
 nmap <leader>cc <Plug>(comment-toggle-line)
 xmap <leader>cc <Plug>(comment-toggle)
+" `cu uncomments (more nerdcommenter memory): the built-in package only
+" toggles, so filter to commented lines -- a bare toggle would re-comment
+" clean lines in a mixed selection.
+function! s:Uncomment() range abort
+  let l:lead = trim(matchstr(&commentstring, '^.\{-}\ze%s'))
+  if empty(l:lead) | return | endif
+  let l:view = winsaveview()
+  for l:ln in range(a:firstline, a:lastline)
+    if stridx(trim(getline(l:ln)), l:lead) == 0
+      execute 'keepjumps' l:ln
+      execute "normal \<Plug>(comment-toggle-line)"
+    endif
+  endfor
+  call winrestview(l:view)
+endfunction
+nnoremap <silent> <leader>cu :call <SID>Uncomment()<CR>
+xnoremap <silent> <leader>cu :call <SID>Uncomment()<CR>
 
 " ============================================================
 " Mappings
