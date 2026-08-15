@@ -25,11 +25,9 @@ tmux_conf_24b_colour=true
 tmux_conf_copy_to_os_clipboard=true
 
 # -- theme ---------------------------------------------------------------------
-# colour_4 #33467c is the stack accent (TokyoNight's selection indigo,
-# derived from the Ghostty theme; CLAUDE.md constraint 6): JankyBorders
-# active_color and herdr ui.accent must match it. Light text goes ON the
-# accent (current_fg below). Historical note: the accent originated here
-# as #00afff before the Ghostty palette took the lead.
+# colour_4 #33467c: TokyoNight-ish selection indigo, purely cosmetic --
+# tmux runs on remote VMs, nothing couples it to the local stack. Light
+# text goes ON it (current_fg below). It originated here as #00afff.
 
 tmux_conf_theme_colour_1="#080808"    # dark gray
 tmux_conf_theme_colour_2="#303030"    # gray

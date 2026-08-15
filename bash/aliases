@@ -1,7 +1,7 @@
 ###############################################################################
 # Shared aliases and functions -- sourced by BOTH bash (via bash/bashrc) and
-# zsh (via zsh/zshrc). Keep everything here bash-AND-zsh compatible
-# (CLAUDE.md constraint 11). Modern tools are guarded with command -v so
+# zsh (via zsh/zshrc). Keep everything here bash-AND-zsh compatible.
+# Modern tools are guarded with command -v so
 # machines without them (Linux VMs, fresh Macs) fall back cleanly.
 ###############################################################################
 

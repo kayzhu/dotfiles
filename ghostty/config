@@ -18,13 +18,9 @@
 # Appearance
 # ---------------------------------------------------------------------
 
-# COUPLED VALUE (CLAUDE.md constraint 6): herdr inherits this palette
-# (herdr config.toml theme name=terminal), so a theme change here restyles
-# the pane layer too, and the stack accent must be re-derived to keep
-# sidebar active rows readable (whitish text paints over the accent; no
-# text-on-accent override exists). A Jellybeans attempt was reverted
-# 2026-08-12 for exactly that reason -- change deliberately, not in
-# passing.
+# herdr inherits this palette (its theme name=terminal), so a theme
+# change here restyles the pane layer too -- herdr derives its own accent
+# from it (deliberately unpinned; see CLAUDE.md colors note).
 theme = TokyoNight
 
 font-size = 13

@@ -24,8 +24,8 @@ auto-reload-config = true
 after-startup-command = [
     # JankyBorders (brew install FelixKratz/formulae/borders).
     # It detects an already-running instance, so restart-safe.
-    # active_color = herdr's ui.accent (#33467c): focus reads the same
-    # at the window layer and the pane layer.
+    # Colors are cosmetic (TokyoNight-ish indigo / near-background) --
+    # change freely; nothing else depends on them.
     'exec-and-forget borders active_color=0xff33467c inactive_color=0xff15161e width=5.0 style=round hidpi=on'
 ]
 
@@ -38,7 +38,7 @@ accordion-padding = 30
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 
-# DISABLED 2026-08-13 (CLAUDE.md constraint 12): with these move-mouse
+# DISABLED 2026-08-13 (CLAUDE.md constraint 9): with these move-mouse
 # callbacks active, alt+h/l cross-monitor focus intermittently landed on
 # a same-monitor window of the target's app instead of crossing --
 # found by bisection (AltTab was a red herring; the upstream-#101 /
@@ -63,7 +63,7 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
 # --- Launch -----------------------------------------------------------
 # open -na forces a genuinely new window (not raising the existing one).
-# Ghostty's command= is deliberately disabled (CLAUDE.md constraint 9),
+# Ghostty's command= is deliberately disabled (CLAUDE.md constraint 7),
 # so this opens a PLAIN shell window; start or attach herdr manually.
 alt-enter = 'exec-and-forget open -na Ghostty'
 

@@ -16,9 +16,8 @@ floating_modifier $mod
 # drag tiling windows by their titlebar (i3 4.22+)
 tiling_drag modifier titlebar
 
-# stack-accent harmonization (CLAUDE.md constraint 6): focused border is the
-# #33467c accent, mirroring JankyBorders/herdr; 8px gaps echo aerospace.
-# UNVERIFIED aesthetically -- tune on a real desktop.
+# #33467c focused border and 8px gaps echo the macOS stack's look; purely
+# cosmetic, nothing couples them. UNVERIFIED -- tune on a real desktop.
 default_border pixel 3
 gaps inner 8
 # class                 border  bg      text    indicator childborder
