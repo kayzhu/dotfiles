@@ -174,10 +174,6 @@ augroup qf_enter
   autocmd FileType qf nnoremap <buffer> <cr> <cr>
 augroup END
 
-" K no longer opens man pages (2018 intent, cleaner form). LSP buffers
-" rebind K to hover documentation below -- the useful version of K.
-nnoremap K <Nop>
-
 " ============================================================
 " Working directory follows the current file
 " ============================================================
