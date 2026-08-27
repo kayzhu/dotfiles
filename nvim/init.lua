@@ -108,6 +108,8 @@ vim.pack.add({
   'https://github.com/nanotech/jellybeans.vim',
   -- structural highlighting (the visible upgrade over vim)
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
+  -- in-buffer markdown rendering (extmarks over the treesitter parser)
+  'https://github.com/MeanderingProgrammer/render-markdown.nvim',
   -- format-on-save (vim's codefmt counterpart); skips missing formatters
   'https://github.com/stevearc/conform.nvim',
   -- git signs in the number column (vim's gitgutter counterpart)
@@ -143,6 +145,10 @@ vim.keymap.set({ 'n', 'v' }, '\\f', function() require('conform').format() end)
 
 -- Git change signs (number column, same as vim's gitgutter).
 require('gitsigns').setup()
+
+-- Markdown: styled in-buffer rendering (headings, tables, checkboxes),
+-- persistent across modes. Rendered view in nvim; glow covers the shell.
+require('render-markdown').setup({})
 
 -- fzf: project-rooted, same as the vimrc (autodir is not ported, but the
 -- root anchor is kept for identical behavior).
