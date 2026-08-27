@@ -152,6 +152,10 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   `herdr integration install claude` (state + session resume) and the herdr
   agent skill (`herdr --skill` to review; installed globally, gated on
   HERDR_ENV=1 and explicit mention).
+- Hand-set macOS defaults (same class as AltTab's prefs):
+  `defaults write -g TSMLanguageIndicatorEnabled -bool false` (2026-08)
+  removes Sonoma+'s floating input-source/caps-lock capsule at the text
+  cursor — no GUI toggle exists. Applies per-app on relaunch.
 - Remote multiplexing, two tiers: VMs that can take the herdr binary get
   `herdr --remote <ssh-target> --session <name>` (managed ssh: keepalives,
   control-socket reuse; local keybindings by default) — run it from a PLAIN
