@@ -125,3 +125,8 @@ bindkey '^ ' autosuggest-accept
 # syntax highlighting must be sourced LAST (it wraps zle widgets)
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/kz/.lmstudio/bin"
+# End of LM Studio CLI section
+

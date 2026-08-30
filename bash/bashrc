@@ -22,3 +22,8 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
 
 # Added by Antigravity
 [ -d "$HOME/.antigravity/antigravity/bin" ] && export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/kz/.lmstudio/bin"
+# End of LM Studio CLI section
+
