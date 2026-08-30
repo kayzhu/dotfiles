@@ -152,6 +152,10 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   `herdr integration install claude` (state + session resume) and the herdr
   agent skill (`herdr --skill` to review; installed globally, gated on
   HERDR_ENV=1 and explicit mention).
+- herdr-annotate plugin (`herdr plugin install plannotator/herdr-annotate`,
+  Full): in-terminal annotation of pane text and document/agent-reply
+  review, fed back to the agent as context. Runtime: bun. Its five
+  prefix+a/shift+a/m/o/shift+o bindings live in herdr/config.toml.
 - Hand-set macOS defaults (same class as AltTab's prefs):
   `defaults write -g TSMLanguageIndicatorEnabled -bool false` (2026-08)
   removes Sonoma+'s floating input-source/caps-lock capsule at the text
@@ -167,6 +171,14 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
 
 ## Pending verification
 
+- herdr-annotate install (2026-08-29): the running server is 0.8.0 but
+  the brew binary auto-upgraded to 0.8.2 (protocol 19 vs 20), so
+  `herdr plugin install plannotator/herdr-annotate --yes` and the new
+  keybindings await a server restart (kills panes — user does it between
+  tasks). After restart: run the plugin install, reload config, confirm
+  the five annotate bindings via `prefix+?`, and do the 0.8.0→0.8.2
+  upgrade-playbook pass (diff `herdr --default-config`, re-verify custom
+  bindings, `herdr integration status`). Then drop this item.
 - vimrc: black upgrade (22.8 → 26.x, 2026-08) — expect small
   format-on-save diffs on first save of old Python. If a vim-lsp server
   install ever fails again, capture `:messages` before closing vim (the

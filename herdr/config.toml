@@ -108,6 +108,41 @@ command = "lazygit"
 width = "90%"
 height = "90%"
 
+# --- herdr-annotate plugin (plannotator/herdr-annotate, Full) ---
+# Annotate selected terminal text, review documents / the agent's last
+# reply (plannotator-tui), send annotations back to the agent as context.
+# Runtime: bun. Keys claimant-checked free 2026-08-29; verify with
+# prefix+? after reload (constraint 5).
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "annotate.capture"
+description = "annotate text"
+
+[[keys.command]]
+key = "prefix+shift+a"
+type = "plugin_action"
+command = "annotate.copy-context"
+description = "copy annotations as context"
+
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "annotate.manage"
+description = "manage annotations"
+
+[[keys.command]]
+key = "prefix+o"
+type = "plugin_action"
+command = "annotate.open"
+description = "review documents in this folder"
+
+[[keys.command]]
+key = "prefix+shift+o"
+type = "plugin_action"
+command = "annotate.last"
+description = "review the agent's last reply"
+
 [ui]
 # tmux_conf_copy_to_os_clipboard=false: selection stays until copied.
 copy_on_select = false

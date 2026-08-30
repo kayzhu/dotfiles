@@ -65,6 +65,9 @@ live herdr bindings; a frozen pane is XOFF — press `ctrl+q`.
 | `prefix enter` | copy mode (vi keys; `v` select, `y` yank) | |
 | `prefix e` | open scrollback in vim | |
 | `prefix g` | lazygit popup | |
+| `prefix a` / `shift+a` | annotate selected text / copy annotations as context | |
+| `prefix m` | manage annotations | |
+| `prefix o` / `shift+o` | review documents here / the agent's last reply | |
 | `prefix r` / `shift+r` | resize mode / reload config | |
 | `prefix w` / `b` / `q` | workspace picker / sidebar / detach | |
 | `prefix ?` | **help — every live binding** | |
