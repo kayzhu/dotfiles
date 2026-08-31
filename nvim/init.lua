@@ -114,6 +114,8 @@ vim.pack.add({
   'https://github.com/stevearc/conform.nvim',
   -- git signs in the number column (vim's gitgutter counterpart)
   'https://github.com/lewis6991/gitsigns.nvim',
+  -- filesystem as a buffer: - opens the parent dir, edit + :w to apply
+  'https://github.com/stevearc/oil.nvim',
   -- the remaining vimrc parity set (all vimscript; work fine in nvim)
   'https://github.com/tpope/vim-surround',
   'https://github.com/tpope/vim-eunuch',
@@ -145,6 +147,11 @@ vim.keymap.set({ 'n', 'v' }, '\\f', function() require('conform').format() end)
 
 -- Git change signs (number column, same as vim's gitgutter).
 require('gitsigns').setup()
+
+-- oil: directories are buffers (NERDTree-free doctrine, one step further).
+-- `-` climbs to the parent dir, edits apply on :w. Replaces netrw.
+require('oil').setup()
+vim.keymap.set('n', '-', '<Cmd>Oil<CR>')
 
 -- Markdown: styled in-buffer rendering (headings, tables, checkboxes),
 -- persistent across modes. Rendered view in nvim; glow covers the shell.
