@@ -60,6 +60,9 @@ link DefaultKeyBinding.dict   "$HOME/Library/KeyBindings/DefaultKeyBinding.dict"
 # Neovim: debug-first config (nvim-dap); vim remains the daily editor.
 link nvim/init.lua            "$HOME/.config/nvim/init.lua"
 
+# Repo script utilities (zshrc/bashrc put ~/bin on PATH).
+link bin/herdr-rotate         "$HOME/bin/herdr-rotate"
+
 # Interactive shell config (login shell is zsh; bash configs serve VMs).
 link zsh/zshrc                "$HOME/.zshrc"
 

@@ -1,0 +1,42 @@
+#!/bin/sh
+# Toggle the focused pane's split orientation (side-by-side <-> stacked).
+# tmux next-layout heritage. herdr 0.8.2 has no native reorient -- a
+# same-tab "pane move" is a no-op (verified) -- so the later pane bounces
+# through a temp tab (auto-closed) and rejoins its partner with the
+# perpendicular split. Visual order is preserved: left pane becomes top,
+# top becomes left. Pairwise: with >2 panes it rotates the focused pane
+# against the first neighbor found (right, left, down, up).
+#
+# Usage: herdr-rotate [PANE_ID]   (default: the focused pane)
+# Requires jq. PATH is pinned because herdr's type=shell bindings run
+# outside a login shell.
+set -eu
+PATH="/opt/homebrew/bin:$PATH"
+
+cur=$(herdr pane current ${1:+--pane "$1"})
+pane=$(printf '%s' "$cur" | jq -r '.result.pane.pane_id')
+tab=$(printf '%s' "$cur"  | jq -r '.result.pane.tab_id')
+ws=$(printf '%s' "$cur"   | jq -r '.result.pane.workspace_id')
+
+neighbor='' ; ndir=''
+for d in right left down up; do
+  n=$(herdr pane neighbor --pane "$pane" --direction "$d" 2>/dev/null \
+      | jq -r '.result.neighbor.neighbor_pane_id // empty') || n=''
+  if [ -n "$n" ]; then neighbor=$n; ndir=$d; break; fi
+done
+[ -n "$neighbor" ] || exit 0   # single pane: nothing to rotate
+
+case $ndir in
+  right) mover=$neighbor; target=$pane;     split=down  ;;
+  left)  mover=$pane;     target=$neighbor; split=down  ;;
+  down)  mover=$neighbor; target=$pane;     split=right ;;
+  up)    mover=$pane;     target=$neighbor; split=right ;;
+esac
+
+# Keep focus where the user invoked the rotate.
+focusflag=--no-focus
+[ "$mover" = "$pane" ] && focusflag=--focus
+
+herdr pane move "$mover" --new-tab --workspace "$ws" --no-focus >/dev/null
+herdr pane move "$mover" --tab "$tab" --split "$split" \
+      --target-pane "$target" "$focusflag" >/dev/null

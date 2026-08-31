@@ -171,14 +171,12 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
 
 ## Pending verification
 
-- herdr-annotate install (2026-08-29): the running server is 0.8.0 but
-  the brew binary auto-upgraded to 0.8.2 (protocol 19 vs 20), so
-  `herdr plugin install plannotator/herdr-annotate --yes` and the new
-  keybindings await a server restart (kills panes — user does it between
-  tasks). After restart: run the plugin install, reload config, confirm
-  the five annotate bindings via `prefix+?`, and do the 0.8.0→0.8.2
-  upgrade-playbook pass (diff `herdr --default-config`, re-verify custom
-  bindings, `herdr integration status`). Then drop this item.
+- herdr 0.8.2 restart done (2026-08-31): annotate plugin installed +
+  enabled, config reloads clean, claude integration hook updated v7→v8,
+  pane swap/rotate verified via CLI in a scratch tab. Remaining finger
+  test: `prefix+?` shows the five annotate bindings, the four
+  prefix+shift+hjkl swaps, and prefix+space rotate; press each once.
+  Then drop this item.
 - vimrc: black upgrade (22.8 → 26.x, 2026-08) — expect small
   format-on-save diffs on first save of old Python. If a vim-lsp server
   install ever fails again, capture `:messages` before closing vim (the

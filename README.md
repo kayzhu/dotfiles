@@ -55,6 +55,8 @@ live herdr bindings; a frozen pane is XOFF — press `ctrl+q`.
 | `prefix [` / `]` | previous / next tab | `cmd+[` / `cmd+]` |
 | `prefix 1..9` | tab by number | `cmd+1..9` |
 | `prefix h/j/k/l` | focus pane | |
+| `prefix shift+h/j/k/l` | swap pane left/down/up/right | |
+| `prefix space` | toggle a pane pair's split orientation | |
 | `prefix v` / `-` | split side-by-side / stacked | `cmd+d` / `cmd+shift+d` |
 | `prefix x` | close pane | `cmd+w` |
 | `prefix +` | zoom pane | `cmd+enter` |

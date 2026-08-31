@@ -108,6 +108,42 @@ command = "lazygit"
 width = "90%"
 height = "90%"
 
+# --- Pane movement (tmux swap-pane / next-layout heritage) ---
+# shift = "move the thing" at every layer: alt+shift+hjkl moves windows
+# (AeroSpace), prefix+shift+hjkl swaps panes. prefix+space toggles a
+# pair's split orientation via bin/herdr-rotate (herdr 0.8.2 has no
+# native reorient; same-tab pane move is a no-op). Absolute paths:
+# type=shell commands run outside a login shell, so no brew PATH.
+[[keys.command]]
+key = "prefix+shift+h"
+type = "shell"
+command = "/opt/homebrew/bin/herdr pane swap --current --direction left"
+description = "swap pane left"
+
+[[keys.command]]
+key = "prefix+shift+j"
+type = "shell"
+command = "/opt/homebrew/bin/herdr pane swap --current --direction down"
+description = "swap pane down"
+
+[[keys.command]]
+key = "prefix+shift+k"
+type = "shell"
+command = "/opt/homebrew/bin/herdr pane swap --current --direction up"
+description = "swap pane up"
+
+[[keys.command]]
+key = "prefix+shift+l"
+type = "shell"
+command = "/opt/homebrew/bin/herdr pane swap --current --direction right"
+description = "swap pane right"
+
+[[keys.command]]
+key = "prefix+space"
+type = "shell"
+command = "$HOME/bin/herdr-rotate"
+description = "toggle split orientation"
+
 # --- herdr-annotate plugin (plannotator/herdr-annotate, Full) ---
 # Annotate selected terminal text, review documents / the agent's last
 # reply (plannotator-tui), send annotations back to the agent as context.

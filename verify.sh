@@ -34,6 +34,7 @@ if [ "$IS_MAC" = 1 ]; then
   check_link "$HOME/Library/KeyBindings/DefaultKeyBinding.dict" DefaultKeyBinding.dict
   check_link "$HOME/.config/nvim/init.lua"    nvim/init.lua
   check_link "$HOME/.zshrc"                   zsh/zshrc
+  check_link "$HOME/bin/herdr-rotate"         bin/herdr-rotate
 fi
 
 # zsh must be on the emacs keymap (EDITOR=vim would otherwise pick viins,
