@@ -175,9 +175,9 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
 
 - herdr 0.8.2 restart done (2026-08-31): annotate plugin installed +
   enabled, config reloads clean, claude integration hook updated v7→v8,
-  pane swap/rotate verified via CLI in a scratch tab. Remaining finger
-  test: `prefix+?` shows the five annotate bindings, the four
-  prefix+shift+hjkl swaps, and prefix+space rotate; press each once.
+  pane swaps verified via CLI in a scratch tab. Remaining finger
+  test: `prefix+?` shows the five annotate bindings and the four
+  prefix+shift+hjkl swaps; press each once.
   Then drop this item.
 - vimrc: black upgrade (22.8 → 26.x, 2026-08) — expect small
   format-on-save diffs on first save of old Python. If a vim-lsp server

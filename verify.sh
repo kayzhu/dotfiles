@@ -39,7 +39,6 @@ if [ "$IS_MAC" = 1 ]; then
   else fail "$kb differs from repo (run ./install.sh, then relaunch apps)"; fi
   check_link "$HOME/.config/nvim/init.lua"    nvim/init.lua
   check_link "$HOME/.zshrc"                   zsh/zshrc
-  check_link "$HOME/bin/herdr-rotate"         bin/herdr-rotate
 fi
 
 # zsh must be on the emacs keymap (EDITOR=vim would otherwise pick viins,
