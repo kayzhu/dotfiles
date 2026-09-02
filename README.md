@@ -27,8 +27,9 @@ The mental model first:
 > No key ever has two owners; `alt+f/b/d/t/u/./c` are reserved for the
 > shell's word motion and fzf.
 
-There is ONE Ghostty window. Tabs, splits, and projects all live inside
-herdr. `ctrl+s` then a key = "prefix+key" below. Lost? `ctrl+s ?` shows all
+Ghostty has no native tabs: tabs, splits, and projects all live inside
+herdr, one herdr session per Ghostty window (`alt+enter` opens another).
+`ctrl+s` then a key = "prefix+key" below. Lost? `ctrl+s ?` shows all
 live herdr bindings; a frozen pane is XOFF — press `ctrl+q`.
 
 ## Windows & workspaces — AeroSpace (`alt`)

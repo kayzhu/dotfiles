@@ -65,7 +65,9 @@ zoom             = "prefix+plus"
 
 # --- Tabs (tmux "windows") ---
 new_tab      = "prefix+c"
-# Bracket pair, mirrored by Ghostty's cmd+[ / cmd+] / cmd+shift+[ / ].
+# Bracket pair. The cmd+shift entries are a fallback only: Ghostty
+# re-encodes those chords to prefix+[ / ] first (same action), so herdr
+# sees them raw only if Ghostty's translation is missing.
 # prefix+[ was copy_mode's default; copy_mode is remapped below.
 previous_tab = ["prefix+[", "cmd+shift+["]
 next_tab     = ["prefix+]", "cmd+shift+]"]

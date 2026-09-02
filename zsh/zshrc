@@ -115,18 +115,19 @@ command -v fzf >/dev/null && eval "$(fzf --zsh)"
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 
 # --- Plugins (brew-installed; guarded so machines without them still work) ---
-[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
+if [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
   source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# ctrl+space accepts the whole autosuggestion (alt+f takes it word-wise,
-# right-arrow also accepts). Claimants checked 2026-08: free in Ghostty/
-# herdr/AeroSpace; overrides zle set-mark; macOS input-source hotkey off.
-bindkey '^ ' autosuggest-accept
+  # ctrl+space accepts the whole autosuggestion (alt+f takes it word-wise,
+  # right-arrow also accepts). Claimants checked 2026-08: free in Ghostty/
+  # herdr/AeroSpace; overrides zle set-mark; macOS input-source hotkey off.
+  bindkey '^ ' autosuggest-accept
+fi
 
 # syntax highlighting must be sourced LAST (it wraps zle widgets)
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/kz/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 

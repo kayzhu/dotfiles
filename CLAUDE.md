@@ -19,7 +19,7 @@ stays stable.
 |-----------|---------------------|---------------------------------------|
 | AeroSpace | windows between apps| `alt+*` (Carbon global hotkeys)       |
 | herdr     | tabs/panes/sessions | everything behind `ctrl+s` (prefix)   |
-| Ghostty   | the frame only      | `cmd+*` (quit, config, clipboard, font)|
+| Ghostty   | the frame; re-encodes cmd chords into prefix bytes | `cmd+*` (quit, config, clipboard, font)|
 | vim       | text                | bare keys; `hjkl` cursor motion       |
 
 **No key may ever have two claimants.** Every bug in the original campaign
@@ -54,7 +54,7 @@ The hold key MUST be ⌘: on the default ⌥ it races AeroSpace's alt+tab.
 | ghostty/config         | ~/.config/ghostty/config     | cmd+shift+comma in Ghostty  | `ghostty +list-keybinds`        |
 | herdr/config.toml      | ~/.config/herdr/config.toml  | `herdr server reload-config`| `prefix+?` inside herdr         |
 | vim/vimrc              | ~/.vimrc                     | restart vim / `:so %`       | `:checkhealth`-style manual     |
-| nvim/init.lua          | ~/.config/nvim/init.lua      | restart nvim                | `:checkhealth`; full vim parity + DAP; vim stays canonical |
+| nvim/init.lua          | ~/.config/nvim/init.lua      | restart nvim                | `:checkhealth`; muscle-memory parity + DAP; vim stays canonical |
 | zsh/zshrc              | ~/.zshrc                     | new shell                   | `stty -a \| grep ixon`; `bindkey -lL main` → emacs |
 | bash/bashrc            | ~/.bash_profile + ~/.bashrc  | new shell                   | `bash --login -i -c 'type la'`  |
 | git/gitconfig          | ~/.gitconfig                 | immediate                   | `git config core.excludesfile`  |
@@ -179,11 +179,6 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   test: `prefix+?` shows the five annotate bindings and the four
   prefix+shift+hjkl swaps; press each once.
   Then drop this item.
-- vimrc: black upgrade (22.8 → 26.x, 2026-08) — expect small
-  format-on-save diffs on first save of old Python. If a vim-lsp server
-  install ever fails again, capture `:messages` before closing vim (the
-  2026-08 pyright fix was a manual install into
-  ~/.local/share/vim-lsp-settings/servers).
 
 ## Upgrade playbook
 
@@ -205,4 +200,7 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   release notes for keybind grammar changes (physical key names arrived
   in 1.2).
 - **vim plugins**: `:PlugUpdate`; `:LspInstallServer --force` if a language
-  server misbehaves after a brew python bump.
+  server misbehaves after a brew python bump. black is 26.x since 2026-08:
+  expect small format-on-save diffs on old Python. If a vim-lsp server
+  install fails, capture `:messages` before closing vim (the 2026-08 pyright
+  fix was a manual install into ~/.local/share/vim-lsp-settings/servers).

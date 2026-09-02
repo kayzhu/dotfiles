@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Smoke tests for the three-layer contract. Checks the checkable, prints a
+# Smoke tests for the four-layer contract. Checks the checkable, prints a
 # manual checklist for the keystroke tests (those need human fingers).
 set -uo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -67,19 +67,33 @@ if [ "$IS_MAC" = 1 ]; then
     pass "aerospace responding (modes: $(aerospace list-modes | tr '\n' ' '))"
   else fail "aerospace CLI not responding"; fi
 
-  # Ghostty keybind translations present: 21 repo-defined (plus Ghostty's
-  # own text: defaults, 3 today -- threshold is the repo-owned count).
-  # Sole owner of this number: bump it here when adding a text: bind.
+  # Every repo-defined text: keybind must be accepted by Ghostty's parser
+  # (+list-keybinds reads the config on disk and escapes backslashes twice;
+  # this catches keybind-grammar changes after an upgrade, not reload state).
   if command -v ghostty >/dev/null; then
-    n=$(ghostty +list-keybinds 2>/dev/null | grep -c 'text:' || true)
-    [ "${n:-0}" -ge 21 ] && pass "ghostty text: translations loaded ($n)" \
-                         || fail "ghostty translations missing ($n found; reload config)"
+    live=$(ghostty +list-keybinds 2>/dev/null)
+    missing=""; n=0
+    while IFS= read -r kb; do
+      n=$((n + 1))
+      printf '%s\n' "$live" | grep -qxF -- "${kb//\\/\\\\}" \
+        || missing="$missing
+    $kb"
+    done < <(grep -E '^keybind = .*=text:' "$REPO/ghostty/config")
+    if [ -z "$missing" ]; then pass "ghostty: all $n repo keybinds accepted"
+    else fail "ghostty rejected repo keybinds (grammar change?):$missing"; fi
   fi
 
   # herdr server up.
   command -v herdr >/dev/null && herdr --version >/dev/null 2>&1 \
     && pass "herdr $(herdr --version 2>/dev/null | head -1)" \
     || fail "herdr not available"
+  # Config parses (constraint 5: invalid bindings fail silently on reload;
+  # the live binding table itself is still prefix+? only).
+  if command -v herdr >/dev/null; then
+    hout=$(herdr config check 2>&1)
+    printf '%s\n' "$hout" | grep -q '^config: ok' && pass "herdr config check" \
+      || fail "herdr config check: $hout"
+  fi
 fi
 
 # vim capabilities. +clipboard is a macOS-pasteboard concern (vimrc's

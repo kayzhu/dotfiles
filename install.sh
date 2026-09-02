@@ -19,7 +19,11 @@ if [ "$REPO" != "$HOME/dotfiles" ]; then
 fi
 
 MINIMAL=0
-[ "${1:-}" = "--minimal" ] && MINIMAL=1
+case "${1:-}" in
+  "") ;;
+  --minimal) MINIMAL=1 ;;
+  *) echo "usage: $0 [--minimal]" >&2; exit 2 ;;
+esac
 
 link() {
   local src="$REPO/$1" dst="$2"
@@ -86,11 +90,14 @@ echo
 echo "--- prerequisite check (informational) ---"
 for c in aerospace herdr vim nvim tmux fzf rg fd bat eza zoxide tree htop \
          btop trash delta lazygit gh borders black clang-format \
-         tree-sitter pyright-langserver; do
+         tree-sitter pyright-langserver bun; do
   if command -v "$c" >/dev/null 2>&1; then echo "ok:       $c"
   else echo "MISSING:  $c"; fi
 done
 open -Ra Ghostty 2>/dev/null && echo "ok:       Ghostty.app" || echo "MISSING:  Ghostty.app"
+# nvim-dap's Python adapter (nvim/init.lua header has the uv one-liner).
+[ -x "$HOME/.virtualenvs/debugpy/bin/python" ] && echo "ok:       debugpy venv" \
+  || echo "MISSING:  ~/.virtualenvs/debugpy (uv venv ~/.virtualenvs/debugpy && uv pip install debugpy)"
 open -Ra AltTab 2>/dev/null && echo "ok:       AltTab.app" || echo "MISSING:  AltTab.app (brew install --cask alt-tab)"
 for p in zsh-autosuggestions zsh-syntax-highlighting; do
   if [ -f "/opt/homebrew/share/$p/$p.zsh" ]; then echo "ok:       $p"

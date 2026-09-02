@@ -5,9 +5,9 @@
 [core]
     excludesfile = ~/.gitignore_global
     editor = vim
-    # delta must be installed (brew/apt install git-delta); on a VM
-    # without it: git -c core.pager=less, or comment this and [interactive]
-    pager = delta
+    # delta (brew/apt install git-delta) when present; plain less otherwise,
+    # so --minimal VMs without it keep a working git log/diff.
+    pager = command -v delta >/dev/null 2>&1 && delta || less
 
 [alias]
     # https://gist.github.com/2051932
@@ -28,7 +28,7 @@
     who = shortlog -s --
 
 [interactive]
-    diffFilter = delta --color-only
+    diffFilter = command -v delta >/dev/null 2>&1 && delta --color-only || cat
 
 [delta]
     navigate = true  # use n and N to move between diff sections

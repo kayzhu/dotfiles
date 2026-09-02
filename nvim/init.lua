@@ -157,8 +157,8 @@ vim.keymap.set('n', '-', '<Cmd>Oil<CR>')
 -- persistent across modes. Rendered view in nvim; glow covers the shell.
 require('render-markdown').setup({})
 
--- fzf: project-rooted, same as the vimrc (autodir is not ported, but the
--- root anchor is kept for identical behavior).
+-- fzf: project-rooted, same as the vimrc (autodir is ported above; the
+-- root anchor keeps `p/`a project-rooted regardless).
 local function project_root()
   local out = vim.fn.systemlist({ 'git', '-C', vim.fn.expand('%:p:h'), 'rev-parse', '--show-toplevel' })
   return (vim.v.shell_error == 0 and out[1]) or vim.fn.getcwd()

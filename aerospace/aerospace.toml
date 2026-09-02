@@ -188,7 +188,7 @@ run = 'layout floating'
 if = 'test %{app-bundle-id} = com.apple.Preview'
 run = 'layout floating'
 
-# Ghostty needs no rule: single window, no native tabs, tiles cleanly.
+# Ghostty needs no rule: no native tabs, one herdr per window, tiles cleanly.
 # To pin it to a workspace instead:
 #[[on-window-detected]]
 #if = 'test %{app-bundle-id} = com.mitchellh.ghostty'

@@ -54,13 +54,11 @@ macos-option-as-alt = true
 # Launch straight into herdr
 # ---------------------------------------------------------------------
 
-# One window, one session layer. Sessions live in the herdr server, so
-# closing this window never loses work.
-# Verify the path with:  which herdr
-# Need a plain shell without herdr? From anywhere:
-#   open -na Ghostty --args -e zsh
-# NOTE DISABLED: not wanting multiple herdr windows for the same session
-# when starting ghostty
+# Windows open a plain shell; run `herdr` (or `herdr --session <name>`)
+# to attach. Sessions live in the herdr server, so closing a window never
+# loses work. command= stays disabled (CLAUDE.md constraint 7): with it,
+# every new Ghostty window attached a duplicate herdr window to the same
+# session. A plain shell from anywhere:  open -na Ghostty --args -e zsh
 #command = /opt/homebrew/bin/herdr
 
 # ---------------------------------------------------------------------
@@ -75,9 +73,9 @@ scrollback-limit = 1000000
 # Shell integration
 # ---------------------------------------------------------------------
 
-# Ghostty's integration wraps the process it launches, which is herdr,
-# not your inner shells. Cursor and title features would fight herdr's
-# own cursor and title handling.
+# Ghostty's integration wraps the shell it launches. Cursor and title
+# features are off because herdr owns both once attached: it draws its
+# own cursor and stamps the window title per session (zshrc herdr()).
 shell-integration = detect
 shell-integration-features = no-cursor,no-title
 
