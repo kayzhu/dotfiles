@@ -61,11 +61,15 @@ The hold key MUST be ⌘: on the default ⌥ it races AeroSpace's alt+tab.
 | git/gitignore_global   | ~/.gitignore_global          | immediate                   | `.DS_Store` invisible to status |
 | tmux/tmux.conf(.local) | ~/.tmux.conf(.local)         | `tmux source ~/.tmux.conf`  | remote-VM use; herdr owns local |
 | DefaultKeyBinding.dict | ~/Library/KeyBindings/… (COPY) | `./install.sh` + app relaunch | Cocoa fields; `cmp` in verify.sh |
+| Brewfile               | (not installed; macOS only)  | `brew bundle --file Brewfile` | `brew bundle check --file Brewfile` |
 
 Not in the table: `bash/env`, `bash/config`, `bash/aliases` are sourced by
 bash/bashrc (and `bash/aliases` also by zsh/zshrc — keep it bash-AND-zsh
 compatible); `i3/config` is installed nowhere — a modernized reference for
-a future Linux desktop, unverifiable until one exists.
+a future Linux desktop, unverifiable until one exists. `Brewfile` is the
+installable form of install.sh's prerequisite check and nothing more (no
+project toolchains); keep the two lists in sync. It is macOS-only and
+independent of `install.sh --minimal`.
 
 `install.sh` creates symlinks (with backup of real files). Edit in the repo,
 apply, verify, commit. Never leave changes uncommitted. The one non-link is
