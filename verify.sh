@@ -31,7 +31,12 @@ if [ "$IS_MAC" = 1 ]; then
   check_link "$HOME/.aerospace.toml"          aerospace/aerospace.toml
   check_link "$HOME/.config/ghostty/config"   ghostty/config
   check_link "$HOME/.config/herdr/config.toml" herdr/config.toml
-  check_link "$HOME/Library/KeyBindings/DefaultKeyBinding.dict" DefaultKeyBinding.dict
+  # Copied, never linked: sandboxed apps can't follow a symlink out of
+  # ~/Library/KeyBindings (install.sh copy()).
+  kb="$HOME/Library/KeyBindings/DefaultKeyBinding.dict"
+  if [ -L "$kb" ]; then fail "$kb is a symlink; sandboxed apps ignore it (run ./install.sh)"
+  elif cmp -s "$kb" "$REPO/DefaultKeyBinding.dict"; then pass "copy $kb (matches repo)"
+  else fail "$kb differs from repo (run ./install.sh, then relaunch apps)"; fi
   check_link "$HOME/.config/nvim/init.lua"    nvim/init.lua
   check_link "$HOME/.zshrc"                   zsh/zshrc
   check_link "$HOME/bin/herdr-rotate"         bin/herdr-rotate

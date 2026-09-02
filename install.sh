@@ -2,6 +2,7 @@
 # Idempotent symlink installer for the dotfiles repo.
 # Real files are backed up to <name>.bak.<timestamp>; symlinks are replaced.
 # Per-file links only, never directory links (config dirs hold runtime state).
+# One file is COPIED instead: DefaultKeyBinding.dict (see copy() below).
 #
 # Usage:
 #   ./install.sh            full install (macOS: terminal stack + shell + git)
@@ -31,6 +32,23 @@ link() {
   echo "linked:    $dst -> $src"
 }
 
+# Copy, for files read by SANDBOXED apps. The sandbox grants Safari/Mail/
+# TextEdit read access to ~/Library/KeyBindings, but resolves symlinks first
+# and denies the target under ~/dotfiles -- a linked dict is silently
+# ignored (found 2026-09-01: option+f typed the U.S.-layout "ƒ" in
+# Safari and Mail while option+backspace, a built-in binding, kept working).
+copy() {
+  local src="$REPO/$1" dst="$2"
+  mkdir -p "$(dirname "$dst")"
+  if [ -L "$dst" ]; then rm "$dst"
+  elif [ -e "$dst" ] && ! cmp -s "$src" "$dst"; then
+    mv "$dst" "$dst.bak.$TS"
+    echo "backed up: $dst -> $dst.bak.$TS"
+  fi
+  cp "$src" "$dst"
+  echo "copied:    $dst <- $src"
+}
+
 # Portable basics (always).
 # bashrc doubles as .bashrc so non-login bash (ssh host cmd) is configured too.
 link bash/bashrc          "$HOME/.bash_profile"
@@ -54,8 +72,9 @@ link aerospace/aerospace.toml "$HOME/.aerospace.toml"
 link ghostty/config           "$HOME/.config/ghostty/config"
 link herdr/config.toml        "$HOME/.config/herdr/config.toml"
 
-# macOS Cocoa text-system keybindings; apps read it at launch.
-link DefaultKeyBinding.dict   "$HOME/Library/KeyBindings/DefaultKeyBinding.dict"
+# macOS Cocoa text-system keybindings; apps read it at launch. Copied, not
+# linked (sandbox, see copy()): after editing, re-run install.sh + relaunch.
+copy DefaultKeyBinding.dict   "$HOME/Library/KeyBindings/DefaultKeyBinding.dict"
 
 # Neovim: debug-first config (nvim-dap); vim remains the daily editor.
 link nvim/init.lua            "$HOME/.config/nvim/init.lua"

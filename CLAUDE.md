@@ -60,7 +60,7 @@ The hold key MUST be ⌘: on the default ⌥ it races AeroSpace's alt+tab.
 | git/gitconfig          | ~/.gitconfig                 | immediate                   | `git config core.excludesfile`  |
 | git/gitignore_global   | ~/.gitignore_global          | immediate                   | `.DS_Store` invisible to status |
 | tmux/tmux.conf(.local) | ~/.tmux.conf(.local)         | `tmux source ~/.tmux.conf`  | remote-VM use; herdr owns local |
-| DefaultKeyBinding.dict | ~/Library/KeyBindings/…      | app relaunch                | Cocoa text fields only          |
+| DefaultKeyBinding.dict | ~/Library/KeyBindings/… (COPY) | `./install.sh` + app relaunch | Cocoa fields; `cmp` in verify.sh |
 
 Not in the table: `bash/env`, `bash/config`, `bash/aliases` are sourced by
 bash/bashrc (and `bash/aliases` also by zsh/zshrc — keep it bash-AND-zsh
@@ -68,7 +68,11 @@ compatible); `i3/config` is installed nowhere — a modernized reference for
 a future Linux desktop, unverifiable until one exists.
 
 `install.sh` creates symlinks (with backup of real files). Edit in the repo,
-apply, verify, commit. Never leave changes uncommitted.
+apply, verify, commit. Never leave changes uncommitted. The one non-link is
+DefaultKeyBinding.dict: sandboxed apps (Safari, Mail, TextEdit) may read
+~/Library/KeyBindings but not a symlink target under ~/dotfiles, so a linked
+dict is silently ignored — it is copied, and edits need a re-install plus
+app relaunch.
 
 ## Hard constraints (violating these reintroduces solved bugs)
 
