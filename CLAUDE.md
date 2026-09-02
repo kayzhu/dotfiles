@@ -173,6 +173,14 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   cursor — no GUI toggle exists. Applies per-app on relaunch.
   `com.apple.spaces spans-displays = true` (constraint 10, set via the
   Mission Control GUI 2026-09-02; logout to apply).
+- **Restart the herdr server after every macOS logout** (`herdr server
+  stop`, then start herdr from a fresh Ghostty). The server outlives
+  logout, and every pane it then spawns inherits a bootstrap port into
+  the dead login session: `launchctl print gui/501` fails with "141:
+  Reentrancy avoided", `open -a` finds no apps, `defaults read` sees no
+  domains, and runtime Metal shader compiles fail with "Unable to reach
+  MTLCompilerService" (ds4's tensor probe). Confirmed 2026-09-02 with a
+  5-line Swift compile probe before and after the restart.
 - Remote multiplexing, two tiers: VMs that can take the herdr binary get
   `herdr --remote <ssh-target> --session <name>` (managed ssh: keepalives,
   control-socket reuse; local keybindings by default) — run it from a PLAIN
@@ -184,18 +192,6 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
 
 ## Pending verification
 
-- herdr server survives macOS logout (2026-09-02: server pid from 08-31
-  still alive after the 11:06 re-login; new Ghostty clients attached to
-  it). Every pane it spawns inherits a bootstrap port into the DEAD
-  login session: mach lookups fail with "141: Reentrancy avoided"
-  (`launchctl print gui/501`), `open -a` finds no apps, `defaults read`
-  sees no domains, and Metal runtime shader compiles fail with "Unable to
-  reach MTLCompilerService" (ds4's Metal 4 tensor probe; reproduced with
-  a 5-line Swift probe, sandbox on and off). Expected fix, UNTESTED:
-  `herdr server stop`, then start herdr from a fresh Ghostty. Confirm
-  with `launchctl print gui/501 | head -1` inside a new pane, then
-  promote to a convention ("restart the herdr server after every
-  logout") and drop this item.
 - herdr 0.8.2 restart done (2026-08-31): annotate plugin installed +
   enabled, config reloads clean, claude integration hook updated v7→v8,
   pane swaps verified via CLI in a scratch tab. Remaining finger
