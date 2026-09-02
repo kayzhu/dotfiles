@@ -62,6 +62,14 @@ if [ "$IS_MAC" = 1 ]; then
     pass "secure input off"
   else fail "secure input HELD (find pid via ioreg; AeroSpace hotkeys dead)"; fi
 
+  # "Displays have separate Spaces" must be OFF (CLAUDE.md constraint 10):
+  # with it on, cross-monitor focus into a multi-window app lands on the
+  # app's last-used window (upstream AeroSpace #101). Read the plist
+  # directly: `defaults read` can miss this domain from a sandboxed shell.
+  sp=$(plutil -extract spans-displays raw "$HOME/Library/Preferences/com.apple.spaces.plist" 2>/dev/null)
+  if [ "$sp" = true ]; then pass "displays-have-separate-spaces off"
+  else fail "displays-have-separate-spaces is ON (Mission Control settings; logout to apply)"; fi
+
   # AeroSpace alive and config loaded.
   if command -v aerospace >/dev/null && aerospace list-modes >/dev/null 2>&1; then
     pass "aerospace responding (modes: $(aerospace list-modes | tr '\n' ' '))"

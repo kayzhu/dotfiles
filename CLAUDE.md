@@ -111,12 +111,21 @@ app relaunch.
    `on-focus-changed` / `on-focused-monitor-changed = move-mouse …`
    active, alt+h cross-monitor focus intermittently landed on a
    same-monitor window of the target app (found by bisection 2026-08-13;
-   the warp fires mid-focus-change and feeds back into focus resolution —
-   symptom mimics upstream #101). macOS "Displays have separate Spaces"
-   stays enabled: never needed once the callbacks were off, and its side
-   effects (native fullscreen blacks the other display) aren't wanted.
+   the warp fires mid-focus-change and feeds back into focus resolution).
    Cost: the pointer no longer follows focus. Re-enable only with a repro
    test at hand.
+10. **macOS "Displays have separate Spaces" stays DISABLED** (System
+   Settings > Desktop & Dock > Mission Control; takes effect after
+   logout). Same symptom as 9, second independent cause (2026-09-02):
+   with it on, focusing a window of an app that has windows on two
+   workspaces lands on the app's most-recently-used window, on ANY
+   monitor, and drags that workspace onto its display (upstream
+   nikitabobko/AeroSpace#101; app-level `activate` restores the app's
+   last key window, draft PR #2179). Deterministic repro: alt+0 (touch
+   the ws-10 Ghostty), alt+1, alt+h — jumps to 10 instead of crossing.
+   Off, 3/3 CLI runs cross correctly. Cost: native (green-button)
+   fullscreen blacks the other display; use alt+shift+enter instead.
+   verify.sh checks the pref.
 
 Colors are NOT doctrine: JankyBorders' active/inactive pair
 (aerospace.toml), tmux's colour_4, and i3's focused border are plain
@@ -162,6 +171,8 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   `defaults write -g TSMLanguageIndicatorEnabled -bool false` (2026-08)
   removes Sonoma+'s floating input-source/caps-lock capsule at the text
   cursor — no GUI toggle exists. Applies per-app on relaunch.
+  `com.apple.spaces spans-displays = true` (constraint 10, set via the
+  Mission Control GUI 2026-09-02; logout to apply).
 - Remote multiplexing, two tiers: VMs that can take the herdr binary get
   `herdr --remote <ssh-target> --session <name>` (managed ssh: keepalives,
   control-socket reuse; local keybindings by default) — run it from a PLAIN
