@@ -65,6 +65,7 @@ if [ "$IS_MAC" = 1 ]; then
 
   # Ghostty keybind translations present: 21 repo-defined (plus Ghostty's
   # own text: defaults, 3 today -- threshold is the repo-owned count).
+  # Sole owner of this number: bump it here when adding a text: bind.
   if command -v ghostty >/dev/null; then
     n=$(ghostty +list-keybinds 2>/dev/null | grep -c 'text:' || true)
     [ "${n:-0}" -ge 21 ] && pass "ghostty text: translations loaded ($n)" \

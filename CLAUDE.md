@@ -9,9 +9,9 @@ The bulk of this repo is **the terminal stack**: a four-layer macOS
 terminal environment on an M5 Max — AeroSpace (tiling WM) + Ghostty
 (emulator) + herdr (agent-aware multiplexer) + the vim that lives
 inside it. This file is the canonical project state; it encodes
-conclusions from the debugging campaign that produced those configs, so
-read it before proposing changes. The rest (`bash/`, `git/`) predates the
-stack and mostly stays stable.
+conclusions from the debugging campaign that produced those configs, not
+preferences. The rest (`bash/`, `git/`) predates the stack and mostly
+stays stable.
 
 ## The layering contract (the core invariant)
 
@@ -196,8 +196,8 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   is marked auto_updates, so the app updates itself and plain
   `brew upgrade` skips it; `brew upgrade --cask ghostty --greedy` forces a
   brew-side sync. After updating, reload config, then
-  `ghostty +list-keybinds` to confirm the 21 repo-defined text:
-  translations survived (24 total including Ghostty's own defaults); watch
+  `./verify.sh` to confirm the repo-defined `text:` translations survived
+  (the expected count is pinned there, next to the check that enforces it); watch
   release notes for keybind grammar changes (physical key names arrived
   in 1.2).
 - **vim plugins**: `:PlugUpdate`; `:LspInstallServer --force` if a language
