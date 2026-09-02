@@ -8,9 +8,7 @@ repo, apply, verify, commit — the repo file IS the live file.
 The bulk of this repo is **the terminal stack**: a four-layer macOS
 terminal environment on an M5 Max — AeroSpace (tiling WM) + Ghostty
 (emulator) + herdr (agent-aware multiplexer) + the vim that lives
-inside it. (It began life as a separate "terminal-stack" project directory,
-long since dissolved into the per-tool dirs here — aerospace/, ghostty/,
-herdr/, vim/, zsh/.) This file is the canonical project state; it encodes
+inside it. This file is the canonical project state; it encodes
 conclusions from the debugging campaign that produced those configs, so
 read it before proposing changes. The rest (`bash/`, `git/`) predates the
 stack and mostly stays stable.
