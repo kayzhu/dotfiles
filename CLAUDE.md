@@ -183,8 +183,7 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   the dead login session: `launchctl print gui/501` fails with "141:
   Reentrancy avoided", `open -a` finds no apps, `defaults read` sees no
   domains, and runtime Metal shader compiles fail with "Unable to reach
-  MTLCompilerService" (ds4's tensor probe). Confirmed 2026-09-02 with a
-  5-line Swift compile probe before and after the restart.
+  MTLCompilerService". Confirmed 2026-09-02.
 - Remote multiplexing, two tiers: VMs that can take the herdr binary get
   `herdr --remote <ssh-target> --session <name>` (managed ssh: keepalives,
   control-socket reuse; local keybindings by default) — run it from a PLAIN
