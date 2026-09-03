@@ -38,17 +38,10 @@ accordion-padding = 30
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 
-# DISABLED 2026-08-13 (CLAUDE.md constraint 9): with these move-mouse
-# callbacks active, alt+h/l cross-monitor focus intermittently landed on
-# a same-monitor window of the target's app instead of crossing --
-# found by bisection (AltTab was a red herring).
-# Suspected mechanism: the mouse warp fires mid-focus-change and feeds
-# back into focus resolution. Re-enable only with a repro test at hand.
-# A SECOND, independent cause of the same symptom was confirmed
-# 2026-09-02: macOS "Displays have separate Spaces" (upstream #101) --
-# now disabled system-wide, see CLAUDE.md constraint 10.
-# on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-# on-focus-changed = ['move-mouse window-lazy-center']
+# Pointer follows focus. Re-enabled 2026-09-02 after constraint 10 fixed
+# the cross-monitor focus bug once blamed on this (CLAUDE.md constraint 9).
+# on-focused-monitor-changed stays off: untested since, not ruled out.
+on-focus-changed = ['move-mouse window-lazy-center']
 
 # Disarm cmd-h "Hide application", a frequent misfire near alt chords.
 automatically-unhide-macos-hidden-apps = true

@@ -111,13 +111,14 @@ app relaunch.
 8. **`bindkey -e` must stay FIRST in zsh/zshrc.** `EDITOR=vim` makes zsh
    select the vi keymap at startup, which kills alt+f/b/d word motion (the
    reserved readline/zle plane, constraint 6).
-9. **AeroSpace `move-mouse` callbacks stay disabled.** With
-   `on-focus-changed` / `on-focused-monitor-changed = move-mouse …`
-   active, alt+h cross-monitor focus intermittently landed on a
-   same-monitor window of the target app (found by bisection 2026-08-13;
-   the warp fires mid-focus-change and feeds back into focus resolution).
-   Cost: the pointer no longer follows focus. Re-enable only with a repro
-   test at hand.
+9. **AeroSpace `on-focused-monitor-changed = move-mouse …` stays off;
+   `on-focus-changed = move-mouse window-lazy-center` is ON** (re-enabled
+   2026-09-02). Both were disabled 2026-08-13 by bisection when alt+h
+   cross-monitor focus intermittently landed on a same-monitor window of
+   the target app; the cause turned out to be constraint 10, not the
+   warp, and the focus callback works with 10 in place. The monitor
+   callback is untested since, not ruled out. If the symptom returns,
+   disable the focus callback first and re-bisect.
 10. **macOS "Displays have separate Spaces" stays DISABLED** (System
    Settings > Desktop & Dock > Mission Control; takes effect after
    logout). Same symptom as 9, second independent cause (2026-09-02):
