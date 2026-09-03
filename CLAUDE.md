@@ -116,9 +116,9 @@ app relaunch.
    2026-09-02). Both were disabled 2026-08-13 by bisection when alt+h
    cross-monitor focus intermittently landed on a same-monitor window of
    the target app; the cause turned out to be constraint 10, not the
-   warp, and the focus callback works with 10 in place. The monitor
-   callback is untested since, not ruled out. If the symptom returns,
-   disable the focus callback first and re-bisect.
+   warp; both callbacks were retested clean with 10 in place. Only the
+   focus callback is enabled because it subsumes the monitor one. If the
+   symptom returns, disable it first and re-bisect.
 10. **macOS "Displays have separate Spaces" stays DISABLED** (System
    Settings > Desktop & Dock > Mission Control; takes effect after
    logout). Same symptom as 9, second independent cause (2026-09-02):

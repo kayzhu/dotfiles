@@ -40,7 +40,7 @@ default-root-container-orientation = 'auto'
 
 # Pointer follows focus. Re-enabled 2026-09-02 after constraint 10 fixed
 # the cross-monitor focus bug once blamed on this (CLAUDE.md constraint 9).
-# on-focused-monitor-changed stays off: untested since, not ruled out.
+# on-focused-monitor-changed also tested clean; omitted as redundant.
 on-focus-changed = ['move-mouse window-lazy-center']
 
 # Disarm cmd-h "Hide application", a frequent misfire near alt chords.
