@@ -46,7 +46,7 @@ on-focus-changed = ['move-mouse window-lazy-center']
 # Disarm cmd-h "Hide application", a frequent misfire near alt chords.
 automatically-unhide-macos-hidden-apps = true
 
-focus-follows-mouse.enabled = false
+focus-follows-mouse.enabled = true
 
 key-mapping.preset = 'qwerty'
 
