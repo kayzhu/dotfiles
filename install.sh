@@ -82,6 +82,9 @@ copy DefaultKeyBinding.dict   "$HOME/Library/KeyBindings/DefaultKeyBinding.dict"
 
 # Neovim: debug-first config (nvim-dap); vim remains the daily editor.
 link nvim/init.lua            "$HOME/.config/nvim/init.lua"
+# Neovide is a GUI app: launchd's PATH has no Homebrew, so it needs an
+# absolute neovim-bin (see the file).
+link neovide/config.toml      "$HOME/.config/neovide/config.toml"
 
 # Interactive shell config (login shell is zsh; bash configs serve VMs).
 link zsh/zshrc                "$HOME/.zshrc"

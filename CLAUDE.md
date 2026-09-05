@@ -55,6 +55,7 @@ The hold key MUST be ⌘: on the default ⌥ it races AeroSpace's alt+tab.
 | herdr/config.toml      | ~/.config/herdr/config.toml  | `herdr server reload-config`| `prefix+?` inside herdr         |
 | vim/vimrc              | ~/.vimrc                     | restart vim / `:so %`       | `:checkhealth`-style manual     |
 | nvim/init.lua          | ~/.config/nvim/init.lua      | restart nvim                | `:checkhealth`; muscle-memory parity + DAP; vim stays canonical |
+| neovide/config.toml    | ~/.config/neovide/config.toml | relaunch Neovide           | `./verify.sh` (neovim-bin executable) |
 | zsh/zshrc              | ~/.zshrc                     | new shell                   | `stty -a \| grep ixon`; `bindkey -lL main` → emacs |
 | bash/bashrc            | ~/.bash_profile + ~/.bashrc  | new shell                   | `bash --login -i -c 'type la'`  |
 | git/gitconfig          | ~/.gitconfig                 | immediate                   | `git config core.excludesfile`  |
@@ -172,6 +173,13 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   Full): in-terminal annotation of pane text and document/agent-reply
   review, fed back to the agent as context. Runtime: bun. Its five
   prefix+a/shift+a/m/o/shift+o bindings live in herdr/config.toml.
+- GUI-launched apps (Finder/Dock/Spotlight/AltTab) inherit launchd's PATH
+  — `/usr/bin:/bin:/usr/sbin:/sbin`, no Homebrew — and any helper they
+  spawn via `zsh -c` reads neither zshrc (non-interactive) nor zshenv
+  (absent). Give such an app an absolute binary path in its own config,
+  as `neovide/config.toml` does. Do NOT create a ~/.zshenv or run
+  `launchctl setenv PATH` to paper over it: that is a second PATH
+  definition, and zsh/zshrc is the only one.
 - Hand-set macOS defaults (same class as AltTab's prefs):
   `defaults write -g TSMLanguageIndicatorEnabled -bool false` (2026-08)
   removes Sonoma+'s floating input-source/caps-lock capsule at the text

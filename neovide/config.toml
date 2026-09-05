@@ -1,0 +1,6 @@
+# Neovide (GUI nvim). Launched from Finder/Dock/Spotlight it inherits
+# launchd's PATH -- /usr/bin:/bin:/usr/sbin:/sbin, no Homebrew -- and
+# spawns `zsh -c nvim`, a non-interactive non-login shell that reads
+# neither zshrc nor zshenv. Absolute path instead of a second PATH
+# definition (zsh/zshrc stays the only one).
+neovim-bin = "/opt/homebrew/bin/nvim"

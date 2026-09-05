@@ -38,7 +38,17 @@ if [ "$IS_MAC" = 1 ]; then
   elif cmp -s "$kb" "$REPO/DefaultKeyBinding.dict"; then pass "copy $kb (matches repo)"
   else fail "$kb differs from repo (run ./install.sh, then relaunch apps)"; fi
   check_link "$HOME/.config/nvim/init.lua"    nvim/init.lua
+  check_link "$HOME/.config/neovide/config.toml" neovide/config.toml
   check_link "$HOME/.zshrc"                   zsh/zshrc
+fi
+
+# Neovide is launched by the GUI, which has no Homebrew on PATH; its
+# neovim-bin must be an absolute path that still exists (a brew prefix
+# change or a neovim uninstall breaks it silently until launch).
+if [ "$IS_MAC" = 1 ] && [ -f "$REPO/neovide/config.toml" ]; then
+  nb=$(sed -n 's/^neovim-bin *= *"\(.*\)"/\1/p' "$REPO/neovide/config.toml")
+  if [ -n "$nb" ] && [ -x "$nb" ]; then pass "neovide neovim-bin $nb"
+  else fail "neovide neovim-bin '$nb' is not executable (update neovide/config.toml)"; fi
 fi
 
 # zsh must be on the emacs keymap (EDITOR=vim would otherwise pick viins,
