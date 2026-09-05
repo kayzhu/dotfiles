@@ -29,10 +29,16 @@ after-startup-command = [
     'exec-and-forget borders active_color=0xff33467c inactive_color=0xff15161e width=5.0 style=round hidpi=on'
 ]
 
-# Normalizations keep the tree sane. The i3 split-then-place idiom is
-# replaced by join-with (see service mode).
+# flatten-containers stays on: it deletes single-child containers, which
+# is what cleans the tree up after a window leaves one.
 enable-normalization-flatten-containers = true
-enable-normalization-opposite-orientation-for-nested-containers = true
+# opposite-orientation is OFF deliberately. It forces a nested container
+# to the opposite orientation of its parent, so pushing a window past the
+# bottom edge flipped the remaining windows from vertical to horizontal.
+# A vertical pair inside a vertical root is the wanted shape; this rule
+# forbids it. Cost: same-orientation nesting is invisible on screen and
+# no CLI command dumps the tree -- service-mode `r` resets a bad one.
+enable-normalization-opposite-orientation-for-nested-containers = false
 
 accordion-padding = 30
 default-root-container-layout = 'tiles'
@@ -69,13 +75,13 @@ alt-l = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop ri
 alt-j = 'focus --boundaries workspace --boundaries-action stop down'
 alt-k = 'focus --boundaries workspace --boundaries-action stop up'
 
-# Stop at the workspace edge. The default (create-implicit-container)
-# rebuilds the tree at the boundary and flips the remaining windows'
-# orientation; structural changes belong to service-mode join-with.
-alt-shift-h = 'move --boundaries workspace --boundaries-action stop left'
-alt-shift-j = 'move --boundaries workspace --boundaries-action stop down'
-alt-shift-k = 'move --boundaries workspace --boundaries-action stop up'
-alt-shift-l = 'move --boundaries workspace --boundaries-action stop right'
+# Default boundaries-action (create-implicit-container) is wanted here:
+# pushing a window past the workspace edge splits the screen and parks it
+# in that half. See the normalization note above for the other half.
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
 
 # --- Layout -----------------------------------------------------------
 alt-shift-enter = 'fullscreen'
