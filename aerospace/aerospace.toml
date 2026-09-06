@@ -52,7 +52,16 @@ on-focus-changed = ['move-mouse window-lazy-center']
 # Disarm cmd-h "Hide application", a frequent misfire near alt chords.
 automatically-unhide-macos-hidden-apps = true
 
-focus-follows-mouse.enabled = true
+# OFF since 2026-09-05, upstream bug: focus-follows-mouse ignores z-order,
+# so a floating window BEHIND a tiled one takes focus when the mouse hovers
+# the tiled window in front (nikitabobko/AeroSpace#2151). The three
+# `layout floating` rules below are the precondition; on-focus-changed
+# above amplifies it by warping the pointer onto the wrongly focused
+# window (#386). Not fixed in any release through 0.21.3-Beta: #2245 and
+# #2238 are open, #2198 closed unmerged. Keyboard focus is unaffected --
+# on-focus-changed still gives pointer-follows-focus, the direction that
+# matters for alt+hjkl. Re-enable (uncomment) once a fix ships.
+# focus-follows-mouse.enabled = true
 
 key-mapping.preset = 'qwerty'
 

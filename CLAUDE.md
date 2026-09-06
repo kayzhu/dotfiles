@@ -210,6 +210,13 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   test: `prefix+?` shows the five annotate bindings and the four
   prefix+shift+hjkl swaps; press each once.
   Then drop this item.
+- `focus-follows-mouse` is commented out pending upstream
+  nikitabobko/AeroSpace#2151 (FFM ignores z-order; a floating window
+  behind a tiled one steals focus on hover). Watch PRs #2245 / #2238;
+  when one ships, uncomment the key in aerospace.toml, reload, and
+  confirm against the floating apps (QuickTime, System Settings,
+  Preview) before dropping this item. Symptom was reported, not
+  bisected here — reproduce it first if the fix seems not to help.
 
 ## Upgrade playbook
 
