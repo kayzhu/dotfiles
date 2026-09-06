@@ -37,6 +37,7 @@ brew "fd"
 brew "bat"
 brew "eza"
 brew "tree"
+brew "timg"                                         # inline images in a pane
 brew "htop"
 brew "btop"
 brew "tmux"                                         # remote VMs; herdr owns local

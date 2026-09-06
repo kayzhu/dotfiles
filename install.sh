@@ -93,7 +93,7 @@ echo
 echo "--- prerequisite check (informational) ---"
 for c in aerospace herdr vim nvim tmux fzf rg fd bat eza zoxide tree htop \
          btop trash delta lazygit gh borders black clang-format \
-         tree-sitter pyright-langserver bun; do
+         tree-sitter pyright-langserver bun timg; do
   if command -v "$c" >/dev/null 2>&1; then echo "ok:       $c"
   else echo "MISSING:  $c"; fi
 done
