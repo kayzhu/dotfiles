@@ -20,7 +20,7 @@ cask "alt-tab"                                      # owns cmd+tab (CLAUDE.md)
 # --- editors (vim/vimrc, nvim/init.lua) ---
 brew "vim"                                          # /usr/bin/vim lacks +clipboard
 brew "neovim"
-cask "neovide"                                      # GUI nvim; neovide/config.toml
+cask "neovide-app"                                  # GUI nvim; neovide/config.toml
 brew "tree-sitter-cli"
 brew "pyright"
 brew "black"
