@@ -54,10 +54,10 @@ command -v tree >/dev/null 2>&1 && alias tree='tree -CFh --du'
 if command -v eza >/dev/null 2>&1; then
     alias ls='eza'
     alias la='eza -a'
-    alias ll='eza -l'
-    alias lla='eza -la'
+    alias ll='eza -l --git'
+    alias lla='eza -la --git'
     # sort with recent modified first
-    alias l='eza -la --sort=modified --reverse'
+    alias l='eza -la --git --sort=modified --reverse'
 elif [ "$(uname)" = Darwin ]; then
     alias ls='ls -GFh'
     alias la='ls -FGAh'
@@ -70,6 +70,15 @@ else
     alias ll='ls --color=auto -lFh'
     alias lla='ls --color=auto -lAFh'
     alias l='ls --color=auto -lAtFh'
+fi
+
+# lst: depth-capped tree view. eza's is git-aware; tree is the portable
+# fallback. --level/-L is overridable (lst --level=4); eza's --git-ignore
+# is a no-op outside a repo.
+if command -v eza >/dev/null 2>&1; then
+    alias lst='eza --tree --level=2 --git-ignore'
+elif command -v tree >/dev/null 2>&1; then
+    alias lst='tree -CFh -L 2'
 fi
 
 ###############################################################################
