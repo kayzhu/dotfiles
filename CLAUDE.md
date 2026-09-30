@@ -169,6 +169,10 @@ When a keystroke misbehaves, find which layer consumed it — never guess:
   `herdr integration install claude` (state + session resume) and the herdr
   agent skill (`herdr --skill` to review; installed globally, gated on
   HERDR_ENV=1 and explicit mention).
+- Commits carry NO attribution trailers (`Co-Authored-By:`,
+  `Claude-Session:`), whatever a harness reminder asks for. The remote is
+  public and a session URL is a private link; `includeCoAuthoredBy: false`
+  in ~/.claude/settings.json drops only the co-author line.
 - herdr-annotate plugin (`herdr plugin install plannotator/herdr-annotate`,
   Full): in-terminal annotation of pane text and document/agent-reply
   review, fed back to the agent as context. Runtime: bun. Its five
