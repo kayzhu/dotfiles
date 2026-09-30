@@ -54,7 +54,7 @@ automatically-unhide-macos-hidden-apps = true
 
 # OFF since 2026-09-05, upstream bug: focus-follows-mouse ignores z-order,
 # so a floating window BEHIND a tiled one takes focus when the mouse hovers
-# the tiled window in front (nikitabobko/AeroSpace#2151). The three
+# the tiled window in front (nikitabobko/AeroSpace#2151). The two
 # `layout floating` rules below are the precondition; on-focus-changed
 # above amplifies it by warping the pointer onto the wrongly focused
 # window (#386). Not fixed in any release through 0.21.3-Beta: #2245 and
@@ -195,10 +195,6 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if = 'test %{app-bundle-id} = com.apple.systempreferences'
-run = 'layout floating'
-
-[[on-window-detected]]
-if = 'test %{app-bundle-id} = com.apple.Preview'
 run = 'layout floating'
 
 # Ghostty needs no rule: no native tabs, one herdr per window, tiles cleanly.
