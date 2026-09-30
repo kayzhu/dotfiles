@@ -54,7 +54,7 @@ The hold key MUST be ⌘: on the default ⌥ it races AeroSpace's alt+tab.
 | ghostty/config         | ~/.config/ghostty/config     | cmd+shift+comma in Ghostty  | `ghostty +list-keybinds`        |
 | herdr/config.toml      | ~/.config/herdr/config.toml  | `herdr server reload-config`| `prefix+?` inside herdr         |
 | vim/vimrc              | ~/.vimrc                     | restart vim / `:so %`       | `:checkhealth`-style manual     |
-| nvim/init.lua          | ~/.config/nvim/init.lua      | restart nvim                | `:checkhealth`; muscle-memory parity + DAP; vim stays canonical |
+| nvim/init.lua          | ~/.config/nvim/init.lua      | restart nvim                | `:checkhealth`; muscle-memory parity + DAP + orgmode (~/org); vim stays canonical |
 | neovide/config.toml    | ~/.config/neovide/config.toml | relaunch Neovide           | `./verify.sh` (neovim-bin executable) |
 | zsh/zshrc              | ~/.zshrc                     | new shell                   | `stty -a \| grep ixon`; `bindkey -lL main` → emacs |
 | bash/bashrc            | ~/.bash_profile + ~/.bashrc  | new shell                   | `bash --login -i -c 'type la'`  |

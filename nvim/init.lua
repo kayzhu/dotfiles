@@ -1,7 +1,8 @@
 -- ~/.config/nvim/init.lua
 -- Neovim, DEBUG-FIRST config (2026-08): nvim exists in this stack for
 -- nvim-dap (stepping through robotics stacks -- Python/ROS 2, local and
--- remote attach). vim (vim/vimrc) remains the daily editor; this config
+-- remote attach), and since 2026-09 for org notes (nvim-orgmode).
+-- vim (vim/vimrc) remains the daily editor; this config
 -- ports the muscle memory, not the whole vimrc. Migrate more only if
 -- nvim earns it.
 --
@@ -110,6 +111,8 @@ vim.pack.add({
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
   -- in-buffer markdown rendering (extmarks over the treesitter parser)
   'https://github.com/MeanderingProgrammer/render-markdown.nvim',
+  -- org notes: agenda, capture, TODO states (ships its own org parser)
+  'https://github.com/nvim-orgmode/orgmode',
   -- format-on-save (vim's codefmt counterpart); skips missing formatters
   'https://github.com/stevearc/conform.nvim',
   -- git signs in the number column (vim's gitgutter counterpart)
@@ -156,6 +159,17 @@ vim.keymap.set('n', '-', '<Cmd>Oil<CR>')
 -- Markdown: styled in-buffer rendering (headings, tables, checkboxes),
 -- persistent across modes. Rendered view in nvim; glow covers the shell.
 require('render-markdown').setup({})
+
+-- Org notes, all under ~/org (Emacs' org-directory default). Keys live
+-- behind `o (agenda `oa, capture `oc; g? in an org buffer lists the rest),
+-- plus <C-Space> for checkboxes -- free in every layer (zle's ^@ binding
+-- only applies at a shell prompt). The org parser is orgmode's own, not
+-- nvim-treesitter's; keep 'org' out of ts_fts. Its experimental LSP
+-- (vim.lsp.enable('org')) is deliberately left off.
+require('orgmode').setup({
+  org_agenda_files = '~/org/**/*',
+  org_default_notes_file = '~/org/refile.org',
+})
 
 -- fzf: project-rooted, same as the vimrc (autodir is ported above; the
 -- root anchor keeps `p/`a project-rooted regardless).
